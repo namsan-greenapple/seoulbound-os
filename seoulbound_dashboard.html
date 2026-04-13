@@ -36,8 +36,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--gray-l);color:var(--ink);
   .g3{grid-template-columns:1fr;gap:10px;}
   .g2{grid-template-columns:1fr;gap:10px;}
   .retro-grid{grid-template-columns:1fr;}
-  .daily-header{grid-template-columns:60px 1fr 70px 44px;font-size:9px;}
-  .daily-row{grid-template-columns:60px 1fr 70px 44px;}
+  .daily-header{grid-template-columns:60px 1fr 60px 36px 28px;font-size:9px;}
+  .daily-row{grid-template-columns:60px 1fr 60px 36px 28px;}
   .cal-cell{min-height:44px;padding:3px;}
   .cal-event{display:none;}
   .pipe-col{min-width:130px;}
@@ -114,9 +114,9 @@ body{font-family:'DM Sans',sans-serif;background:var(--gray-l);color:var(--ink);
 .cb.done::after{content:'✓';color:white;font-size:9px;font-weight:800;}
 .ct{font-size:12px;line-height:1.5;color:var(--ink);transition:all .15s;}
 .ct.done{text-decoration:line-through;color:#B0ADA7;}
-.daily-header{display:grid;grid-template-columns:80px 1fr 110px 70px;background:var(--gray-l);border-radius:8px 8px 0 0;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--gray);}
+.daily-header{display:grid;grid-template-columns:80px 1fr 110px 50px 36px;background:var(--gray-l);border-radius:8px 8px 0 0;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--gray);}
 .daily-header>div{padding:8px 12px;}
-.daily-row{display:grid;grid-template-columns:80px 1fr 110px 70px;border-bottom:1px solid var(--border);background:var(--white);transition:background .1s;cursor:pointer;}
+.daily-row{display:grid;grid-template-columns:80px 1fr 110px 50px 36px;border-bottom:1px solid var(--border);background:var(--white);transition:background .1s;cursor:pointer;}
 .daily-row:hover{background:var(--gray-l);}
 .daily-row:last-child{border-bottom:none;border-radius:0 0 8px 8px;}
 .daily-row>div{padding:9px 12px;display:flex;align-items:center;}
@@ -231,7 +231,7 @@ textarea:focus{outline:none;}
 .daily-row{cursor:grab;}
 .daily-row.dragging{opacity:.4;background:var(--teal-l);}
 .daily-row.drag-over{border-top:2px solid var(--teal);}
-.time-edit{border:none;background:transparent;font-size:11px;font-weight:600;color:var(--gray);width:52px;font-family:'DM Sans',sans-serif;cursor:pointer;}
+.time-edit{border:none;background:transparent;font-size:11px;font-weight:600;color:var(--gray);width:58px;font-family:'DM Sans',sans-serif;cursor:text;border-radius:4px;padding:2px 4px;}
 .time-edit:focus{outline:none;background:var(--teal-l);border-radius:4px;color:var(--teal);}
 
 
@@ -272,7 +272,34 @@ textarea:focus{outline:none;}
 .mt-add-save{background:var(--teal);color:white;border:none;border-radius:6px;padding:5px 10px;font-size:11px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;}
 .mt-add-cancel{background:var(--white);color:var(--gray);border:1px solid var(--border);border-radius:6px;padding:5px 10px;font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif;}
 .mt-add-section-btn{width:100%;background:var(--white);border:1px dashed var(--border);border-radius:10px;padding:10px;font-size:12px;color:var(--gray);cursor:pointer;margin-top:4px;font-family:'DM Sans',sans-serif;}
+.to-daily-btn{font-size:9px;background:var(--teal-l);color:var(--teal);border:none;border-radius:5px;padding:2px 7px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap;flex-shrink:0;opacity:0;transition:opacity .15s;}
+.mt-task-row:hover .to-daily-btn{opacity:1;}
 .mt-add-btn{font-size:10px;background:var(--teal-l);color:var(--teal);border:none;border-radius:6px;padding:3px 8px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;}
+
+
+/* ── 주간 목표 CSS ─────────────────────────── */
+.wg-day{border:1px solid var(--border);border-radius:8px;padding:8px 6px;min-height:90px;}
+.wg-day.today-col{border-color:var(--teal);background:var(--teal-l);}
+.wg-day-hdr{font-size:9px;font-weight:700;text-align:center;color:var(--gray);margin-bottom:6px;}
+.wg-day.today-col .wg-day-hdr{color:var(--teal);}
+.wg-item{display:flex;align-items:flex-start;gap:4px;margin-bottom:3px;font-size:10px;}
+.wg-cb{width:11px;height:11px;border:1.5px solid #C8C5BE;border-radius:2px;flex-shrink:0;margin-top:1px;cursor:pointer;}
+.wg-cb.done{background:var(--teal);border-color:var(--teal);}
+.wg-txt{flex:1;line-height:1.4;color:var(--ink);cursor:text;outline:none;}
+.wg-txt:focus{background:var(--teal-l);border-radius:2px;padding:1px 2px;}
+.wg-del{border:none;background:none;color:#C8C5BE;cursor:pointer;font-size:9px;padding:0;flex-shrink:0;}
+.wg-del:hover{color:var(--coral);}
+.wg-add{width:100%;border:none;background:none;color:var(--gray);font-size:9px;cursor:pointer;text-align:left;padding:2px 0;margin-top:2px;}
+.wg-add:hover{color:var(--teal);}
+/* 히스토리 */
+.hist-day{border:1px solid var(--border);border-radius:9px;overflow:hidden;margin-bottom:8px;}
+.hist-hdr{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:var(--gray-l);cursor:pointer;}
+.hist-date{font-size:12px;font-weight:700;color:var(--ink);}
+.hist-pct{font-size:11px;color:var(--gray);}
+.hist-body{padding:8px 12px;display:none;}
+.hist-body.open{display:block;}
+.hist-task{font-size:11px;padding:3px 0;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:6px;}
+.hist-task:last-child{border-bottom:none;}
 
 </style>
 </head>
@@ -287,7 +314,7 @@ textarea:focus{outline:none;}
     <div class="sb-section">메인</div>
     <div class="nav-item active" onclick="go('hub',this)"><span class="nav-icon">🏠</span> 허브</div>
     <div class="nav-item" onclick="go('daily',this)"><span class="nav-icon">☀️</span> 데일리 스케줄</div>
-    <div class="nav-item" onclick="go('tasks',this)"><span class="nav-icon">✅</span> 4월 태스크</div>
+    <div class="nav-item" onclick="go('tasks',this)"><span class="nav-icon">✅</span> 월별 목표</div>
     <div class="sb-section">수익</div>
     <div class="nav-item" onclick="go('revenue',this)"><span class="nav-icon">💰</span> 수익 트래커</div>
     <div class="nav-item" onclick="go('pipeline',this)"><span class="nav-icon">🔄</span> 고객 파이프라인</div>
@@ -392,40 +419,61 @@ textarea:focus{outline:none;}
 <div id="daily" class="page">
   <div class="page-header">
     <div class="page-title">☀️ 데일리 스케줄</div>
-    <div class="page-date">2026년 4월 14일 · 화요일</div>
+    <div class="page-date" id="daily-date-label">2026년 4월 14일 · 화요일</div>
   </div>
-  <div class="card" style="margin-bottom:16px">
-    <div class="card-title">오늘 스케줄</div>
-    <div style="border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-top:8px">
-      <div class="daily-header"><div>시간</div><div>태스크</div><div>카테고리</div><div>완료</div></div>
+
+  <!-- 1. 주간 목표 -->
+  <div class="card" style="margin-bottom:14px">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+      <div class="card-title" style="margin-bottom:0">📅 이번 주 목표 (요일별 할 일)</div>
+      <span style="font-size:10px;color:var(--gray)">클릭해서 수정</span>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:6px" id="weekly-goals-grid"></div>
+  </div>
+
+  <!-- 2. 오늘 스케줄 -->
+  <div class="card" style="margin-bottom:14px">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+      <div style="display:flex;align-items:center;gap:12px">
+        <div class="card-title" style="margin-bottom:0">오늘 스케줄</div>
+        <div style="display:flex;gap:6px">
+          <span style="font-size:9px;font-weight:700;padding:2px 7px;border-radius:99px;background:#E1F5EE;color:#0F5F4A">📊 운영</span>
+          <span style="font-size:9px;font-weight:700;padding:2px 7px;border-radius:99px;background:#FFE8E4;color:#A33C1D">🎬 콘텐츠</span>
+          <span style="font-size:9px;font-weight:700;padding:2px 7px;border-radius:99px;background:#EDF4FF;color:#1A5FA3">📣 마케팅</span>
+          <span style="font-size:9px;font-weight:700;padding:2px 7px;border-radius:99px;background:#F0EFFD;color:#3C3489">🛠 플랫폼</span>
+          <span style="font-size:9px;font-weight:700;padding:2px 7px;border-radius:99px;background:#FFF3DC;color:#BA7517">💼 영업</span>
+        </div>
+      </div>
+      <button onclick="addTodayFromWeekly()" style="font-size:10px;background:var(--teal-l);color:var(--teal);border:none;border-radius:6px;padding:3px 9px;font-weight:700;cursor:pointer">↓ 오늘 주간목표 불러오기</button>
+    </div>
+    <div style="border:1px solid var(--border);border-radius:10px;overflow:hidden">
+      <div class="daily-header"><div>시간</div><div>태스크</div><div>카테고리</div><div>완료</div><div></div></div>
       <div id="schedule-body"></div>
     </div>
-    <div class="add-task">
-      <input id="new-time" class="add-time" type="time" value="10:00">
+    <div class="add-task" style="margin-top:10px">
+      <input id="new-time" class="add-time" type="text" placeholder="09:00" value="09:00">
       <input id="new-task" class="add-input" placeholder="오늘 추가할 태스크...">
       <select id="new-cat" style="border:1px solid var(--border);border-radius:8px;padding:8px 10px;font-size:12px;font-family:'DM Sans',sans-serif;background:var(--white)">
-        <option>📊 운영</option><option>🎬 콘텐츠</option><option>💰 수익</option><option>📧 마케팅</option><option>🛠 개발</option>
+        <option>📊 운영</option>
+        <option>🎬 콘텐츠</option>
+        <option>📣 마케팅</option>
+        <option>🛠 플랫폼</option>
+        <option>💼 영업</option>
       </select>
       <button class="btn" onclick="addTask()">+ 추가</button>
     </div>
   </div>
+
+  <!-- 3. 지난 날 히스토리 -->
   <div class="card">
-    <div class="card-title">요일별 고정 루틴</div>
-    <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:8px;margin-top:8px">
-      <div style="text-align:center"><div style="font-size:10px;font-weight:700;color:var(--gray);margin-bottom:6px">월</div><div style="font-size:10px;line-height:1.6">기획<br>Claude 미팅</div></div>
-      <div style="text-align:center;background:var(--teal-l);border-radius:8px;padding:6px"><div style="font-size:10px;font-weight:700;color:var(--teal);margin-bottom:6px">화 ★</div><div style="font-size:10px;line-height:1.6">이태원<br>촬영</div></div>
-      <div style="text-align:center"><div style="font-size:10px;font-weight:700;color:var(--gray);margin-bottom:6px">수</div><div style="font-size:10px;line-height:1.6">편집<br>업로드</div></div>
-      <div style="text-align:center"><div style="font-size:10px;font-weight:700;color:var(--gray);margin-bottom:6px">목</div><div style="font-size:10px;line-height:1.6">뉴스레터<br>발송</div></div>
-      <div style="text-align:center"><div style="font-size:10px;font-weight:700;color:var(--gray);margin-bottom:6px">금</div><div style="font-size:10px;line-height:1.6">Reddit<br>5개</div></div>
-      <div style="text-align:center;background:var(--teal-l);border-radius:8px;padding:6px"><div style="font-size:10px;font-weight:700;color:var(--teal);margin-bottom:6px">토 ★</div><div style="font-size:10px;line-height:1.6">명동<br>촬영</div></div>
-      <div style="text-align:center"><div style="font-size:10px;font-weight:700;color:var(--gray);margin-bottom:6px">일</div><div style="font-size:10px;line-height:1.6">Buffer<br>예약</div></div>
-    </div>
+    <div class="card-title" style="margin-bottom:10px">📆 지난 날 기록</div>
+    <div id="past-history-list"></div>
   </div>
 </div>
 
 <div id="tasks" class="page">
   <div class="page-header">
-    <div class="page-title">✅ 월별 태스크</div>
+    <div class="page-title">✅ 월별 목표</div>
     <div class="page-date">4월 ~ 12월 · 편집/추가/삭제/드래그 가능</div>
   </div>
 
@@ -986,10 +1034,10 @@ const fixedTasks=[
   {time:'10:00',task:'[촬영] 이태원/명동/남대문 인터뷰 3명 (30분)',cat:'🎬 콘텐츠',fixed:true},
   {time:'10:30',task:'[AI] CapCut Auto Caption → 자막 자동 생성',cat:'🎬 콘텐츠',fixed:true},
   {time:'11:00',task:'[배포] Buffer로 TikTok+Reels+Shorts 동시 예약',cat:'🎬 콘텐츠',fixed:true},
-  {time:'11:30',task:'[AI] ManyChat 댓글 자동응답 세팅 확인',cat:'📧 마케팅',fixed:true},
-  {time:'14:00',task:'[AI] Claude가 작성한 Reddit 답변 검토 후 발행',cat:'📧 마케팅',fixed:true},
-  {time:'15:00',task:'[AI] Loops.so 이메일 시퀀스 확인',cat:'📧 마케팅',fixed:true},
-  {time:'20:00',task:'[AI] ManyChat이 인스타 DM 자동처리 확인',cat:'📧 마케팅',fixed:true},
+  {time:'11:30',task:'[AI] ManyChat 댓글 자동응답 세팅 확인',cat:'📣 마케팅',fixed:true},
+  {time:'14:00',task:'[AI] Claude가 작성한 Reddit 답변 검토 후 발행',cat:'📣 마케팅',fixed:true},
+  {time:'15:00',task:'[AI] Loops.so 이메일 시퀀스 확인',cat:'📣 마케팅',fixed:true},
+  {time:'20:00',task:'[AI] ManyChat이 인스타 DM 자동처리 확인',cat:'📣 마케팅',fixed:true},
 ];
 // ── 날짜 유틸 ─────────────────────────────────────────
 const today = () => new Date().toISOString().slice(0,10); // "2026-04-14"
@@ -1088,8 +1136,8 @@ function renderSchedule(){
   const missing = allTasks.map((_,i)=>i).filter(i=>!validOrder.includes(i));
   const finalOrder = [...validOrder, ...missing];
 
-  const catColors={'📊 운영':'#E1F5EE','🎬 콘텐츠':'#FFE8E4','💰 수익':'#FFF3DC','📧 마케팅':'#EDF4FF','🛠 개발':'#F0EFFD'};
-  const catText={'📊 운영':'#0F5F4A','🎬 콘텐츠':'#A33C1D','💰 수익':'#BA7517','📧 마케팅':'#1A5FA3','🛠 개발':'#3C3489'};
+  const catColors={'📊 운영':'#E1F5EE','🎬 콘텐츠':'#FFE8E4','📧 마케팅':'#EDF4FF','💰 수익':'#FFF3DC','🛠 개발':'#F0EFFD'};
+  const catText={'📊 운영':'#0F5F4A','🎬 콘텐츠':'#A33C1D','📧 마케팅':'#1A5FA3','💰 수익':'#BA7517','🛠 개발':'#3C3489'};
   const doneRows = load('rowDone', {});
   const done = Object.values(doneRows).filter(Boolean).length;
   const total = allTasks.length;
@@ -1110,13 +1158,17 @@ function renderSchedule(){
       ondragleave="dragLeave(event)"
       style="opacity:${isDone?'.5':'1'}">
       <div class="time-cell">
-        <input class="time-edit" type="time" value="${t.time}"
+        <input class="time-edit" type="text" value="${t.time}" placeholder="09:00"
           onclick="event.stopPropagation()"
-          onchange="updateTime(${origIdx},this.value)">
+          onblur="updateTime(${origIdx},this.value)"
+          onkeydown="if(event.key==='Enter'){updateTime(${origIdx},this.value);this.blur();event.stopPropagation();}">
       </div>
       <div class="task-cell" onclick="chkRow(this.parentElement,${origIdx})">${t.task}${t.fixed?'<span class="fixed-tag">고정</span>':''}</div>
       <div onclick="chkRow(this.parentElement,${origIdx})"><span class="cat-pill" style="background:${catColors[t.cat]||'#f5f3ee'};color:${catText[t.cat]||'#6b6863'}">${t.cat}</span></div>
       <div class="check-cell" onclick="chkRow(this.parentElement,${origIdx})"><div class="cb ${isDone?'done':''}"></div></div>
+      <div style="display:flex;align-items:center;justify-content:center;">
+        <button onclick="event.stopPropagation();deleteScheduleTask(${origIdx})" style="border:none;background:none;color:#C8C5BE;cursor:pointer;font-size:13px;padding:2px 4px;border-radius:4px;" onmouseover="this.style.color='#A33C1D';this.style.background='#FFF0EB'" onmouseout="this.style.color='#C8C5BE';this.style.background='none'">✕</button>
+      </div>
     </div>`;
   }).join('') + (completed.length > 0 ? `
     <div style="padding:8px 12px;background:var(--teal-l);font-size:10px;font-weight:700;color:var(--teal);letter-spacing:.05em;text-transform:uppercase">
@@ -1173,6 +1225,22 @@ function chkRow(el, idx){
   const doneRows = load('rowDone', {});
   doneRows[idx] = isDone;
   save('rowDone', doneRows);
+  renderSchedule();
+}
+
+function deleteScheduleTask(origIdx){
+  // 확인 없이 바로 삭제 (월별과 동일)
+  if(origIdx < fixedTasks.length){
+    fixedTasks.splice(origIdx, 1);
+  } else {
+    const ui = origIdx - fixedTasks.length;
+    if(userTasks[ui] !== undefined){
+      userTasks.splice(ui, 1);
+      save('userTasks', userTasks);
+    }
+  }
+  // reset order
+  save('taskOrder', []);
   renderSchedule();
 }
 
@@ -1542,7 +1610,7 @@ const MT_DEFAULTS = {
       {text:'Seoul Insider 1호 초안',done:false},
       {text:'목요일 첫 발송',done:false},
     ]},
-    {title:'마케팅',color:'coral',tasks:[
+    {title:'콘텐츠 & 마케팅',color:'coral',tasks:[
       {text:'인스타 계정 개설',done:false},
       {text:'TikTok 영상 3개 업로드',done:false},
       {text:'Reddit 답변 20개',done:false},
@@ -1673,9 +1741,24 @@ function mtHideForm(pi){ document.getElementById('mt-form-'+pi).classList.remove
 function mtSaveNew(pi){
   const m=MT_MONTHS[mtSelected];
   const val=document.getElementById('mt-new-'+pi).value.trim();
+  const catEl=document.getElementById('mt-cat-'+pi);
+  const dateEl=document.getElementById('mt-date-'+pi);
+  const cat=catEl?catEl.value:'📊 운영';
+  const date=dateEl?dateEl.value.trim():'';
   if(!val) return;
-  mtData[m].phases[pi].tasks.push({text:val,done:false});
+  mtData[m].phases[pi].tasks.push({text:val,done:false,cat,date});
   mtSave(); mtRender();
+}
+
+function mtUpdateCat(pi,ti,val){
+  const m=MT_MONTHS[mtSelected];
+  mtData[m].phases[pi].tasks[ti].cat=val;
+  mtSave();
+}
+function mtUpdateDate(pi,ti,val){
+  const m=MT_MONTHS[mtSelected];
+  mtData[m].phases[pi].tasks[ti].date=val.trim();
+  mtSave();
 }
 function mtAddPhase(){
   const m=MT_MONTHS[mtSelected];
@@ -1683,6 +1766,23 @@ function mtAddPhase(){
   mtData[m].phases.push({title:'새 섹션',color:cols[mtData[m].phases.length%cols.length],tasks:[]});
   mtSave(); mtRender();
 }
+function mtAddToDaily(taskText, cat, date){
+  const now = new Date();
+  const hh = String(now.getHours()).padStart(2,'0');
+  const mm = String(now.getMinutes()).padStart(2,'0');
+  const time = hh+':'+mm;
+  const taskCat = cat||'📊 운영';
+  const prefix = date ? '['+date+'] ' : '';
+  userTasks.push({time, task: prefix+taskText, cat: taskCat, fixed:false});
+  save('userTasks', userTasks);
+  const msg = date ? '✅ '+date+' 데일리에 추가됐어요!' : '✅ 오늘 데일리에 추가됐어요!';
+  const toast = document.createElement('div');
+  toast.textContent = msg;
+  toast.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--teal);color:white;padding:8px 16px;border-radius:8px;font-size:12px;font-weight:700;z-index:9999;transition:opacity .3s;';
+  document.body.appendChild(toast);
+  setTimeout(()=>{ toast.style.opacity='0'; setTimeout(()=>toast.remove(),300); }, 1800);
+}
+
 function mtDS(e,pi,ti){ mtDragSrc={pi,ti}; e.currentTarget.classList.add('mt-dragging'); e.dataTransfer.effectAllowed='move'; }
 function mtDOV(e){ e.preventDefault(); e.currentTarget.classList.add('mt-dragover'); }
 function mtDLV(e){ e.currentTarget.classList.remove('mt-dragover'); }
@@ -1703,6 +1803,133 @@ go = function(id,el){
   if(id==='tasks') mtRender();
 }
 setTimeout(()=>{ if(document.getElementById('mt-tab-list')) mtRender(); }, 200);
+
+
+// ── 주간 목표 JS ─────────────────────────────────
+const DAYS_KO = ['월','화','수','목','금','토','일'];
+const TODAY_DOW = (new Date().getDay()+6)%7; // 0=월,1=화,...,6=일
+
+const WG_DEFAULTS = {
+  0: [{text:'기획 + Claude 브리핑',done:false}],
+  1: [{text:'이태원 인터뷰 촬영',done:false},{text:'CapCut 편집 + 업로드',done:false}],
+  2: [{text:'편집 + Buffer 예약',done:false}],
+  3: [{text:'Seoul Insider 뉴스레터 발송',done:false}],
+  4: [{text:'Reddit 답변 5개',done:false}],
+  5: [{text:'명동/남대문 촬영',done:false}],
+  6: [{text:'다음 주 Buffer 예약',done:false},{text:'주간 회고 작성',done:false}],
+};
+
+let weeklyGoals = load('weeklyGoals', WG_DEFAULTS);
+
+function wgSave(){ save('weeklyGoals', weeklyGoals); }
+
+function renderWeeklyGoals(){
+  const el = document.getElementById('weekly-goals-grid');
+  if(!el) return;
+  el.innerHTML = DAYS_KO.map((day,di) => {
+    const items = weeklyGoals[di] || [];
+    const isToday = di === TODAY_DOW;
+    const doneCount = items.filter(i=>i.done).length;
+    return `<div class="wg-day ${isToday?'today-col':''}">
+      <div class="wg-day-hdr">${day}${isToday?' ★':''} ${items.length>0?`<span style="font-size:8px;opacity:.7">${doneCount}/${items.length}</span>`:''}</div>
+      ${items.map((item,ii)=>`
+        <div class="wg-item">
+          <div class="wg-cb ${item.done?'done':''}" onclick="wgToggle(${di},${ii})"></div>
+          <span class="wg-txt ${item.done?'done':''}" contenteditable="true"
+            onblur="wgEdit(${di},${ii},this.innerText)"
+            onkeydown="if(event.key==='Enter'){event.preventDefault();this.blur()}"
+            style="${item.done?'text-decoration:line-through;color:#B0ADA7':''}"
+          >${item.text}</span>
+          <button class="wg-del" onclick="wgDel(${di},${ii})">✕</button>
+        </div>`).join('')}
+      <button class="wg-add" onclick="wgAdd(${di})">+ 추가</button>
+    </div>`;
+  }).join('');
+}
+
+function wgToggle(di,ii){
+  weeklyGoals[di][ii].done = !weeklyGoals[di][ii].done;
+  wgSave(); renderWeeklyGoals();
+}
+function wgEdit(di,ii,txt){
+  if(weeklyGoals[di] && weeklyGoals[di][ii]) weeklyGoals[di][ii].text = txt.trim();
+  wgSave();
+}
+function wgDel(di,ii){
+  weeklyGoals[di].splice(ii,1);
+  wgSave(); renderWeeklyGoals();
+}
+function wgAdd(di){
+  if(!weeklyGoals[di]) weeklyGoals[di]=[];
+  weeklyGoals[di].push({text:'새 할 일',done:false});
+  wgSave(); renderWeeklyGoals();
+  // focus last item
+  setTimeout(()=>{
+    const cols = document.querySelectorAll('.wg-day');
+    if(cols[di]){
+      const txts = cols[di].querySelectorAll('.wg-txt');
+      if(txts.length) { const last=txts[txts.length-1]; last.focus(); document.execCommand('selectAll'); }
+    }
+  },50);
+}
+
+// 오늘 주간목표 불러오기
+function addTodayFromWeekly(){
+  const items = weeklyGoals[TODAY_DOW] || [];
+  if(!items.length){ alert('오늘 주간 목표가 없어요! 주간 목표에 먼저 입력해줘요.'); return; }
+  items.filter(i=>!i.done).forEach(item=>{
+    userTasks.push({time:'09:00', task:item.text, cat:'✅ 월별목표', fixed:false});
+  });
+  save('userTasks', userTasks);
+  save('taskOrder',[]);
+  renderSchedule();
+  // toast
+  const toast=document.createElement('div');
+  toast.textContent='✅ 오늘 주간목표를 스케줄에 추가했어요!';
+  toast.style.cssText='position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--teal);color:white;padding:8px 16px;border-radius:8px;font-size:12px;font-weight:700;z-index:9999;';
+  document.body.appendChild(toast);
+  setTimeout(()=>toast.remove(),2000);
+}
+
+// ── 지난 날 히스토리 렌더 ─────────────────────────
+function renderPastHistory(){
+  const el = document.getElementById('past-history-list');
+  if(!el) return;
+  const history = load('history', {});
+  const dates = Object.keys(history).sort().reverse().slice(0,7); // 최근 7일
+  if(!dates.length){
+    el.innerHTML = '<div style="text-align:center;padding:20px;color:var(--gray);font-size:11px">아직 기록이 없어요. 매일 사용하면 여기에 쌓여요.</div>';
+    return;
+  }
+  el.innerHTML = dates.map(d=>{
+    const rec = history[d];
+    const pct = rec.total>0 ? Math.round(rec.completed.length/rec.total*100) : 0;
+    const dateObj = new Date(d);
+    const dayNames = ['일','월','화','수','목','금','토'];
+    const label = (dateObj.getMonth()+1)+'월 '+dateObj.getDate()+'일 '+dayNames[dateObj.getDay()]+'요일';
+    const color = pct>=80?'var(--teal)':pct>=50?'var(--amber)':'var(--coral)';
+    return `<div class="hist-day">
+      <div class="hist-hdr" onclick="this.nextElementSibling.classList.toggle('open')">
+        <div>
+          <div class="hist-date">${label}</div>
+          <div style="height:3px;background:var(--border);border-radius:99px;width:120px;margin-top:4px;overflow:hidden">
+            <div style="height:100%;background:${color};width:${pct}%;border-radius:99px"></div>
+          </div>
+        </div>
+        <div class="hist-pct" style="color:${color};font-weight:700">${pct}% (${rec.completed.length}/${rec.total})</div>
+      </div>
+      <div class="hist-body">
+        ${rec.completed.map(t=>`<div class="hist-task"><span style="color:var(--teal);font-size:10px">✓</span>${t}</div>`).join('')}
+        ${rec.userTasks&&rec.userTasks.length?`<div style="font-size:10px;color:var(--gray);margin-top:6px">추가 태스크: ${rec.userTasks.map(t=>t.task).join(', ')}</div>`:''}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+setTimeout(()=>{
+  renderWeeklyGoals();
+  renderPastHistory();
+},120);
 
 </script>
 
