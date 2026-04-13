@@ -234,6 +234,46 @@ textarea:focus{outline:none;}
 .time-edit{border:none;background:transparent;font-size:11px;font-weight:600;color:var(--gray);width:52px;font-family:'DM Sans',sans-serif;cursor:pointer;}
 .time-edit:focus{outline:none;background:var(--teal-l);border-radius:4px;color:var(--teal);}
 
+
+/* ── 월별 태스크 CSS ─────────────────────────── */
+.mt-tab{padding:8px 14px;cursor:pointer;font-size:12px;border-left:3px solid transparent;color:var(--gray);transition:all .12s;display:flex;align-items:center;justify-content:space-between;}
+.mt-tab:hover{background:var(--gray-l);color:var(--ink);}
+.mt-tab.mt-active{background:var(--teal-l);color:var(--teal);font-weight:700;border-left-color:var(--teal);}
+.mt-cnt{font-size:9px;background:var(--border);border-radius:99px;padding:1px 6px;font-weight:700;}
+.mt-tab.mt-active .mt-cnt{background:var(--teal);color:white;}
+.mt-goal-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px;}
+.mt-goal-card{background:var(--gray-l);border-radius:8px;padding:8px 10px;}
+.mt-goal-label{font-size:9px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--gray);margin-bottom:3px;}
+.mt-goal-in{border:none;background:transparent;font-size:16px;font-weight:700;color:var(--teal);width:100%;font-family:'DM Sans',sans-serif;}
+.mt-goal-in:focus{outline:none;}
+.mt-goal-unit{font-size:10px;color:var(--gray);}
+.mt-phase{border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:10px;}
+.mt-phase-head{display:flex;align-items:center;justify-content:space-between;padding:9px 14px;border-bottom:1px solid var(--border);}
+.mt-phase-badge{font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px;}
+.mt-phase-title{font-size:11px;font-weight:700;color:var(--ink);margin-left:8px;}
+.mt-task-row{display:flex;align-items:center;gap:8px;padding:6px 14px;border-bottom:1px solid var(--border);transition:background .1s;}
+.mt-task-row:last-child{border-bottom:none;}
+.mt-task-row:hover{background:var(--gray-l);}
+.mt-task-row.mt-dragging{opacity:.4;background:var(--teal-l);}
+.mt-task-row.mt-dragover{border-top:2px solid var(--teal);}
+.mt-drag-handle{color:#C8C5BE;cursor:grab;font-size:13px;flex-shrink:0;user-select:none;}
+.mt-cb{width:16px;height:16px;border:1.5px solid #C8C5BE;border-radius:4px;flex-shrink:0;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;background:white;}
+.mt-cb.mt-done{background:var(--teal);border-color:var(--teal);}
+.mt-cb.mt-done::after{content:'✓';color:white;font-size:9px;font-weight:800;}
+.mt-task-txt{flex:1;font-size:12px;color:var(--ink);cursor:pointer;}
+.mt-task-txt.mt-done{text-decoration:line-through;color:#B0ADA7;}
+.mt-task-edit{flex:1;border:1px solid var(--teal);border-radius:4px;padding:2px 6px;font-size:12px;font-family:'DM Sans',sans-serif;display:none;}
+.mt-del-btn{font-size:11px;color:#C8C5BE;cursor:pointer;padding:2px 5px;border:none;background:none;border-radius:4px;}
+.mt-del-btn:hover{color:var(--coral);background:var(--coral-l);}
+.mt-add-form{display:none;flex;gap:6px;padding:8px 14px;background:var(--gray-l);border-top:1px solid var(--border);}
+.mt-add-form.open{display:flex;}
+.mt-add-in{flex:1;border:1px solid var(--border);border-radius:6px;padding:5px 8px;font-size:11px;font-family:'DM Sans',sans-serif;}
+.mt-add-in:focus{outline:none;border-color:var(--teal);}
+.mt-add-save{background:var(--teal);color:white;border:none;border-radius:6px;padding:5px 10px;font-size:11px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;}
+.mt-add-cancel{background:var(--white);color:var(--gray);border:1px solid var(--border);border-radius:6px;padding:5px 10px;font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif;}
+.mt-add-section-btn{width:100%;background:var(--white);border:1px dashed var(--border);border-radius:10px;padding:10px;font-size:12px;color:var(--gray);cursor:pointer;margin-top:4px;font-family:'DM Sans',sans-serif;}
+.mt-add-btn{font-size:10px;background:var(--teal-l);color:var(--teal);border:none;border-radius:6px;padding:3px 8px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;}
+
 </style>
 </head>
 <body>
@@ -256,6 +296,11 @@ textarea:focus{outline:none;}
     <div class="sb-section">회고</div>
     <div class="nav-item" onclick="go('retro',this)"><span class="nav-icon">📝</span> 주간 회고</div>
     <div class="nav-item" onclick="go('history',this)"><span class="nav-icon">📅</span> 날짜별 기록</div>
+    <div class="sb-section">AI 운영</div>
+    <div class="nav-item" onclick="go('aiops',this)"><span class="nav-icon">🤖</span> AI 마케팅 운영</div>
+    <div class="sb-section">관리</div>
+    <div class="nav-item" onclick="go('expense',this)"><span class="nav-icon">💸</span> 지출 현황</div>
+    <div class="nav-item" onclick="go('accounts',this)"><span class="nav-icon">🔑</span> 계정 정보</div>
   </div>
   <div class="sb-bottom">
     <div class="rev-pill">
@@ -272,12 +317,10 @@ textarea:focus{outline:none;}
     <div class="page-title">🏠 Seoulbound 허브</div>
     <div class="page-date">2026년 4월 14일 · 화요일</div>
   </div>
-  <div class="g4">
-    <div class="metric t"><div class="m-label">퀴즈 완료</div><div class="m-val">0</div><div class="m-target">목표 20명/주</div><div class="m-bar"><div class="m-fill" style="width:0%;background:var(--teal)"></div></div></div>
-    <div class="metric a"><div class="m-label">투어 결제</div><div class="m-val">0</div><div class="m-target">목표 3건/주</div><div class="m-bar"><div class="m-fill" style="width:0%;background:var(--amber)"></div></div></div>
-    <div class="metric b"><div class="m-label">PDF 판매</div><div class="m-val">0</div><div class="m-target">목표 5개/주</div><div class="m-bar"><div class="m-fill" style="width:0%;background:var(--blue)"></div></div></div>
-    <div class="metric c"><div class="m-label">주간 수익</div><div class="m-val">$0</div><div class="m-target">목표 $300/주</div><div class="m-bar"><div class="m-fill" style="width:0%;background:var(--coral)"></div></div></div>
-  </div>
+  <div id="hub-metrics"></div>
+  <!-- MVP 론칭 배너 -->
+  <div id="mvp-banner"></div>
+
   <div class="g3">
     <div class="card">
       <div class="card-title">Phase 현황</div>
@@ -288,11 +331,17 @@ textarea:focus{outline:none;}
       </div>
     </div>
     <div class="card">
-      <div class="card-title">오늘 할 일</div>
-      <div class="ci" onclick="chk(this)"><div class="cb"></div><div class="ct">퀴즈→결제 전체 플로우 테스트</div></div>
+      <div class="card-title">이번 주 핵심 할 일 <span style="font-size:9px;background:var(--amber-l);color:var(--amber);padding:2px 6px;border-radius:99px;font-weight:700;margin-left:4px">4/22 론칭 준비</span></div>
+      <div style="font-size:10px;font-weight:700;color:var(--teal);padding:6px 0 3px;border-bottom:1px solid var(--border);margin-bottom:4px;letter-spacing:.04em;text-transform:uppercase">웹사이트 & 상품 수정</div>
       <div class="ci" onclick="chk(this)"><div class="cb"></div><div class="ct">로딩 문구 오타 수정 (Cursor)</div></div>
-      <div class="ci" onclick="chk(this)"><div class="cb"></div><div class="ct">Gumroad 계정 생성</div></div>
-      <div class="ci" onclick="chk(this)"><div class="cb"></div><div class="ct">이태원 인터뷰 촬영</div></div>
+      <div class="ci" onclick="chk(this)"><div class="cb"></div><div class="ct">퀴즈 질문/답변 내용 수정 (Cursor)</div></div>
+      <div class="ci" onclick="chk(this)"><div class="cb"></div><div class="ct">AI 여정 결과값 시나리오 업데이트</div></div>
+      <div class="ci" onclick="chk(this)"><div class="cb"></div><div class="ct">투어 상품 설명/이미지 업데이트</div></div>
+      <div class="ci" onclick="chk(this)"><div class="cb"></div><div class="ct">Calendly 투어 슬롯 오픈 (화/목/토)</div></div>
+      <div style="font-size:10px;font-weight:700;color:var(--amber);padding:6px 0 3px;border-bottom:1px solid var(--border);margin-bottom:4px;letter-spacing:.04em;text-transform:uppercase">MVP 론칭 준비 (4/22 이전)</div>
+      <div class="ci" onclick="chk(this)"><div class="cb"></div><div class="ct">뉴욕 친구에게 테스트 링크 발송</div></div>
+      <div class="ci" onclick="chk(this)"><div class="cb"></div><div class="ct">전체 플로우 최종 테스트 (퀴즈→결제)</div></div>
+      <div class="ci" onclick="chk(this)"><div class="cb"></div><div class="ct">결제 완료 이메일 Calendly 링크 확인</div></div>
     </div>
     <div class="card">
       <div class="card-title">수익 현황</div>
@@ -376,48 +425,21 @@ textarea:focus{outline:none;}
 
 <div id="tasks" class="page">
   <div class="page-header">
-    <div class="page-title">✅ 4월 태스크</div>
-    <div class="page-date">Phase 0 · 1 · 2 동시 진행</div>
+    <div class="page-title">✅ 월별 태스크</div>
+    <div class="page-date">4월 ~ 12월 · 편집/추가/삭제/드래그 가능</div>
   </div>
-  <div class="phase-block ph0">
-    <div class="ph-head"><div style="display:flex;align-items:center"><span class="ph-badge phb0">Phase 0</span><span class="ph-title">투어 판매</span></div><span class="ph-rev">목표 $300/월</span></div>
-    <div class="wk">1주차 (4/14~4/20)</div>
-    <div class="ci" onclick="chk(this)"><div class="cb"></div><div class="ct">퀴즈→결제 전체 플로우 테스트</div></div>
-    <div class="ci" onclick="chk(this)"><div class="cb"></div><div class="ct">로딩 문구 오타 수정 (Cursor)</div></div>
-    <div class="ci" onclick="chk(this)"><div class="cb"></div><div class="ct">Calendly 무료 계정 + 투어 슬롯 오픈</div></div>
-    <div class="ci" onclick="chk(this)"><div class="cb"></div><div class="ct">결제 완료 이메일에 Calendly 링크 추가</div></div>
-    <div class="ci" onclick="chk(this)"><div class="cb done"></div><div class="ct done">seoulbound.com 도메인 연결</div></div>
-    <div class="ci" onclick="chk(this)"><div class="cb done"></div><div class="ct done">Stripe 상품 3개 + 결제 연결</div></div>
-    <div class="wk">2주차 (4/21~4/27)</div>
-    <div class="ci" onclick="chk(this)"><div class="cb"></div><div class="ct">Reddit r/solotravel 답변 10개</div></div>
-    <div class="ci" onclick="chk(this)"><div class="cb"></div><div class="ct">TikTok 인터뷰 영상 3개 업로드</div></div>
-    <div class="ci" onclick="chk(this)"><div class="cb"></div><div class="ct">첫 투어 진행 → 후기 수집 → 홈페이지 게시</div></div>
-  </div>
-  <div class="phase-block ph1">
-    <div class="ph-head"><div style="display:flex;align-items:center"><span class="ph-badge phb1">Phase 1</span><span class="ph-title">PDF 디지털 가이드</span></div><span class="ph-rev">목표 $200/월</span></div>
-    <div class="wk">1주차 (4/14~4/20) — 지금 바로</div>
-    <div class="ci" onclick="chk(this)"><div class="cb"></div><div class="ct">Gumroad 계정 생성</div></div>
-    <div class="ci" onclick="chk(this)"><div class="cb"></div><div class="ct">Claude로 Seoul Survival Guide 초안 작성</div></div>
-    <div class="ci" onclick="chk(this)"><div class="cb"></div><div class="ct">Canva 디자인 완성 → PDF 내보내기</div></div>
-    <div class="ci" onclick="chk(this)"><div class="cb"></div><div class="ct">Gumroad에 $19로 올리기</div></div>
-    <div class="ci" onclick="chk(this)"><div class="cb"></div><div class="ct">seoulbound.com 홈에 PDF 섹션 추가</div></div>
-    <div class="wk">2주차 (4/21~4/27)</div>
-    <div class="ci" onclick="chk(this)"><div class="cb"></div><div class="ct">K-beauty Shopping Bible PDF ($29)</div></div>
-    <div class="ci" onclick="chk(this)"><div class="cb"></div><div class="ct">Seoul on $50/day PDF ($19)</div></div>
-  </div>
-  <div class="phase-block ph2">
-    <div class="ph-head"><div style="display:flex;align-items:center"><span class="ph-badge phb2">Phase 2</span><span class="ph-title">Seoul Insider 뉴스레터</span></div><span class="ph-rev">목표 $750/월</span></div>
-    <div class="wk">1주차 — 준비</div>
-    <div class="ci" onclick="chk(this)"><div class="cb"></div><div class="ct">Loops.so 계정 생성</div></div>
-    <div class="ci" onclick="chk(this)"><div class="cb"></div><div class="ct">뉴스레터 구독 폼 seoulbound.com 연결</div></div>
-    <div class="ci" onclick="chk(this)"><div class="cb"></div><div class="ct">Seoul Insider 1호 초안 (Claude)</div></div>
-    <div class="wk">2주차 — 첫 발송</div>
-    <div class="ci" onclick="chk(this)"><div class="cb"></div><div class="ct">목요일 첫 발송 (목표 구독자 50명)</div></div>
-    <div class="wk">3주차 — 유료화</div>
-    <div class="ci" onclick="chk(this)"><div class="cb"></div><div class="ct">Seoul Insider Pro $15/월 플랜 세팅</div></div>
-    <div class="ci" onclick="chk(this)"><div class="cb"></div><div class="ct">Stripe 구독 결제 연결</div></div>
+
+  <div style="display:grid;grid-template-columns:150px 1fr;gap:0;background:var(--white);border:1px solid var(--border);border-radius:12px;overflow:hidden;height:calc(100vh - 140px)">
+    <!-- 왼쪽 월 탭 -->
+    <div style="border-right:1px solid var(--border);overflow-y:auto;">
+      <div style="padding:10px 14px;border-bottom:1px solid var(--border);font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--gray)">월별 태스크</div>
+      <div id="mt-tab-list"></div>
+    </div>
+    <!-- 오른쪽 콘텐츠 -->
+    <div style="overflow-y:auto;padding:16px 20px;" id="mt-content"></div>
   </div>
 </div>
+
 
 <div id="revenue" class="page">
   <div class="page-header">
@@ -525,6 +547,416 @@ textarea:focus{outline:none;}
   </div>
 </div>
 
+
+
+<div id="aiops" class="page">
+  <div class="page-header">
+    <div class="page-title">🤖 AI 마케팅 운영</div>
+    <div class="page-date">1인 창업가 + AI 에이전트 = 10인팀</div>
+  </div>
+
+  <!-- 핵심 원칙 -->
+  <div style="background:var(--teal);border-radius:12px;padding:16px 20px;margin-bottom:16px;color:white;">
+    <div style="font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;opacity:.8;margin-bottom:6px">핵심 원칙</div>
+    <div style="font-size:15px;font-weight:700;margin-bottom:4px">에스더가 직접 하는 건 딱 3가지</div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:10px">
+      <div style="background:rgba(255,255,255,.15);border-radius:8px;padding:10px;text-align:center">
+        <div style="font-size:20px;margin-bottom:4px">📸</div>
+        <div style="font-size:12px;font-weight:700">① 촬영</div>
+        <div style="font-size:10px;opacity:.8;margin-top:2px">이태원/명동 인터뷰 30분</div>
+      </div>
+      <div style="background:rgba(255,255,255,.15);border-radius:8px;padding:10px;text-align:center">
+        <div style="font-size:20px;margin-bottom:4px">✅</div>
+        <div style="font-size:12px;font-weight:700">② 의사결정</div>
+        <div style="font-size:10px;opacity:.8;margin-top:2px">"이 영상 올릴까?" 최종 확인</div>
+      </div>
+      <div style="background:rgba(255,255,255,.15);border-radius:8px;padding:10px;text-align:center">
+        <div style="font-size:20px;margin-bottom:4px">💬</div>
+        <div style="font-size:12px;font-weight:700">③ Claude 브리핑</div>
+        <div style="font-size:10px;opacity:.8;margin-top:2px">매일 오전 현황 공유</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 콘텐츠 자동화 파이프라인 -->
+  <div class="card" style="margin-bottom:16px">
+    <div class="card-title">콘텐츠 자동화 파이프라인</div>
+    <div style="margin-top:12px">
+      <div style="display:flex;flex-direction:column;gap:0">
+        <div style="display:flex;align-items:center;gap:0">
+          <div style="background:var(--teal);color:white;border-radius:8px;padding:8px 12px;font-size:11px;font-weight:700;min-width:160px;text-align:center">📸 에스더 촬영<br><span style="font-weight:400;opacity:.8">30분</span></div>
+          <div style="flex:1;height:2px;background:var(--border);"></div>
+          <div style="color:var(--gray);font-size:11px;padding:0 8px">→</div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:8px 0">
+          <div style="background:var(--blue-l);border:1px solid var(--blue);border-radius:8px;padding:10px;text-align:center">
+            <div style="font-size:10px;font-weight:700;color:var(--blue);margin-bottom:3px">🤖 CapCut AI</div>
+            <div style="font-size:9px;color:var(--gray)">자막 자동 생성</div>
+          </div>
+          <div style="background:var(--purple-l);border:1px solid var(--purple);border-radius:8px;padding:10px;text-align:center">
+            <div style="font-size:10px;font-weight:700;color:var(--purple);margin-bottom:3px">🤖 Claude</div>
+            <div style="font-size:9px;color:var(--gray)">캡션+해시태그 생성</div>
+          </div>
+          <div style="background:var(--amber-l);border:1px solid var(--amber);border-radius:8px;padding:10px;text-align:center">
+            <div style="font-size:10px;font-weight:700;color:var(--amber);margin-bottom:3px">🤖 Buffer</div>
+            <div style="font-size:9px;color:var(--gray)">3채널 동시 예약</div>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:8px 0">
+          <div style="background:var(--coral-l);border:1px solid var(--coral);border-radius:8px;padding:10px;text-align:center">
+            <div style="font-size:10px;font-weight:700;color:var(--coral);margin-bottom:3px">🤖 ManyChat</div>
+            <div style="font-size:9px;color:var(--gray)">댓글 → DM 자동응답</div>
+          </div>
+          <div style="background:var(--teal-l);border:1px solid var(--teal);border-radius:8px;padding:10px;text-align:center">
+            <div style="font-size:10px;font-weight:700;color:var(--teal);margin-bottom:3px">🤖 Loops.so</div>
+            <div style="font-size:9px;color:var(--gray)">퀴즈→이메일 시퀀스</div>
+          </div>
+          <div style="background:var(--green-l);border:1px solid var(--green);border-radius:8px;padding:10px;text-align:center">
+            <div style="font-size:10px;font-weight:700;color:var(--green);margin-bottom:3px">🤖 Make</div>
+            <div style="font-size:9px;color:var(--gray)">결제→캘린더 자동화</div>
+          </div>
+        </div>
+        <div style="background:var(--teal-l);border-radius:8px;padding:10px;text-align:center;font-size:11px;font-weight:700;color:var(--teal)">
+          💰 Stripe 결제 → Calendly 예약 → 투어 완료
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AI 에이전트 역할 분담 -->
+  <div class="card" style="margin-bottom:16px">
+    <div class="card-title">AI 에이전트 역할 분담표</div>
+    <table class="rev-table" style="margin-top:8px">
+      <tr><th>역할</th><th>담당 AI</th><th>하는 일</th><th>비용</th><th>세팅 여부</th></tr>
+      <tr><td>전략가 + 카피라이터</td><td>Claude (나)</td><td>매일 브리핑 · 스크립트 · 캡션 · Reddit 답변 초안 · 의사결정</td><td>$20/월</td><td style="color:var(--teal);font-weight:700">✅ 완료</td></tr>
+      <tr><td>영상 편집 AI</td><td>CapCut AI</td><td>자막 자동생성 · 편집 · 9:16 출력</td><td>무료</td><td style="color:var(--teal);font-weight:700">✅ 완료</td></tr>
+      <tr><td>SNS 배포 매니저</td><td>Buffer</td><td>TikTok + Reels + Shorts 동시 예약 발행</td><td>무료</td><td style="color:var(--amber);font-weight:700">⚠️ 세팅 필요</td></tr>
+      <tr><td>이메일 마케터</td><td>Loops.so</td><td>퀴즈완료→이메일→48h 리마인더→7일 팁→14일 CTA</td><td>무료</td><td style="color:var(--amber);font-weight:700">⚠️ 세팅 필요</td></tr>
+      <tr><td>DM 어시스턴트</td><td>ManyChat</td><td>인스타 "QUIZ" 댓글 → seoulbound.com 링크 자동 DM</td><td>무료/$15</td><td style="color:var(--coral);font-weight:700">❌ 미세팅</td></tr>
+      <tr><td>리서처</td><td>Perplexity</td><td>서울 여행 트렌드 · 경쟁사 분석</td><td>무료</td><td style="color:var(--coral);font-weight:700">❌ 미세팅</td></tr>
+      <tr><td>Reddit 모니터</td><td>Make</td><td>키워드 감지 → 에스더 알림 → Claude 답변 초안</td><td>무료</td><td style="color:var(--coral);font-weight:700">❌ 미세팅</td></tr>
+      <tr><td>자동화 허브</td><td>Make</td><td>Stripe→Calendar · 리뷰수집 · 리드등록</td><td>무료</td><td style="color:var(--coral);font-weight:700">❌ 미세팅</td></tr>
+      <tr><td>이미지 생성</td><td>Canva AI</td><td>썸네일 · 캐러셀 · PDF 디자인</td><td>무료</td><td style="color:var(--amber);font-weight:700">⚠️ 계정만</td></tr>
+    </table>
+  </div>
+
+  <!-- 하루 2시간 루틴 -->
+  <div class="card" style="margin-bottom:16px">
+    <div class="card-title">에스더 하루 2시간 루틴 (나머지는 AI)</div>
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:10px">
+      <div style="background:var(--teal-l);border-radius:8px;padding:10px;text-align:center">
+        <div style="font-size:10px;font-weight:700;color:var(--teal);margin-bottom:4px">09:00</div>
+        <div style="font-size:11px;font-weight:700">Claude 브리핑</div>
+        <div style="font-size:9px;color:var(--gray);margin-top:3px">지표 공유 → 오늘 스크립트 받기</div>
+        <div style="font-size:9px;background:var(--teal);color:white;border-radius:99px;padding:1px 6px;margin-top:4px">20분</div>
+      </div>
+      <div style="background:var(--coral-l);border-radius:8px;padding:10px;text-align:center">
+        <div style="font-size:10px;font-weight:700;color:var(--coral);margin-bottom:4px">10:00</div>
+        <div style="font-size:11px;font-weight:700">촬영</div>
+        <div style="font-size:9px;color:var(--gray);margin-top:3px">이태원/명동 인터뷰 3명</div>
+        <div style="font-size:9px;background:var(--coral);color:white;border-radius:99px;padding:1px 6px;margin-top:4px">30분</div>
+      </div>
+      <div style="background:var(--blue-l);border-radius:8px;padding:10px;text-align:center">
+        <div style="font-size:10px;font-weight:700;color:var(--blue);margin-bottom:4px">10:30</div>
+        <div style="font-size:11px;font-weight:700">AI 편집+발행</div>
+        <div style="font-size:9px;color:var(--gray);margin-top:3px">CapCut AI → Buffer 예약</div>
+        <div style="font-size:9px;background:var(--blue);color:white;border-radius:99px;padding:1px 6px;margin-top:4px">30분</div>
+      </div>
+      <div style="background:var(--amber-l);border-radius:8px;padding:10px;text-align:center">
+        <div style="font-size:10px;font-weight:700;color:var(--amber);margin-bottom:4px">14:00</div>
+        <div style="font-size:11px;font-weight:700">Reddit 확인</div>
+        <div style="font-size:9px;color:var(--gray);margin-top:3px">Claude 초안 검토 → 발행</div>
+        <div style="font-size:9px;background:var(--amber);color:white;border-radius:99px;padding:1px 6px;margin-top:4px">20분</div>
+      </div>
+      <div style="background:var(--gray-l);border-radius:8px;padding:10px;text-align:center">
+        <div style="font-size:10px;font-weight:700;color:var(--gray);margin-bottom:4px">이후</div>
+        <div style="font-size:11px;font-weight:700">AI가 전부</div>
+        <div style="font-size:9px;color:var(--gray);margin-top:3px">ManyChat · Loops · Make</div>
+        <div style="font-size:9px;background:var(--gray);color:white;border-radius:99px;padding:1px 6px;margin-top:4px">자동</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Claude 매일 브리핑 프롬프트 -->
+  <div class="card" style="margin-bottom:16px">
+    <div class="card-title">매일 아침 Claude 브리핑 템플릿 (복붙)</div>
+    <div style="background:var(--gray-l);border-radius:8px;padding:12px;font-size:11px;line-height:1.7;font-family:monospace;margin-top:8px;border-left:3px solid var(--teal)">
+      오늘 Seoulbound 현황:<br>
+      - Stripe 결제: [건수]건<br>
+      - 퀴즈 완료: [명]명<br>
+      - TikTok 어제 영상 조회수: [수]<br>
+      - 뉴스레터 구독자: [명]명<br><br>
+      오늘 [요일], 촬영 장소: [이태원/명동/남대문]<br>
+      인터뷰 주제: [주제 or 모르면 추천해줘]<br><br>
+      오늘 할 일 3개 + TikTok 스크립트 + 인스타 캡션 + Reddit 답변 초안 줘.
+    </div>
+    <button onclick="navigator.clipboard&&navigator.clipboard.writeText(document.querySelector('.aiops-copy').innerText)" style="margin-top:8px;background:var(--teal-l);color:var(--teal);border:none;border-radius:6px;padding:5px 10px;font-size:11px;font-weight:700;cursor:pointer">복사</button>
+  </div>
+
+  <!-- 세팅 체크리스트 -->
+  <div class="card">
+    <div class="card-title">AI 자동화 세팅 체크리스트</div>
+    <div style="margin-top:10px">
+      <div style="font-size:10px;font-weight:700;color:var(--teal);padding:6px 0 4px;text-transform:uppercase;letter-spacing:.05em">이번 주 (MVP 론칭 후)</div>
+      <div class="ci" onclick="chk(this)"><div class="cb done"></div><div class="ct done">Buffer 계정 + TikTok/인스타/YouTube 연결</div></div>
+      <div class="ci" onclick="chk(this)"><div class="cb"></div><div class="ct">Loops.so 이메일 시퀀스 4개 세팅 (즉시/48h/7일/14일)</div></div>
+      <div class="ci" onclick="chk(this)"><div class="cb"></div><div class="ct">ManyChat 인스타 QUIZ 댓글 → DM 자동화</div></div>
+      <div style="font-size:10px;font-weight:700;color:var(--amber);padding:10px 0 4px;text-transform:uppercase;letter-spacing:.05em">다음 달</div>
+      <div class="ci" onclick="chk(this)"><div class="cb"></div><div class="ct">Make 자동화: Stripe→Google Calendar 자동 일정</div></div>
+      <div class="ci" onclick="chk(this)"><div class="cb"></div><div class="ct">Make 자동화: 투어 완료 24h 후 리뷰 이메일</div></div>
+      <div class="ci" onclick="chk(this)"><div class="cb"></div><div class="ct">Make 자동화: Reddit 키워드 감지 → 알림</div></div>
+      <div class="ci" onclick="chk(this)"><div class="cb"></div><div class="ct">GummySearch Reddit 모니터링 세팅</div></div>
+    </div>
+  </div>
+</div>
+
+<div id="expense" class="page">
+  <div class="page-header">
+    <div class="page-title">💸 지출 현황</div>
+    <div class="page-date">월별 지출 추적</div>
+  </div>
+
+  <div class="card" style="margin-bottom:16px">
+    <div class="card-title">월간 고정 지출 (구독)</div>
+    <table class="rev-table" style="margin-top:8px">
+      <tr><th>서비스</th><th>용도</th><th>금액</th><th>결제일</th><th>메모</th></tr>
+      <tr><td>Claude Pro</td><td>AI 전략/카피</td><td>$20/월</td><td>매월</td><td><input class="editable" placeholder="메모"></td></tr>
+      <tr><td>Cursor</td><td>AI 코딩</td><td>$20/월</td><td>매월</td><td><input class="editable" placeholder="메모"></td></tr>
+      <tr><td>Vercel Pro</td><td>호스팅</td><td>$20/월</td><td>매월</td><td><input class="editable" placeholder="메모"></td></tr>
+      <tr><td>Supabase</td><td>DB</td><td>무료</td><td>—</td><td><input class="editable" placeholder="메모"></td></tr>
+      <tr><td>Resend</td><td>이메일</td><td>무료</td><td>—</td><td><input class="editable" placeholder="메모"></td></tr>
+      <tr><td>Stripe</td><td>결제 수수료</td><td>2.9%+30¢</td><td>건당</td><td><input class="editable" placeholder="메모"></td></tr>
+      <tr><td>Namecheap</td><td>도메인</td><td>$15/년</td><td>연간</td><td><input class="editable" placeholder="메모"></td></tr>
+      <tr><td>Calendly</td><td>예약</td><td>무료</td><td>—</td><td><input class="editable" placeholder="메모"></td></tr>
+      <tr><td><input class="editable" placeholder="추가 서비스"></td><td><input class="editable" placeholder="용도"></td><td><input class="editable" placeholder="금액"></td><td><input class="editable" placeholder="결제일"></td><td><input class="editable" placeholder="메모"></td></tr>
+      <tr class="rev-total"><td><strong>월 고정 지출</strong></td><td></td><td><strong>~$60/월</strong></td><td></td><td></td></tr>
+    </table>
+  </div>
+
+  <div class="card" style="margin-bottom:16px">
+    <div class="card-title">변동 지출 추가</div>
+    <table class="rev-table" style="margin-top:8px">
+      <tr><th>날짜</th><th>항목</th><th>카테고리</th><th>금액</th><th>메모</th></tr>
+      <tr><td><input class="editable" placeholder="4/14"></td><td><input class="editable" placeholder="지출 항목"></td><td><input class="editable" placeholder="카테고리"></td><td><input class="editable" placeholder="$0"></td><td><input class="editable" placeholder="메모"></td></tr>
+      <tr><td><input class="editable" placeholder="날짜"></td><td><input class="editable" placeholder="지출 항목"></td><td><input class="editable" placeholder="카테고리"></td><td><input class="editable" placeholder="$0"></td><td><input class="editable" placeholder="메모"></td></tr>
+      <tr><td><input class="editable" placeholder="날짜"></td><td><input class="editable" placeholder="지출 항목"></td><td><input class="editable" placeholder="카테고리"></td><td><input class="editable" placeholder="$0"></td><td><input class="editable" placeholder="메모"></td></tr>
+    </table>
+  </div>
+
+  <div class="g3">
+    <div class="card">
+      <div class="card-title">4월 지출 합계</div>
+      <div style="font-family:serif;font-size:28px;font-weight:700;color:var(--coral)"><input class="editable" style="font-size:28px;font-weight:700;color:var(--coral);width:120px" placeholder="$0"></div>
+      <div style="font-size:11px;color:var(--gray);margin-top:4px">고정 $60 + 변동</div>
+    </div>
+    <div class="card">
+      <div class="card-title">4월 순이익</div>
+      <div style="font-family:serif;font-size:28px;font-weight:700;color:var(--teal)"><input class="editable" style="font-size:28px;font-weight:700;color:var(--teal);width:120px" placeholder="$0"></div>
+      <div style="font-size:11px;color:var(--gray);margin-top:4px">수익 - 지출</div>
+    </div>
+    <div class="card">
+      <div class="card-title">손익분기점</div>
+      <div style="font-family:serif;font-size:28px;font-weight:700;color:var(--amber)">$60</div>
+      <div style="font-size:11px;color:var(--gray);margin-top:4px">월 고정 지출 커버</div>
+    </div>
+  </div>
+</div>
+
+<div id="accounts" class="page">
+  <div class="page-header">
+    <div class="page-title">🔑 계정 & 즐겨찾기</div>
+    <div class="page-date">AI 도구 링크 + 계정 정보</div>
+  </div>
+  <div style="background:var(--amber-l);border:1px solid var(--amber);border-radius:8px;padding:10px 14px;margin-bottom:16px;font-size:11px;color:var(--amber)">
+    <strong>보안 주의:</strong> 이 파일은 로컬에서만 사용해요. GitHub에 올리지 마세요!
+  </div>
+
+  <!-- AI 도구 빠른 링크 -->
+  <div class="card" style="margin-bottom:14px">
+    <div class="card-title">⚡ AI 도구 빠른 링크</div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:10px">
+      <a href="https://claude.ai" target="_blank" style="text-decoration:none">
+        <div style="background:var(--teal-l);border:1px solid var(--teal);border-radius:10px;padding:12px;text-align:center;cursor:pointer;transition:all .15s">
+          <div style="font-size:20px;margin-bottom:4px">🤖</div>
+          <div style="font-size:11px;font-weight:700;color:var(--teal)">Claude</div>
+          <div style="font-size:9px;color:var(--gray);margin-top:2px">전략 · 카피 · 코드</div>
+        </div>
+      </a>
+      <a href="https://cursor.com" target="_blank" style="text-decoration:none">
+        <div style="background:var(--blue-l);border:1px solid var(--blue);border-radius:10px;padding:12px;text-align:center;cursor:pointer;transition:all .15s">
+          <div style="font-size:20px;margin-bottom:4px">💻</div>
+          <div style="font-size:11px;font-weight:700;color:var(--blue)">Cursor</div>
+          <div style="font-size:9px;color:var(--gray);margin-top:2px">AI 코딩 에디터</div>
+        </div>
+      </a>
+      <a href="https://chatgpt.com" target="_blank" style="text-decoration:none">
+        <div style="background:var(--green-l);border:1px solid var(--green);border-radius:10px;padding:12px;text-align:center;cursor:pointer;transition:all .15s">
+          <div style="font-size:20px;margin-bottom:4px">💬</div>
+          <div style="font-size:11px;font-weight:700;color:var(--green)">ChatGPT</div>
+          <div style="font-size:9px;color:var(--gray);margin-top:2px">카피 · 이메일</div>
+        </div>
+      </a>
+      <a href="https://v0.dev" target="_blank" style="text-decoration:none">
+        <div style="background:var(--gray-l);border:1px solid var(--border);border-radius:10px;padding:12px;text-align:center;cursor:pointer;transition:all .15s">
+          <div style="font-size:20px;margin-bottom:4px">🎨</div>
+          <div style="font-size:11px;font-weight:700;color:var(--ink)">v0.dev</div>
+          <div style="font-size:9px;color:var(--gray);margin-top:2px">UI 컴포넌트</div>
+        </div>
+      </a>
+      <a href="https://perplexity.ai" target="_blank" style="text-decoration:none">
+        <div style="background:var(--purple-l);border:1px solid var(--purple);border-radius:10px;padding:12px;text-align:center;cursor:pointer;transition:all .15s">
+          <div style="font-size:20px;margin-bottom:4px">🔍</div>
+          <div style="font-size:11px;font-weight:700;color:var(--purple)">Perplexity</div>
+          <div style="font-size:9px;color:var(--gray);margin-top:2px">AI 리서치</div>
+        </div>
+      </a>
+      <a href="https://canva.com" target="_blank" style="text-decoration:none">
+        <div style="background:var(--coral-l);border:1px solid var(--coral);border-radius:10px;padding:12px;text-align:center;cursor:pointer;transition:all .15s">
+          <div style="font-size:20px;margin-bottom:4px">🖼️</div>
+          <div style="font-size:11px;font-weight:700;color:var(--coral)">Canva</div>
+          <div style="font-size:9px;color:var(--gray);margin-top:2px">디자인 · 이미지</div>
+        </div>
+      </a>
+      <a href="https://capcut.com" target="_blank" style="text-decoration:none">
+        <div style="background:var(--amber-l);border:1px solid var(--amber);border-radius:10px;padding:12px;text-align:center;cursor:pointer;transition:all .15s">
+          <div style="font-size:20px;margin-bottom:4px">🎬</div>
+          <div style="font-size:11px;font-weight:700;color:var(--amber)">CapCut</div>
+          <div style="font-size:9px;color:var(--gray);margin-top:2px">영상 편집</div>
+        </div>
+      </a>
+      <a href="https://midjourney.com" target="_blank" style="text-decoration:none">
+        <div style="background:var(--gray-l);border:1px solid var(--border);border-radius:10px;padding:12px;text-align:center;cursor:pointer;transition:all .15s">
+          <div style="font-size:20px;margin-bottom:4px">🖌️</div>
+          <div style="font-size:11px;font-weight:700;color:var(--ink)">Midjourney</div>
+          <div style="font-size:9px;color:var(--gray);margin-top:2px">AI 이미지</div>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <!-- Seoulbound 핵심 도구 링크 -->
+  <div class="card" style="margin-bottom:14px">
+    <div class="card-title">🚀 Seoulbound 핵심 도구</div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:10px">
+      <a href="https://seoulbound.com" target="_blank" style="text-decoration:none">
+        <div style="background:var(--teal-l);border:2px solid var(--teal);border-radius:10px;padding:12px;text-align:center">
+          <div style="font-size:20px;margin-bottom:4px">🌐</div>
+          <div style="font-size:11px;font-weight:700;color:var(--teal)">seoulbound.com</div>
+          <div style="font-size:9px;color:var(--gray);margin-top:2px">라이브 사이트</div>
+        </div>
+      </a>
+      <a href="https://vercel.com" target="_blank" style="text-decoration:none">
+        <div style="background:var(--gray-l);border:1px solid var(--border);border-radius:10px;padding:12px;text-align:center">
+          <div style="font-size:20px;margin-bottom:4px">▲</div>
+          <div style="font-size:11px;font-weight:700;color:var(--ink)">Vercel</div>
+          <div style="font-size:9px;color:var(--gray);margin-top:2px">배포 · 로그</div>
+        </div>
+      </a>
+      <a href="https://stripe.com/dashboard" target="_blank" style="text-decoration:none">
+        <div style="background:var(--purple-l);border:1px solid var(--purple);border-radius:10px;padding:12px;text-align:center">
+          <div style="font-size:20px;margin-bottom:4px">💳</div>
+          <div style="font-size:11px;font-weight:700;color:var(--purple)">Stripe</div>
+          <div style="font-size:9px;color:var(--gray);margin-top:2px">결제 대시보드</div>
+        </div>
+      </a>
+      <a href="https://supabase.com" target="_blank" style="text-decoration:none">
+        <div style="background:var(--green-l);border:1px solid var(--green);border-radius:10px;padding:12px;text-align:center">
+          <div style="font-size:20px;margin-bottom:4px">🗄️</div>
+          <div style="font-size:11px;font-weight:700;color:var(--green)">Supabase</div>
+          <div style="font-size:9px;color:var(--gray);margin-top:2px">DB · 퀴즈 데이터</div>
+        </div>
+      </a>
+      <a href="https://github.com/namsan-greenapple" target="_blank" style="text-decoration:none">
+        <div style="background:var(--gray-l);border:1px solid var(--border);border-radius:10px;padding:12px;text-align:center">
+          <div style="font-size:20px;margin-bottom:4px">🐙</div>
+          <div style="font-size:11px;font-weight:700;color:var(--ink)">GitHub</div>
+          <div style="font-size:9px;color:var(--gray);margin-top:2px">코드 저장소</div>
+        </div>
+      </a>
+      <a href="https://calendly.com" target="_blank" style="text-decoration:none">
+        <div style="background:var(--blue-l);border:1px solid var(--blue);border-radius:10px;padding:12px;text-align:center">
+          <div style="font-size:20px;margin-bottom:4px">📅</div>
+          <div style="font-size:11px;font-weight:700;color:var(--blue)">Calendly</div>
+          <div style="font-size:9px;color:var(--gray);margin-top:2px">투어 예약</div>
+        </div>
+      </a>
+      <a href="https://gumroad.com" target="_blank" style="text-decoration:none">
+        <div style="background:var(--coral-l);border:1px solid var(--coral);border-radius:10px;padding:12px;text-align:center">
+          <div style="font-size:20px;margin-bottom:4px">📄</div>
+          <div style="font-size:11px;font-weight:700;color:var(--coral)">Gumroad</div>
+          <div style="font-size:9px;color:var(--gray);margin-top:2px">PDF 판매</div>
+        </div>
+      </a>
+      <a href="https://loops.so" target="_blank" style="text-decoration:none">
+        <div style="background:var(--amber-l);border:1px solid var(--amber);border-radius:10px;padding:12px;text-align:center">
+          <div style="font-size:20px;margin-bottom:4px">📧</div>
+          <div style="font-size:11px;font-weight:700;color:var(--amber)">Loops.so</div>
+          <div style="font-size:9px;color:var(--gray);margin-top:2px">뉴스레터</div>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <!-- 계정 정보 테이블 -->
+  <div class="card" style="margin-bottom:14px">
+    <div class="card-title">개발 & 호스팅 계정</div>
+    <table class="rev-table" style="margin-top:8px">
+      <tr><th>서비스</th><th>이메일/아이디</th><th>비밀번호 힌트</th><th>URL 바로가기</th><th>메모</th></tr>
+      <tr><td>GitHub</td><td>namsan-greenapple</td><td><input class="editable" placeholder="힌트"></td><td><a href="https://github.com" target="_blank" style="color:var(--teal);font-size:11px">열기 →</a></td><td><input class="editable" placeholder="메모"></td></tr>
+      <tr><td>Vercel</td><td><input class="editable" placeholder="이메일"></td><td><input class="editable" placeholder="힌트"></td><td><a href="https://vercel.com" target="_blank" style="color:var(--teal);font-size:11px">열기 →</a></td><td><input class="editable" placeholder="메모"></td></tr>
+      <tr><td>Supabase</td><td><input class="editable" placeholder="이메일"></td><td><input class="editable" placeholder="힌트"></td><td><a href="https://supabase.com" target="_blank" style="color:var(--teal);font-size:11px">열기 →</a></td><td><input class="editable" placeholder="메모"></td></tr>
+      <tr><td>Namecheap</td><td><input class="editable" placeholder="이메일"></td><td><input class="editable" placeholder="힌트"></td><td><a href="https://namecheap.com" target="_blank" style="color:var(--teal);font-size:11px">열기 →</a></td><td>seoulbound.com</td></tr>
+      <tr><td>Cursor</td><td><input class="editable" placeholder="이메일"></td><td><input class="editable" placeholder="힌트"></td><td><a href="https://cursor.com" target="_blank" style="color:var(--teal);font-size:11px">열기 →</a></td><td>AI 코딩 에디터</td></tr>
+    </table>
+  </div>
+
+  <div class="card" style="margin-bottom:14px">
+    <div class="card-title">수익 & 결제 계정</div>
+    <table class="rev-table" style="margin-top:8px">
+      <tr><th>서비스</th><th>이메일/아이디</th><th>비밀번호 힌트</th><th>URL 바로가기</th><th>메모</th></tr>
+      <tr><td>Stripe</td><td><input class="editable" placeholder="이메일"></td><td><input class="editable" placeholder="힌트"></td><td><a href="https://stripe.com/dashboard" target="_blank" style="color:var(--teal);font-size:11px">열기 →</a></td><td>결제 처리</td></tr>
+      <tr><td>Gumroad</td><td><input class="editable" placeholder="이메일"></td><td><input class="editable" placeholder="힌트"></td><td><a href="https://gumroad.com" target="_blank" style="color:var(--teal);font-size:11px">열기 →</a></td><td>PDF 판매</td></tr>
+      <tr><td>Calendly</td><td><input class="editable" placeholder="이메일"></td><td><input class="editable" placeholder="힌트"></td><td><a href="https://calendly.com" target="_blank" style="color:var(--teal);font-size:11px">열기 →</a></td><td>투어 예약</td></tr>
+    </table>
+  </div>
+
+  <div class="card" style="margin-bottom:14px">
+    <div class="card-title">AI 도구 계정</div>
+    <table class="rev-table" style="margin-top:8px">
+      <tr><th>서비스</th><th>이메일/아이디</th><th>비밀번호 힌트</th><th>URL 바로가기</th><th>메모</th></tr>
+      <tr><td>Claude (Anthropic)</td><td><input class="editable" placeholder="이메일"></td><td><input class="editable" placeholder="힌트"></td><td><a href="https://claude.ai" target="_blank" style="color:var(--teal);font-size:11px">열기 →</a></td><td>전략 · 카피 · 코드</td></tr>
+      <tr><td>ChatGPT</td><td><input class="editable" placeholder="이메일"></td><td><input class="editable" placeholder="힌트"></td><td><a href="https://chatgpt.com" target="_blank" style="color:var(--teal);font-size:11px">열기 →</a></td><td>카피라이팅</td></tr>
+      <tr><td>Perplexity</td><td><input class="editable" placeholder="이메일"></td><td><input class="editable" placeholder="힌트"></td><td><a href="https://perplexity.ai" target="_blank" style="color:var(--teal);font-size:11px">열기 →</a></td><td>AI 리서치</td></tr>
+      <tr><td>Midjourney</td><td><input class="editable" placeholder="이메일"></td><td><input class="editable" placeholder="힌트"></td><td><a href="https://midjourney.com" target="_blank" style="color:var(--teal);font-size:11px">열기 →</a></td><td>AI 이미지</td></tr>
+      <tr><td>v0.dev</td><td><input class="editable" placeholder="이메일"></td><td><input class="editable" placeholder="힌트"></td><td><a href="https://v0.dev" target="_blank" style="color:var(--teal);font-size:11px">열기 →</a></td><td>UI 컴포넌트</td></tr>
+    </table>
+  </div>
+
+  <div class="card" style="margin-bottom:14px">
+    <div class="card-title">마케팅 & SNS 계정</div>
+    <table class="rev-table" style="margin-top:8px">
+      <tr><th>서비스</th><th>이메일/아이디</th><th>비밀번호 힌트</th><th>URL 바로가기</th><th>메모</th></tr>
+      <tr><td>Instagram</td><td><input class="editable" placeholder="@아이디"></td><td><input class="editable" placeholder="힌트"></td><td><a href="https://instagram.com" target="_blank" style="color:var(--teal);font-size:11px">열기 →</a></td><td>@seoulbound.guide</td></tr>
+      <tr><td>TikTok</td><td><input class="editable" placeholder="@아이디"></td><td><input class="editable" placeholder="힌트"></td><td><a href="https://tiktok.com" target="_blank" style="color:var(--teal);font-size:11px">열기 →</a></td><td><input class="editable" placeholder="메모"></td></tr>
+      <tr><td>Resend</td><td><input class="editable" placeholder="이메일"></td><td><input class="editable" placeholder="힌트"></td><td><a href="https://resend.com" target="_blank" style="color:var(--teal);font-size:11px">열기 →</a></td><td>트랜잭션 이메일</td></tr>
+      <tr><td>Loops.so</td><td><input class="editable" placeholder="이메일"></td><td><input class="editable" placeholder="힌트"></td><td><a href="https://loops.so" target="_blank" style="color:var(--teal);font-size:11px">열기 →</a></td><td>뉴스레터</td></tr>
+      <tr><td>Buffer</td><td><input class="editable" placeholder="이메일"></td><td><input class="editable" placeholder="힌트"></td><td><a href="https://buffer.com" target="_blank" style="color:var(--teal);font-size:11px">열기 →</a></td><td>SNS 예약</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="card-title">API 키 힌트 (앞 8자리만 — 보안)</div>
+    <table class="rev-table" style="margin-top:8px">
+      <tr><th>서비스</th><th>키 힌트</th><th>저장 위치</th><th>메모</th></tr>
+      <tr><td>Anthropic API</td><td>sk-ant-ap...</td><td>Vercel 환경변수</td><td><input class="editable" placeholder="메모"></td></tr>
+      <tr><td>Stripe Secret</td><td>sk_test_5...</td><td>Vercel 환경변수</td><td><input class="editable" placeholder="메모"></td></tr>
+      <tr><td>Resend API</td><td>re_T8eLKJ...</td><td>Vercel 환경변수</td><td><input class="editable" placeholder="메모"></td></tr>
+      <tr><td>Supabase Service Role</td><td>eyJhbGci...</td><td>Vercel 환경변수</td><td><input class="editable" placeholder="메모"></td></tr>
+      <tr><td><input class="editable" placeholder="추가 서비스"></td><td><input class="editable" placeholder="힌트"></td><td><input class="editable" placeholder="저장 위치"></td><td><input class="editable" placeholder="메모"></td></tr>
+    </table>
+  </div>
+</div>
+
 <div id="history" class="page">
   <div class="page-header">
     <div class="page-title">📅 날짜별 기록</div>
@@ -549,14 +981,15 @@ function chk(el){
   ct.classList.toggle('done');
 }
 const fixedTasks=[
-  {time:'09:00',task:'Stripe/Supabase 지표 확인',cat:'📊 운영',fixed:true},
-  {time:'09:30',task:'퀴즈 완료 수 & 전환율 확인',cat:'📊 운영',fixed:true},
-  {time:'10:00',task:'이태원 인터뷰 촬영',cat:'🎬 콘텐츠',fixed:true},
-  {time:'11:30',task:'CapCut 편집 + 업로드',cat:'🎬 콘텐츠',fixed:false},
-  {time:'14:00',task:'Reddit r/solotravel 답변 3개',cat:'📧 마케팅',fixed:true},
-  {time:'15:00',task:'Gumroad 계정 생성',cat:'💰 수익',fixed:false},
-  {time:'16:00',task:'Seoul Survival Guide Claude 초안',cat:'💰 수익',fixed:false},
-  {time:'20:00',task:'인스타 스토리 + 댓글 답변',cat:'📧 마케팅',fixed:true},
+  {time:'09:00',task:'[AI] Stripe/Supabase 지표 → Claude에게 브리핑',cat:'📊 운영',fixed:true},
+  {time:'09:20',task:'[AI] Claude가 오늘 스크립트+캡션+Reddit 초안 생성',cat:'📊 운영',fixed:true},
+  {time:'10:00',task:'[촬영] 이태원/명동/남대문 인터뷰 3명 (30분)',cat:'🎬 콘텐츠',fixed:true},
+  {time:'10:30',task:'[AI] CapCut Auto Caption → 자막 자동 생성',cat:'🎬 콘텐츠',fixed:true},
+  {time:'11:00',task:'[배포] Buffer로 TikTok+Reels+Shorts 동시 예약',cat:'🎬 콘텐츠',fixed:true},
+  {time:'11:30',task:'[AI] ManyChat 댓글 자동응답 세팅 확인',cat:'📧 마케팅',fixed:true},
+  {time:'14:00',task:'[AI] Claude가 작성한 Reddit 답변 검토 후 발행',cat:'📧 마케팅',fixed:true},
+  {time:'15:00',task:'[AI] Loops.so 이메일 시퀀스 확인',cat:'📧 마케팅',fixed:true},
+  {time:'20:00',task:'[AI] ManyChat이 인스타 DM 자동처리 확인',cat:'📧 마케팅',fixed:true},
 ];
 // ── 날짜 유틸 ─────────────────────────────────────────
 const today = () => new Date().toISOString().slice(0,10); // "2026-04-14"
@@ -891,7 +1324,7 @@ function calRenderYearGrid(){
     const days = CAL_DAYS[mi];
     let cells = ['월','화','수','목','금','토','일'].map(d=>`<div class="mini-dhdr-c">${d}</div>`).join('');
     for(let i=0;i<fd;i++) cells+=`<div class="mini-dc empty-c">.</div>`;
-    for(let d=1;d<=Math.min(days,14);d++){
+    for(let d=1;d<=days;d++){
       const isToday=mi===0&&d===14;
       const hasEv=evDays.has(d);
       cells+=`<div class="mini-dc ${isToday?'today-c':''} ${hasEv&&!isToday?'has-ev-c':''}">${d}</div>`;
@@ -979,6 +1412,297 @@ function calDeleteEvent(idx){
 }
 
 setTimeout(calRender, 150);
+setTimeout(calRender, 150);
+
+// ── MVP D-Day & 허브 동적 렌더 ───────────────────────
+function renderHubDynamic(){
+  const launch = new Date('2026-04-22');
+  const now = new Date();
+  const diffMs = launch - now;
+  const diffDays = Math.ceil(diffMs / (1000*60*60*24));
+  const isLaunched = diffDays <= 0;
+  
+  // 허브 지표
+  const metricsEl = document.getElementById('hub-metrics');
+  if(metricsEl){
+    if(!isLaunched){
+      // 론칭 전: 준비 진행률 표시
+      const totalPrep = 11; // 준비 체크박스 총 수
+      const doneChecks = Object.values(load('checks',{})).filter(Boolean).length;
+      const pct = Math.min(100, Math.round(doneChecks/totalPrep*100));
+      metricsEl.innerHTML = `
+      <div class="g4">
+        <div class="metric t">
+          <div class="m-label">MVP 론칭까지</div>
+          <div class="m-val" style="color:var(--teal)">D-${Math.max(0,diffDays)}</div>
+          <div class="m-target">4월 22일 · 수요일</div>
+          <div class="m-bar"><div class="m-fill" style="width:${Math.round((8-Math.min(8,diffDays))/8*100)}%;background:var(--teal)"></div></div>
+        </div>
+        <div class="metric a">
+          <div class="m-label">준비 완료율</div>
+          <div class="m-val">${pct}%</div>
+          <div class="m-target">체크박스 기준</div>
+          <div class="m-bar"><div class="m-fill" style="width:${pct}%;background:var(--amber)"></div></div>
+        </div>
+        <div class="metric b">
+          <div class="m-label">테스트 유저</div>
+          <div class="m-val">1명</div>
+          <div class="m-target">뉴욕 친구 코워커</div>
+          <div class="m-bar"><div class="m-fill" style="width:100%;background:var(--blue)"></div></div>
+        </div>
+        <div class="metric c">
+          <div class="m-label">이번 주 목표</div>
+          <div class="m-val" style="font-size:16px;padding-top:4px">론칭!</div>
+          <div class="m-target">4/22 seoulbound.com</div>
+          <div class="m-bar"><div class="m-fill" style="width:0%;background:var(--coral)"></div></div>
+        </div>
+      </div>`;
+    } else {
+      // 론칭 후: 실제 지표
+      metricsEl.innerHTML = `
+      <div class="g4">
+        <div class="metric t"><div class="m-label">퀴즈 완료</div><div class="m-val"><input class="editable" style="font-size:24px;font-weight:700;width:80px" placeholder="0"></div><div class="m-target">목표 20명/주</div><div class="m-bar"><div class="m-fill" style="width:0%;background:var(--teal)"></div></div></div>
+        <div class="metric a"><div class="m-label">투어 결제</div><div class="m-val"><input class="editable" style="font-size:24px;font-weight:700;width:80px" placeholder="0"></div><div class="m-target">목표 3건/주</div><div class="m-bar"><div class="m-fill" style="width:0%;background:var(--amber)"></div></div></div>
+        <div class="metric b"><div class="m-label">PDF 판매</div><div class="m-val"><input class="editable" style="font-size:24px;font-weight:700;width:80px" placeholder="0"></div><div class="m-target">목표 5개/주</div><div class="m-bar"><div class="m-fill" style="width:0%;background:var(--blue)"></div></div></div>
+        <div class="metric c"><div class="m-label">주간 수익</div><div class="m-val"><input class="editable" style="font-size:20px;font-weight:700;width:80px" placeholder="$0"></div><div class="m-target">목표 $300/주</div><div class="m-bar"><div class="m-fill" style="width:0%;background:var(--coral)"></div></div></div>
+      </div>`;
+      document.querySelectorAll('.editable').forEach(el=>el.addEventListener('input', saveInputs));
+      loadInputs();
+    }
+  }
+
+  // 배너
+  const bannerEl = document.getElementById('mvp-banner');
+  if(bannerEl){
+    if(!isLaunched){
+      bannerEl.innerHTML = `
+      <div style="background:var(--teal);color:white;border-radius:10px;padding:12px 16px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between">
+        <div>
+          <div style="font-size:11px;opacity:.8;font-weight:600;letter-spacing:.05em;text-transform:uppercase">MVP 론칭까지</div>
+          <div style="font-size:13px;font-weight:700;margin-top:2px">4월 22일 · 뉴욕 친구 코워커가 테스트 유저 1번</div>
+        </div>
+        <div style="font-family:serif;font-size:32px;font-weight:700">D-${Math.max(0,diffDays)}</div>
+      </div>`;
+    } else {
+      bannerEl.innerHTML = `
+      <div style="background:var(--teal);color:white;border-radius:10px;padding:12px 16px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between">
+        <div>
+          <div style="font-size:11px;opacity:.8;font-weight:600;letter-spacing:.05em;text-transform:uppercase">MVP 론칭됨!</div>
+          <div style="font-size:13px;font-weight:700;margin-top:2px">seoulbound.com 라이브 · 이제 실제 지표를 추적해요</div>
+        </div>
+        <div style="font-size:24px">🚀</div>
+      </div>`;
+    }
+  }
+
+  // 태스크 페이지 D-Day
+  const ddayEl = document.getElementById('mvp-dday');
+  const progEl = document.getElementById('mvp-progress');
+  const progTxt = document.getElementById('mvp-progress-txt');
+  if(ddayEl) ddayEl.innerHTML = `<div style="font-size:11px;opacity:.8">D-</div>${Math.max(0,diffDays)}`;
+  if(progEl){
+    const totalDays = 8; // 4/14 ~ 4/22
+    const elapsed = totalDays - Math.max(0,diffDays);
+    const pct = Math.round(elapsed/totalDays*100);
+    progEl.style.width = pct+'%';
+    if(progTxt) progTxt.textContent = `${elapsed}일 경과 / ${totalDays}일 중`;
+  }
+}
+
+renderHubDynamic();
+setInterval(renderHubDynamic, 60000);
+
+
+
+// ── 월별 태스크 JS ────────────────────────────────
+const MT_MONTHS = ['4월','5월','6월','7월','8월','9월','10월','11월','12월'];
+const MT_COLORS = {
+  teal:{bg:'var(--teal-l)',badge:'var(--teal)',text:'white'},
+  amber:{bg:'var(--amber-l)',badge:'var(--amber)',text:'white'},
+  blue:{bg:'var(--blue-l)',badge:'var(--blue)',text:'white'},
+  coral:{bg:'var(--coral-l)',badge:'var(--coral)',text:'white'},
+  purple:{bg:'var(--purple-l)',badge:'var(--purple)',text:'white'},
+};
+
+const MT_DEFAULTS = {
+  '4월':{goals:{퀴즈완료:'50명',투어결제:'3건',수익:'$415',구독:'0명'},phases:[
+    {title:'MVP 론칭 준비',color:'teal',tasks:[
+      {text:'퀴즈/결과값 시나리오 업데이트',done:false},
+      {text:'여행상품 설명 업데이트',done:false},
+      {text:'4/22 MVP 론칭 (뉴욕 친구 테스트)',done:false},
+      {text:'Calendly 슬롯 오픈',done:false},
+    ]},
+    {title:'Phase 1 — PDF 가이드',color:'amber',tasks:[
+      {text:'Gumroad 계정 생성',done:false},
+      {text:'Seoul Survival Guide $19 제작',done:false},
+      {text:'K-beauty Bible $29 제작',done:false},
+    ]},
+    {title:'Phase 2 — 뉴스레터',color:'blue',tasks:[
+      {text:'Loops.so 계정 생성',done:false},
+      {text:'Seoul Insider 1호 초안',done:false},
+      {text:'목요일 첫 발송',done:false},
+    ]},
+    {title:'마케팅',color:'coral',tasks:[
+      {text:'인스타 계정 개설',done:false},
+      {text:'TikTok 영상 3개 업로드',done:false},
+      {text:'Reddit 답변 20개',done:false},
+    ]},
+  ]},
+  '5월':{goals:{퀴즈완료:'200명',투어결제:'10건',수익:'$1,195',구독:'50명'},phases:[
+    {title:'투어 확장',color:'teal',tasks:[{text:'가이드 1명 모집',done:false},{text:'투어 루트 매뉴얼 작성',done:false}]},
+    {title:'PDF 확장',color:'amber',tasks:[{text:'Seoul on $50/day PDF 제작',done:false},{text:'TikTok으로 PDF 홍보',done:false}]},
+    {title:'뉴스레터 성장',color:'blue',tasks:[{text:'구독자 100명 달성',done:false},{text:'Seoul Insider Pro 유료화',done:false}]},
+  ]},
+  '6월':{goals:{퀴즈완료:'500명',투어결제:'20건',수익:'$2,000',구독:'150명'},phases:[
+    {title:'플랫폼 확장',color:'teal',tasks:[{text:'가이드 2명으로 확장',done:false},{text:'투어 상품 1개 추가',done:false}]},
+    {title:'수익 다각화',color:'amber',tasks:[{text:'올리브영 어필리에이트 신청',done:false},{text:'SafetyWing 여행보험 제휴',done:false}]},
+  ]},
+};
+['7월','8월','9월','10월','11월','12월'].forEach(m=>{
+  MT_DEFAULTS[m]={goals:{퀴즈완료:'',투어결제:'',수익:'',구독:''},phases:[{title:'이번 달 목표',color:'teal',tasks:[]}]};
+});
+
+let mtData = load('mt_data', MT_DEFAULTS);
+MT_MONTHS.forEach(m=>{ if(!mtData[m]) mtData[m]=MT_DEFAULTS[m]; });
+let mtSelected = 0;
+let mtDragSrc = null;
+
+function mtSave(){ save('mt_data', mtData); }
+function mtTotal(m){ return (mtData[m].phases||[]).reduce((s,p)=>s+(p.tasks||[]).length,0); }
+function mtDone(m){ return (mtData[m].phases||[]).reduce((s,p)=>s+(p.tasks||[]).filter(t=>t.done).length,0); }
+
+function mtRenderTabs(){
+  const el = document.getElementById('mt-tab-list');
+  if(!el) return;
+  el.innerHTML = MT_MONTHS.map((m,i)=>`
+    <div class="mt-tab ${i===mtSelected?'mt-active':''}" onclick="mtSelect(${i})">
+      ${m}<span class="mt-cnt">${mtDone(m)}/${mtTotal(m)}</span>
+    </div>`).join('');
+}
+
+function mtRenderContent(){
+  const el = document.getElementById('mt-content');
+  if(!el) return;
+  const m = MT_MONTHS[mtSelected];
+  const d = mtData[m];
+  const total = mtTotal(m);
+  const done = mtDone(m);
+  const pct = total>0 ? Math.round(done/total*100) : 0;
+
+  let html = `
+  <div style="background:var(--white);border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-bottom:14px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+      <div style="font-size:12px;font-weight:700;color:var(--ink)">📊 ${m} 목표 수치</div>
+      <div style="font-size:11px;color:var(--gray)">완료율 <strong style="color:var(--teal)">${pct}%</strong> (${done}/${total})</div>
+    </div>
+    <div class="mt-goal-grid">
+      <div class="mt-goal-card"><div class="mt-goal-label">퀴즈 완료</div><input class="mt-goal-in" value="${d.goals.퀴즈완료||''}" placeholder="목표" onchange="mtUpdateGoal('${m}','퀴즈완료',this.value)"><div class="mt-goal-unit">명</div></div>
+      <div class="mt-goal-card"><div class="mt-goal-label">투어 결제</div><input class="mt-goal-in" value="${d.goals.투어결제||''}" placeholder="목표" onchange="mtUpdateGoal('${m}','투어결제',this.value)"><div class="mt-goal-unit">건</div></div>
+      <div class="mt-goal-card"><div class="mt-goal-label">월 수익</div><input class="mt-goal-in" value="${d.goals.수익||''}" placeholder="목표" onchange="mtUpdateGoal('${m}','수익',this.value)"><div class="mt-goal-unit">목표</div></div>
+      <div class="mt-goal-card"><div class="mt-goal-label">뉴스레터</div><input class="mt-goal-in" value="${d.goals.구독||''}" placeholder="목표" onchange="mtUpdateGoal('${m}','구독',this.value)"><div class="mt-goal-unit">명</div></div>
+    </div>
+  </div>`;
+
+  (d.phases||[]).forEach((phase,pi)=>{
+    const c = MT_COLORS[phase.color]||MT_COLORS.teal;
+    const pDone=(phase.tasks||[]).filter(t=>t.done).length;
+    html+=`
+    <div class="mt-phase">
+      <div class="mt-phase-head" style="background:${c.bg}">
+        <div style="display:flex;align-items:center">
+          <span class="mt-phase-badge" style="background:${c.badge};color:${c.text}">${pi+1}</span>
+          <span class="mt-phase-title">${phase.title}</span>
+        </div>
+        <div style="display:flex;gap:6px;align-items:center">
+          <span style="font-size:10px;color:var(--gray)">${pDone}/${(phase.tasks||[]).length}</span>
+          <button class="mt-add-btn" onclick="mtShowForm(${pi})">+ 추가</button>
+        </div>
+      </div>
+      ${(phase.tasks||[]).map((t,ti)=>`
+      <div class="mt-task-row" draggable="true"
+        ondragstart="mtDS(event,${pi},${ti})"
+        ondragover="mtDOV(event)"
+        ondrop="mtDDR(event,${pi},${ti})"
+        ondragleave="mtDLV(event)">
+        <span class="mt-drag-handle">⠿</span>
+        <div class="mt-cb ${t.done?'mt-done':''}" onclick="mtToggle(${pi},${ti})"></div>
+        <span class="mt-task-txt ${t.done?'mt-done':''}" ondblclick="mtEditStart(this,${pi},${ti})">${t.text||'(빈 태스크)'}</span>
+        <input class="mt-task-edit" value="${(t.text||'').replace(/"/g,'&quot;')}" onblur="mtEditSave(this,${pi},${ti})" onkeydown="if(event.key==='Enter')this.blur()">
+        <button class="mt-del-btn" onclick="mtDeleteTask(${pi},${ti})">✕</button>
+      </div>`).join('')}
+      <div class="mt-add-form" id="mt-form-${pi}">
+        <input class="mt-add-in" id="mt-new-${pi}" placeholder="새 태스크..." onkeydown="if(event.key==='Enter')mtSaveNew(${pi})">
+        <button class="mt-add-save" onclick="mtSaveNew(${pi})">저장</button>
+        <button class="mt-add-cancel" onclick="mtHideForm(${pi})">취소</button>
+      </div>
+    </div>`;
+  });
+
+  html+=`<button class="mt-add-section-btn" onclick="mtAddPhase()">+ 섹션 추가</button>`;
+  el.innerHTML = html;
+}
+
+function mtRender(){ mtRenderTabs(); mtRenderContent(); }
+function mtSelect(i){ mtSelected=i; mtRender(); }
+function mtUpdateGoal(m,k,v){ mtData[m].goals[k]=v; mtSave(); mtRenderTabs(); }
+function mtToggle(pi,ti){
+  const m=MT_MONTHS[mtSelected];
+  mtData[m].phases[pi].tasks[ti].done=!mtData[m].phases[pi].tasks[ti].done;
+  mtSave(); mtRender();
+}
+function mtEditStart(span,pi,ti){
+  const inp=span.nextElementSibling;
+  span.style.display='none'; inp.style.display='block'; inp.focus();
+}
+function mtEditSave(inp,pi,ti){
+  const m=MT_MONTHS[mtSelected];
+  const val=inp.value.trim();
+  if(val) mtData[m].phases[pi].tasks[ti].text=val;
+  mtSave(); mtRender();
+}
+function mtDeleteTask(pi,ti){
+  const m=MT_MONTHS[mtSelected];
+  mtData[m].phases[pi].tasks.splice(ti,1);
+  mtSave(); mtRender();
+}
+function mtShowForm(pi){
+  document.getElementById('mt-form-'+pi).classList.add('open');
+  document.getElementById('mt-new-'+pi).focus();
+}
+function mtHideForm(pi){ document.getElementById('mt-form-'+pi).classList.remove('open'); }
+function mtSaveNew(pi){
+  const m=MT_MONTHS[mtSelected];
+  const val=document.getElementById('mt-new-'+pi).value.trim();
+  if(!val) return;
+  mtData[m].phases[pi].tasks.push({text:val,done:false});
+  mtSave(); mtRender();
+}
+function mtAddPhase(){
+  const m=MT_MONTHS[mtSelected];
+  const cols=['teal','amber','blue','coral','purple'];
+  mtData[m].phases.push({title:'새 섹션',color:cols[mtData[m].phases.length%cols.length],tasks:[]});
+  mtSave(); mtRender();
+}
+function mtDS(e,pi,ti){ mtDragSrc={pi,ti}; e.currentTarget.classList.add('mt-dragging'); e.dataTransfer.effectAllowed='move'; }
+function mtDOV(e){ e.preventDefault(); e.currentTarget.classList.add('mt-dragover'); }
+function mtDLV(e){ e.currentTarget.classList.remove('mt-dragover'); }
+function mtDDR(e,pi,ti){
+  e.preventDefault(); e.currentTarget.classList.remove('mt-dragover');
+  if(!mtDragSrc||mtDragSrc.pi!==pi||mtDragSrc.ti===ti) return;
+  const m=MT_MONTHS[mtSelected];
+  const tasks=mtData[m].phases[pi].tasks;
+  const [mv]=tasks.splice(mtDragSrc.ti,1);
+  tasks.splice(ti,0,mv);
+  mtDragSrc=null; mtSave(); mtRender();
+}
+
+// go 함수에서 tasks 탭 열 때 렌더
+const _origGo = go;
+go = function(id,el){
+  _origGo(id,el);
+  if(id==='tasks') mtRender();
+}
+setTimeout(()=>{ if(document.getElementById('mt-tab-list')) mtRender(); }, 200);
 
 </script>
 
