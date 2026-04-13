@@ -231,7 +231,7 @@ textarea:focus{outline:none;}
 .daily-row{cursor:grab;}
 .daily-row.dragging{opacity:.4;background:var(--teal-l);}
 .daily-row.drag-over{border-top:2px solid var(--teal);}
-.time-edit{border:none;background:transparent;font-size:11px;font-weight:600;color:var(--gray);width:52px;font-family:'DM Sans',sans-serif;cursor:pointer;}
+.time-edit{border:none;background:transparent;font-size:11px;font-weight:600;color:var(--gray);width:58px;font-family:'DM Sans',sans-serif;cursor:text;border-radius:4px;padding:2px 4px;}
 .time-edit:focus{outline:none;background:var(--teal-l);border-radius:4px;color:var(--teal);}
 
 
@@ -1110,9 +1110,10 @@ function renderSchedule(){
       ondragleave="dragLeave(event)"
       style="opacity:${isDone?'.5':'1'}">
       <div class="time-cell">
-        <input class="time-edit" type="time" value="${t.time}"
+        <input class="time-edit" type="text" value="${t.time}" placeholder="09:00"
           onclick="event.stopPropagation()"
-          onchange="updateTime(${origIdx},this.value)">
+          onblur="updateTime(${origIdx},this.value)"
+          onkeydown="if(event.key==='Enter'){updateTime(${origIdx},this.value);this.blur();event.stopPropagation();}">
       </div>
       <div class="task-cell" onclick="chkRow(this.parentElement,${origIdx})">${t.task}${t.fixed?'<span class="fixed-tag">고정</span>':''}</div>
       <div onclick="chkRow(this.parentElement,${origIdx})"><span class="cat-pill" style="background:${catColors[t.cat]||'#f5f3ee'};color:${catText[t.cat]||'#6b6863'}">${t.cat}</span></div>
