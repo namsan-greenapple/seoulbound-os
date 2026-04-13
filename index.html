@@ -180,6 +180,60 @@ textarea:focus{outline:none;}
 .sp-draft{background:var(--amber-l);color:var(--amber);}
 .sp-ready{background:var(--blue-l);color:var(--blue);}
 .sp-done{background:var(--green-l);color:var(--green);}
+
+/* ── 캘린더 CSS ─────────────────────────────── */
+.cal-section{padding:14px 16px;border-bottom:1px solid var(--border);}
+.year-grid-cal{display:grid;grid-template-columns:repeat(9,1fr);gap:5px;margin-bottom:0;}
+.mini-cal-c{border:1px solid var(--border);border-radius:7px;overflow:hidden;cursor:pointer;transition:all .15s;}
+.mini-cal-c:hover{border-color:var(--teal);}
+.mini-cal-c.active-c{border-color:var(--teal);box-shadow:0 0 0 2px var(--teal-l);}
+.mini-hdr-c{font-size:9px;font-weight:700;padding:4px 0;text-align:center;background:var(--gray-l);color:var(--gray);}
+.mini-cal-c.active-c .mini-hdr-c{background:var(--teal);color:white;}
+.mini-grid-c{display:grid;grid-template-columns:repeat(7,1fr);padding:2px;}
+.mini-dc{text-align:center;font-size:7px;padding:1px 0;border-radius:2px;}
+.mini-dc.today-c{background:var(--teal);color:white;}
+.mini-dc.has-ev-c{color:var(--teal);font-weight:700;}
+.mini-dc.empty-c{color:transparent;}
+.mini-dhdr-c{text-align:center;font-size:6px;color:var(--gray);font-weight:600;}
+.cal-split{display:grid;grid-template-columns:130px 1fr;}
+.cal-month-list{border-right:1px solid var(--border);padding:6px 0;}
+.cal-mpill{display:flex;align-items:center;justify-content:space-between;padding:5px 10px;cursor:pointer;font-size:11px;color:var(--gray);transition:all .1s;}
+.cal-mpill:hover{background:var(--gray-l);color:var(--ink);}
+.cal-mpill.active-m{background:var(--teal-l);color:var(--teal);font-weight:700;border-right:2px solid var(--teal);}
+.cal-mcnt{font-size:9px;background:var(--border);border-radius:99px;padding:1px 5px;font-weight:700;min-width:14px;text-align:center;}
+.cal-mpill.active-m .cal-mcnt{background:var(--teal);color:white;}
+.cal-detail{padding:12px 14px;}
+.cal-dhdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+.cal-dtitle{font-size:13px;font-weight:700;color:var(--ink);}
+.cal-add-btn{background:var(--teal);color:white;border:none;border-radius:6px;padding:4px 9px;font-size:11px;font-weight:700;cursor:pointer;}
+.cal-ev-row{display:flex;align-items:flex-start;gap:8px;padding:6px 0;border-bottom:1px solid var(--border);}
+.cal-ev-row:last-child{border-bottom:none;}
+.cal-ev-day{font-size:11px;font-weight:700;color:var(--teal);min-width:28px;}
+.cal-ev-title{font-size:12px;font-weight:600;color:var(--ink);}
+.cal-ev-memo{font-size:10px;color:var(--gray);margin-top:1px;}
+.cal-ev-tag{display:inline-block;font-size:9px;font-weight:700;padding:1px 5px;border-radius:99px;margin-top:2px;}
+.cal-tag-t{background:#FFE8E4;color:var(--coral);}
+.cal-tag-n{background:var(--teal-l);color:var(--teal);}
+.cal-tag-r{background:var(--blue-l);color:var(--blue);}
+.cal-ev-del{font-size:10px;color:var(--gray);cursor:pointer;padding:2px 5px;border-radius:4px;border:none;background:none;margin-left:auto;}
+.cal-ev-del:hover{background:var(--gray-l);color:var(--coral);}
+.cal-empty{text-align:center;padding:24px;color:var(--gray);font-size:11px;}
+.cal-form{background:var(--gray-l);border-radius:8px;padding:10px;margin-bottom:10px;display:none;}
+.cal-form.open{display:block;}
+.cal-frow{display:flex;gap:6px;margin-bottom:6px;}
+.cal-finput{flex:1;border:1px solid var(--border);border-radius:6px;padding:5px 8px;font-size:11px;font-family:'DM Sans',sans-serif;background:white;}
+.cal-finput:focus{outline:none;border-color:var(--teal);}
+.cal-fsel{border:1px solid var(--border);border-radius:6px;padding:5px 8px;font-size:11px;font-family:'DM Sans',sans-serif;background:white;}
+.cal-fbtns{display:flex;gap:6px;}
+.cal-fsave{background:var(--teal);color:white;border:none;border-radius:6px;padding:5px 10px;font-size:11px;font-weight:700;cursor:pointer;}
+.cal-fcancel{background:white;color:var(--gray);border:1px solid var(--border);border-radius:6px;padding:5px 10px;font-size:11px;cursor:pointer;}
+/* ── 드래그 CSS ─────────────────────────────── */
+.daily-row{cursor:grab;}
+.daily-row.dragging{opacity:.4;background:var(--teal-l);}
+.daily-row.drag-over{border-top:2px solid var(--teal);}
+.time-edit{border:none;background:transparent;font-size:11px;font-weight:600;color:var(--gray);width:52px;font-family:'DM Sans',sans-serif;cursor:pointer;}
+.time-edit:focus{outline:none;background:var(--teal-l);border-radius:4px;color:var(--teal);}
+
 </style>
 </head>
 <body>
@@ -247,6 +301,40 @@ textarea:focus{outline:none;}
         <div style="display:flex;justify-content:space-between;font-size:12px;padding:5px 0;border-bottom:1px solid var(--border)"><span>📄 PDF</span><span style="font-weight:600">$0 / $100</span></div>
         <div style="display:flex;justify-content:space-between;font-size:12px;padding:5px 0"><span>📧 뉴스레터</span><span style="font-weight:600">$0 / $0</span></div>
         <div style="display:flex;justify-content:space-between;font-size:13px;padding:8px 10px;background:var(--teal-l);border-radius:8px;margin-top:4px"><span style="font-weight:700;color:var(--teal)">합계</span><span style="font-weight:700;color:var(--teal)">$0 / $415</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="card" style="margin-top:0;padding:0;overflow:hidden;">
+    <div class="cal-section">
+      <div class="card-title" style="margin-bottom:10px">📅 2026년 일정 캘린더</div>
+      <div class="year-grid-cal" id="cal-year-grid"></div>
+    </div>
+    <div class="cal-split">
+      <div class="cal-month-list" id="cal-month-list"></div>
+      <div class="cal-detail">
+        <div class="cal-dhdr">
+          <div class="cal-dtitle" id="cal-detail-title">4월 일정</div>
+          <button class="cal-add-btn" onclick="calToggleForm()">+ 추가</button>
+        </div>
+        <div class="cal-form" id="cal-add-form">
+          <div class="cal-frow">
+            <input class="cal-finput" id="cal-ev-day" type="number" min="1" max="31" placeholder="날짜(일)" style="width:70px;flex:none;">
+            <input class="cal-finput" id="cal-ev-title" placeholder="일정 제목">
+          </div>
+          <div class="cal-frow">
+            <select class="cal-fsel" id="cal-ev-tag">
+              <option value="t">🔴 TikTok/콘텐츠</option>
+              <option value="n">🟢 뉴스레터</option>
+              <option value="r">🔵 마케팅/Reddit</option>
+            </select>
+            <input class="cal-finput" id="cal-ev-memo" placeholder="메모 (선택)">
+          </div>
+          <div class="cal-fbtns">
+            <button class="cal-fsave" onclick="calSaveEvent()">저장</button>
+            <button class="cal-fcancel" onclick="calToggleForm()">취소</button>
+          </div>
+        </div>
+        <div id="cal-event-list"></div>
       </div>
     </div>
   </div>
@@ -558,33 +646,91 @@ function loadTextareas(){
 // ── 데일리 스케줄 ────────────────────────────────────
 let userTasks = load('userTasks', []);
 
+let dragSrcIdx = null;
+
 function renderSchedule(){
-  const all=[...fixedTasks,...userTasks].sort((a,b)=>a.time.localeCompare(b.time));
+  const allTasks=[...fixedTasks,...userTasks];
+  const order = load('taskOrder', allTasks.map((_,i)=>i));
+  const validOrder = order.filter(i=>i<allTasks.length);
+  const missing = allTasks.map((_,i)=>i).filter(i=>!validOrder.includes(i));
+  const finalOrder = [...validOrder, ...missing];
+
   const catColors={'📊 운영':'#E1F5EE','🎬 콘텐츠':'#FFE8E4','💰 수익':'#FFF3DC','📧 마케팅':'#EDF4FF','🛠 개발':'#F0EFFD'};
   const catText={'📊 운영':'#0F5F4A','🎬 콘텐츠':'#A33C1D','💰 수익':'#BA7517','📧 마케팅':'#1A5FA3','🛠 개발':'#3C3489'};
   const doneRows = load('rowDone', {});
   const done = Object.values(doneRows).filter(Boolean).length;
-  const total = all.length;
+  const total = allTasks.length;
 
-  // 완료/미완료 분리
-  const pending = all.filter((_,i) => !doneRows[i]);
-  const completed = all.filter((_,i) => doneRows[i]);
+  const pending = finalOrder.filter(i=>!doneRows[i]);
+  const completed = finalOrder.filter(i=>doneRows[i]);
   const sorted = [...pending, ...completed];
 
-  document.getElementById('schedule-body').innerHTML = sorted.map((t,si) => {
-    const origIdx = all.indexOf(t);
+  document.getElementById('schedule-body').innerHTML = sorted.map((origIdx,si) => {
+    const t = allTasks[origIdx];
+    if(!t) return '';
     const isDone = doneRows[origIdx];
     return `
-    <div class="daily-row" onclick="chkRow(this,${origIdx})" style="opacity:${isDone?'.5':'1'}">
-      <div class="time-cell">${t.time}</div>
-      <div class="task-cell">${t.task}${t.fixed?'<span class="fixed-tag">고정</span>':''}</div>
-      <div><span class="cat-pill" style="background:${catColors[t.cat]||'#f5f3ee'};color:${catText[t.cat]||'#6b6863'}">${t.cat}</span></div>
-      <div class="check-cell"><div class="cb ${isDone?'done':''}"></div></div>
+    <div class="daily-row" draggable="true"
+      ondragstart="dragStart(event,${si})"
+      ondragover="dragOver(event)"
+      ondrop="dragDrop(event,${si})"
+      ondragleave="dragLeave(event)"
+      style="opacity:${isDone?'.5':'1'}">
+      <div class="time-cell">
+        <input class="time-edit" type="time" value="${t.time}"
+          onclick="event.stopPropagation()"
+          onchange="updateTime(${origIdx},this.value)">
+      </div>
+      <div class="task-cell" onclick="chkRow(this.parentElement,${origIdx})">${t.task}${t.fixed?'<span class="fixed-tag">고정</span>':''}</div>
+      <div onclick="chkRow(this.parentElement,${origIdx})"><span class="cat-pill" style="background:${catColors[t.cat]||'#f5f3ee'};color:${catText[t.cat]||'#6b6863'}">${t.cat}</span></div>
+      <div class="check-cell" onclick="chkRow(this.parentElement,${origIdx})"><div class="cb ${isDone?'done':''}"></div></div>
     </div>`;
   }).join('') + (completed.length > 0 ? `
     <div style="padding:8px 12px;background:var(--teal-l);font-size:10px;font-weight:700;color:var(--teal);letter-spacing:.05em;text-transform:uppercase">
-      ✅ 완료 ${done}/${total} — 완료된 항목은 아래로
+      완료 ${done}/${total} — 완료된 항목은 아래로
     </div>` : '');
+}
+
+function updateTime(idx, newTime){
+  const allTasks=[...fixedTasks,...userTasks];
+  if(idx < fixedTasks.length) fixedTasks[idx].time = newTime;
+  else {
+    const ui = idx - fixedTasks.length;
+    if(userTasks[ui]) userTasks[ui].time = newTime;
+    save('userTasks', userTasks);
+  }
+  renderSchedule();
+}
+
+function dragStart(e, si){
+  dragSrcIdx = si;
+  e.currentTarget.classList.add('dragging');
+  e.dataTransfer.effectAllowed='move';
+}
+function dragOver(e){
+  e.preventDefault();
+  e.currentTarget.classList.add('drag-over');
+  e.dataTransfer.dropEffect='move';
+}
+function dragLeave(e){ e.currentTarget.classList.remove('drag-over'); }
+function dragDrop(e, targetSi){
+  e.preventDefault();
+  e.currentTarget.classList.remove('drag-over');
+  if(dragSrcIdx===null||dragSrcIdx===targetSi) return;
+  const allTasks=[...fixedTasks,...userTasks];
+  const doneRows=load('rowDone',{});
+  const order=load('taskOrder',allTasks.map((_,i)=>i));
+  const validOrder=order.filter(i=>i<allTasks.length);
+  const missing=allTasks.map((_,i)=>i).filter(i=>!validOrder.includes(i));
+  const finalOrder=[...validOrder,...missing];
+  const pending=finalOrder.filter(i=>!doneRows[i]);
+  const completed=finalOrder.filter(i=>doneRows[i]);
+  const sorted=[...pending,...completed];
+  const moved=sorted.splice(dragSrcIdx,1)[0];
+  sorted.splice(targetSi,0,moved);
+  save('taskOrder',sorted);
+  dragSrcIdx=null;
+  renderSchedule();
 }
 
 function chkRow(el, idx){
@@ -716,6 +862,123 @@ go = function(id, el){
   });
   window.scrollTo(0,0);
 }
+
+
+// ── 캘린더 JS ────────────────────────────────────
+const CAL_MONTHS = ['4월','5월','6월','7월','8월','9월','10월','11월','12월'];
+const CAL_MONTH_NUMS = [4,5,6,7,8,9,10,11,12];
+const CAL_DAYS = [30,31,30,31,31,30,31,30,31];
+const CAL_FIRST = [2,4,0,2,5,0,2,4,6];
+let calSelectedMonth = 0;
+let calEvents = load('calEvents', {});
+
+if(!calEvents['4']) calEvents['4'] = [
+  {day:14,title:'이태원 인터뷰 촬영',tag:'t',memo:''},
+  {day:21,title:'남대문 촬영',tag:'t',memo:''},
+  {day:24,title:'Seoul Insider 1호 발송',tag:'n',memo:'목요일'},
+];
+
+function calSaveAll(){ save('calEvents', calEvents); }
+
+function calRenderYearGrid(){
+  const grid = document.getElementById('cal-year-grid');
+  if(!grid) return;
+  grid.innerHTML = CAL_MONTHS.map((m,mi) => {
+    const key = String(CAL_MONTH_NUMS[mi]);
+    const evs = calEvents[key] || [];
+    const evDays = new Set(evs.map(e=>e.day));
+    const fd = CAL_FIRST[mi];
+    const days = CAL_DAYS[mi];
+    let cells = ['월','화','수','목','금','토','일'].map(d=>`<div class="mini-dhdr-c">${d}</div>`).join('');
+    for(let i=0;i<fd;i++) cells+=`<div class="mini-dc empty-c">.</div>`;
+    for(let d=1;d<=Math.min(days,14);d++){
+      const isToday=mi===0&&d===14;
+      const hasEv=evDays.has(d);
+      cells+=`<div class="mini-dc ${isToday?'today-c':''} ${hasEv&&!isToday?'has-ev-c':''}">${d}</div>`;
+    }
+    return `<div class="mini-cal-c ${mi===calSelectedMonth?'active-c':''}" onclick="calSelectMonth(${mi})">
+      <div class="mini-hdr-c">${m}</div>
+      <div class="mini-grid-c">${cells}</div>
+    </div>`;
+  }).join('');
+}
+
+function calRenderMonthList(){
+  const list = document.getElementById('cal-month-list');
+  if(!list) return;
+  list.innerHTML = CAL_MONTHS.map((m,mi) => {
+    const key = String(CAL_MONTH_NUMS[mi]);
+    const cnt = (calEvents[key]||[]).length;
+    return `<div class="cal-mpill ${mi===calSelectedMonth?'active-m':''}" onclick="calSelectMonth(${mi})">
+      ${m} <span class="cal-mcnt">${cnt}</span>
+    </div>`;
+  }).join('');
+}
+
+function calRenderDetail(){
+  const key = String(CAL_MONTH_NUMS[calSelectedMonth]);
+  const evs = (calEvents[key]||[]).sort((a,b)=>a.day-b.day);
+  const el = document.getElementById('cal-event-list');
+  const title = document.getElementById('cal-detail-title');
+  if(!el||!title) return;
+  title.textContent = `2026년 ${CAL_MONTHS[calSelectedMonth]} 일정`;
+  const tagLabel={'t':'TikTok/콘텐츠','n':'뉴스레터','r':'마케팅/Reddit'};
+  el.innerHTML = evs.length ? evs.map((e,i)=>`
+    <div class="cal-ev-row">
+      <div class="cal-ev-day">${e.day}일</div>
+      <div style="flex:1">
+        <div class="cal-ev-title">${e.title}</div>
+        ${e.memo?`<div class="cal-ev-memo">${e.memo}</div>`:''}
+        <span class="cal-ev-tag cal-tag-${e.tag}">${tagLabel[e.tag]||''}</span>
+      </div>
+      <button class="cal-ev-del" onclick="calDeleteEvent(${i})">✕</button>
+    </div>`).join('')
+    : `<div class="cal-empty">일정이 없어요<br>+ 추가 버튼으로 넣어봐요</div>`;
+}
+
+function calRender(){
+  calRenderYearGrid();
+  calRenderMonthList();
+  calRenderDetail();
+}
+
+function calSelectMonth(mi){
+  calSelectedMonth=mi;
+  document.getElementById('cal-add-form').classList.remove('open');
+  calRender();
+}
+
+function calToggleForm(){
+  document.getElementById('cal-add-form').classList.toggle('open');
+  if(document.getElementById('cal-add-form').classList.contains('open'))
+    document.getElementById('cal-ev-title').focus();
+}
+
+function calSaveEvent(){
+  const day=parseInt(document.getElementById('cal-ev-day').value);
+  const title=document.getElementById('cal-ev-title').value.trim();
+  const tag=document.getElementById('cal-ev-tag').value;
+  const memo=document.getElementById('cal-ev-memo').value.trim();
+  if(!day||!title) return;
+  const key=String(CAL_MONTH_NUMS[calSelectedMonth]);
+  if(!calEvents[key]) calEvents[key]=[];
+  calEvents[key].push({day,title,tag,memo});
+  calSaveAll();
+  document.getElementById('cal-ev-day').value='';
+  document.getElementById('cal-ev-title').value='';
+  document.getElementById('cal-ev-memo').value='';
+  document.getElementById('cal-add-form').classList.remove('open');
+  calRender();
+}
+
+function calDeleteEvent(idx){
+  const key=String(CAL_MONTH_NUMS[calSelectedMonth]);
+  calEvents[key].splice(idx,1);
+  calSaveAll();
+  calRender();
+}
+
+setTimeout(calRender, 150);
 
 </script>
 
