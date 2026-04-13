@@ -287,7 +287,7 @@ textarea:focus{outline:none;}
     <div class="sb-section">메인</div>
     <div class="nav-item active" onclick="go('hub',this)"><span class="nav-icon">🏠</span> 허브</div>
     <div class="nav-item" onclick="go('daily',this)"><span class="nav-icon">☀️</span> 데일리 스케줄</div>
-    <div class="nav-item" onclick="go('tasks',this)"><span class="nav-icon">✅</span> 4월 태스크</div>
+    <div class="nav-item" onclick="go('tasks',this)"><span class="nav-icon">✅</span> 월별 목표</div>
     <div class="sb-section">수익</div>
     <div class="nav-item" onclick="go('revenue',this)"><span class="nav-icon">💰</span> 수익 트래커</div>
     <div class="nav-item" onclick="go('pipeline',this)"><span class="nav-icon">🔄</span> 고객 파이프라인</div>
@@ -425,7 +425,7 @@ textarea:focus{outline:none;}
 
 <div id="tasks" class="page">
   <div class="page-header">
-    <div class="page-title">✅ 월별 태스크</div>
+    <div class="page-title">✅ 월별 목표</div>
     <div class="page-date">4월 ~ 12월 · 편집/추가/삭제/드래그 가능</div>
   </div>
 
@@ -1180,7 +1180,7 @@ function chkRow(el, idx){
 }
 
 function deleteScheduleTask(origIdx){
-  if(!confirm('이 태스크를 삭제할까요?')) return;
+  // 확인 없이 바로 삭제 (월별과 동일)
   if(origIdx < fixedTasks.length){
     fixedTasks.splice(origIdx, 1);
   } else {
