@@ -36,8 +36,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--gray-l);color:var(--ink);
   .g3{grid-template-columns:1fr;gap:10px;}
   .g2{grid-template-columns:1fr;gap:10px;}
   .retro-grid{grid-template-columns:1fr;}
-  .daily-header{grid-template-columns:60px 1fr 70px 44px;font-size:9px;}
-  .daily-row{grid-template-columns:60px 1fr 70px 44px;}
+  .daily-header{grid-template-columns:60px 1fr 60px 36px 28px;font-size:9px;}
+  .daily-row{grid-template-columns:60px 1fr 60px 36px 28px;}
   .cal-cell{min-height:44px;padding:3px;}
   .cal-event{display:none;}
   .pipe-col{min-width:130px;}
@@ -114,9 +114,9 @@ body{font-family:'DM Sans',sans-serif;background:var(--gray-l);color:var(--ink);
 .cb.done::after{content:'✓';color:white;font-size:9px;font-weight:800;}
 .ct{font-size:12px;line-height:1.5;color:var(--ink);transition:all .15s;}
 .ct.done{text-decoration:line-through;color:#B0ADA7;}
-.daily-header{display:grid;grid-template-columns:80px 1fr 110px 70px;background:var(--gray-l);border-radius:8px 8px 0 0;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--gray);}
+.daily-header{display:grid;grid-template-columns:80px 1fr 110px 50px 36px;background:var(--gray-l);border-radius:8px 8px 0 0;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--gray);}
 .daily-header>div{padding:8px 12px;}
-.daily-row{display:grid;grid-template-columns:80px 1fr 110px 70px;border-bottom:1px solid var(--border);background:var(--white);transition:background .1s;cursor:pointer;}
+.daily-row{display:grid;grid-template-columns:80px 1fr 110px 50px 36px;border-bottom:1px solid var(--border);background:var(--white);transition:background .1s;cursor:pointer;}
 .daily-row:hover{background:var(--gray-l);}
 .daily-row:last-child{border-bottom:none;border-radius:0 0 8px 8px;}
 .daily-row>div{padding:9px 12px;display:flex;align-items:center;}
@@ -397,7 +397,7 @@ textarea:focus{outline:none;}
   <div class="card" style="margin-bottom:16px">
     <div class="card-title">오늘 스케줄</div>
     <div style="border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-top:8px">
-      <div class="daily-header"><div>시간</div><div>태스크</div><div>카테고리</div><div>완료</div></div>
+      <div class="daily-header"><div>시간</div><div>태스크</div><div>카테고리</div><div>완료</div><div></div></div>
       <div id="schedule-body"></div>
     </div>
     <div class="add-task">
@@ -1117,6 +1117,9 @@ function renderSchedule(){
       <div class="task-cell" onclick="chkRow(this.parentElement,${origIdx})">${t.task}${t.fixed?'<span class="fixed-tag">고정</span>':''}</div>
       <div onclick="chkRow(this.parentElement,${origIdx})"><span class="cat-pill" style="background:${catColors[t.cat]||'#f5f3ee'};color:${catText[t.cat]||'#6b6863'}">${t.cat}</span></div>
       <div class="check-cell" onclick="chkRow(this.parentElement,${origIdx})"><div class="cb ${isDone?'done':''}"></div></div>
+      <div style="display:flex;align-items:center;justify-content:center;">
+        <button onclick="event.stopPropagation();deleteScheduleTask(${origIdx})" style="border:none;background:none;color:#C8C5BE;cursor:pointer;font-size:13px;padding:2px 4px;border-radius:4px;" onmouseover="this.style.color='#A33C1D';this.style.background='#FFF0EB'" onmouseout="this.style.color='#C8C5BE';this.style.background='none'">✕</button>
+      </div>
     </div>`;
   }).join('') + (completed.length > 0 ? `
     <div style="padding:8px 12px;background:var(--teal-l);font-size:10px;font-weight:700;color:var(--teal);letter-spacing:.05em;text-transform:uppercase">
@@ -1173,6 +1176,22 @@ function chkRow(el, idx){
   const doneRows = load('rowDone', {});
   doneRows[idx] = isDone;
   save('rowDone', doneRows);
+  renderSchedule();
+}
+
+function deleteScheduleTask(origIdx){
+  if(!confirm('이 태스크를 삭제할까요?')) return;
+  if(origIdx < fixedTasks.length){
+    fixedTasks.splice(origIdx, 1);
+  } else {
+    const ui = origIdx - fixedTasks.length;
+    if(userTasks[ui] !== undefined){
+      userTasks.splice(ui, 1);
+      save('userTasks', userTasks);
+    }
+  }
+  // reset order
+  save('taskOrder', []);
   renderSchedule();
 }
 
