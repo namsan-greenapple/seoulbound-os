@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,600;0,700;1,300&family=DM+Sans:wght@300;400;500;600&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --teal:#0F5F4A;--teal-l:#E1F5EE;--teal-m:#1D9E75;
+  --amber:#BA7517;--amber-l:#FFF3DC;
+  --gray:#6B6863;--gray-l:#F5F3EE;--border:#E8E5DF;
+  --black:#1C1A17;--white:#FEFCF8;
+  --blue:#1A5FA3;--blue-l:#EDF4FF;
+  --coral:#A33C1D;--coral-l:#FFF0EB;
+  --purple:#3C3489;--purple-l:#F0EFFD;
+  --green:#2D7A3A;--green-l:#EDFAF0;
+  --ink:#2C2A26;
+}
+body{font-family:'DM Sans',sans-serif;background:var(--gray-l);color:var(--ink);font-size:13px;line-height:1.55;overflow:hidden;height:100vh;}
+.os{display:grid;grid-template-columns:220px 1fr;height:100vh;}
+.sidebar{background:var(--white);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden;}
+
+/* ── 모바일 반응형 ────────────────────────── */
+@media(max-width:768px){
+  body{overflow:auto;height:auto;}
+  .os{grid-template-columns:1fr;height:auto;}
+  .sidebar{display:none;position:fixed;top:0;left:0;width:80vw;height:100vh;z-index:999;transform:translateX(-100%);transition:transform .25s ease;border-right:1px solid var(--border);}
+  .sidebar.open{display:flex;transform:translateX(0);}
+  .sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:998;}
+  .sidebar-overlay.open{display:block;}
+  .main{height:auto;overflow:visible;padding-bottom:80px;}
+  .page{padding:16px;}
+  .page-title{font-size:22px;}
+  .g4{grid-template-columns:1fr 1fr;gap:8px;}
+  .g3{grid-template-columns:1fr;gap:10px;}
+  .g2{grid-template-columns:1fr;gap:10px;}
+  .retro-grid{grid-template-columns:1fr;}
+  .daily-header{grid-template-columns:60px 1fr 70px 44px;font-size:9px;}
+  .daily-row{grid-template-columns:60px 1fr 70px 44px;}
+  .cal-cell{min-height:44px;padding:3px;}
+  .cal-event{display:none;}
+  .pipe-col{min-width:130px;}
+
+  /* 모바일 하단 탭바 */
+  .mobile-nav{display:flex;position:fixed;bottom:0;left:0;right:0;background:var(--white);border-top:1px solid var(--border);z-index:100;padding:4px 0 env(safe-area-inset-bottom);}
+  .mobile-nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 4px;cursor:pointer;color:var(--gray);font-size:9px;font-weight:600;border:none;background:none;}
+  .mobile-nav-item.active{color:var(--teal);}
+  .mobile-nav-item .mn-icon{font-size:20px;}
+  .mobile-menu-btn{display:flex;align-items:center;justify-content:center;width:40px;height:40px;border:none;background:var(--teal-l);border-radius:10px;cursor:pointer;font-size:18px;position:fixed;top:12px;right:12px;z-index:1000;}
+  .metric{padding:12px;}
+  .m-val{font-size:24px;}
+  .cb{width:22px;height:22px;border-radius:6px;}
+  .ci{padding:8px 4px;}
+  .ct{font-size:13px;}
+}
+@media(min-width:769px){
+  .mobile-nav{display:none;}
+  .mobile-menu-btn{display:none;}
+  .sidebar-overlay{display:none!important;}
+}
+.sb-top{padding:18px 16px 14px;border-bottom:1px solid var(--border);}
+.sb-wordmark{font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:var(--teal);letter-spacing:-.02em;}
+.sb-sub{font-size:10px;color:var(--gray);letter-spacing:.07em;text-transform:uppercase;margin-top:1px;}
+.sb-scroll{overflow-y:auto;flex:1;padding:8px 0;}
+.sb-section{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#C2BFB8;padding:14px 16px 5px;}
+.nav-item{display:flex;align-items:center;gap:9px;padding:7px 16px;color:var(--gray);cursor:pointer;transition:all .12s;font-size:12.5px;font-weight:400;border-left:3px solid transparent;}
+.nav-item:hover{background:var(--gray-l);color:var(--ink);}
+.nav-item.active{background:var(--teal-l);color:var(--teal);font-weight:600;border-left-color:var(--teal);}
+.nav-icon{font-size:14px;width:18px;text-align:center;flex-shrink:0;}
+.sb-bottom{padding:12px 16px;border-top:1px solid var(--border);}
+.rev-pill{background:var(--teal-l);border-radius:8px;padding:8px 10px;font-size:11px;}
+.rev-pill strong{color:var(--teal);display:block;font-size:13px;font-family:'Fraunces',serif;}
+.main{overflow-y:auto;height:100vh;}
+.page{display:none;padding:32px 36px;animation:fadeUp .2s ease;}
+.page.active{display:block;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.page-header{margin-bottom:24px;}
+.page-title{font-family:'Fraunces',serif;font-size:28px;font-weight:700;color:var(--ink);letter-spacing:-.02em;}
+.page-date{font-size:11px;color:var(--gray);margin-top:3px;}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:20px;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px;}
+.card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:16px;}
+.card-title{font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--gray);margin-bottom:10px;}
+.card-sm{background:var(--gray-l);border-radius:8px;padding:10px 12px;}
+.metric{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:14px 16px;position:relative;overflow:hidden;}
+.metric::before{content:'';position:absolute;top:0;left:0;width:100%;height:3px;}
+.metric.t::before{background:var(--teal);}
+.metric.a::before{background:var(--amber);}
+.metric.b::before{background:var(--blue);}
+.metric.c::before{background:var(--coral);}
+.m-label{font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--gray);margin-bottom:5px;}
+.m-val{font-family:'Fraunces',serif;font-size:28px;font-weight:600;color:var(--ink);line-height:1;}
+.m-target{font-size:10px;color:var(--gray);margin-top:4px;}
+.m-bar{height:3px;background:var(--border);border-radius:99px;margin-top:10px;overflow:hidden;}
+.m-fill{height:100%;border-radius:99px;transition:width .6s ease;}
+.phase-block{border-radius:10px;padding:14px 16px;margin-bottom:12px;}
+.ph0{background:var(--teal-l);border-left:4px solid var(--teal);}
+.ph1{background:var(--amber-l);border-left:4px solid var(--amber);}
+.ph2{background:var(--blue-l);border-left:4px solid var(--blue);}
+.ph-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+.ph-badge{font-size:10px;font-weight:700;padding:3px 9px;border-radius:99px;letter-spacing:.05em;}
+.phb0{background:var(--teal);color:white;}
+.phb1{background:var(--amber);color:white;}
+.phb2{background:var(--blue);color:white;}
+.ph-title{font-size:13px;font-weight:600;margin-left:10px;}
+.ph-rev{font-size:11px;color:var(--gray);}
+.wk{font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--teal);padding:10px 0 5px;border-bottom:1px solid rgba(15,95,74,.15);margin-bottom:5px;}
+.ci{display:flex;align-items:flex-start;gap:9px;padding:5px 0;cursor:pointer;border-radius:6px;transition:background .1s;}
+.ci:hover{background:rgba(0,0,0,.03);}
+.cb{width:16px;height:16px;border:1.5px solid #C8C5BE;border-radius:4px;flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;transition:all .15s;background:white;}
+.cb.done{background:var(--teal);border-color:var(--teal);}
+.cb.done::after{content:'✓';color:white;font-size:9px;font-weight:800;}
+.ct{font-size:12px;line-height:1.5;color:var(--ink);transition:all .15s;}
+.ct.done{text-decoration:line-through;color:#B0ADA7;}
+.daily-header{display:grid;grid-template-columns:80px 1fr 110px 70px;background:var(--gray-l);border-radius:8px 8px 0 0;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--gray);}
+.daily-header>div{padding:8px 12px;}
+.daily-row{display:grid;grid-template-columns:80px 1fr 110px 70px;border-bottom:1px solid var(--border);background:var(--white);transition:background .1s;cursor:pointer;}
+.daily-row:hover{background:var(--gray-l);}
+.daily-row:last-child{border-bottom:none;border-radius:0 0 8px 8px;}
+.daily-row>div{padding:9px 12px;display:flex;align-items:center;}
+.time-cell{font-size:11px;font-weight:600;color:var(--gray);}
+.task-cell{font-size:12px;}
+.cat-pill{font-size:9px;font-weight:700;padding:2px 8px;border-radius:99px;white-space:nowrap;}
+.check-cell{justify-content:center;}
+.fixed-tag{font-size:9px;color:var(--gray);background:var(--gray-l);border-radius:99px;padding:1px 6px;margin-left:6px;}
+.add-task{display:flex;gap:8px;margin-top:12px;}
+.add-input{flex:1;border:1px solid var(--border);border-radius:8px;padding:8px 12px;font-size:12px;font-family:'DM Sans',sans-serif;background:var(--white);}
+.add-input:focus{outline:none;border-color:var(--teal);}
+.add-time{width:80px;border:1px solid var(--border);border-radius:8px;padding:8px 10px;font-size:12px;font-family:'DM Sans',sans-serif;}
+.btn{background:var(--teal);color:white;border:none;border-radius:8px;padding:8px 14px;font-size:12px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;}
+.btn:hover{background:var(--teal-m);}
+.btn-ghost{background:transparent;color:var(--teal);border:1px solid var(--teal);border-radius:8px;padding:6px 12px;font-size:11px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;}
+.rev-table{width:100%;border-collapse:collapse;font-size:12px;}
+.rev-table th{padding:9px 12px;background:var(--gray-l);color:var(--gray);font-weight:700;font-size:10px;text-transform:uppercase;letter-spacing:.05em;text-align:left;}
+.rev-table td{padding:10px 12px;border-bottom:1px solid var(--border);}
+.rev-table tr:last-child td{border:none;}
+.rev-total td{background:var(--teal-l);color:var(--teal);font-weight:700;}
+.editable{background:transparent;border:none;width:100%;font-size:12px;font-family:'DM Sans',sans-serif;color:var(--ink);}
+.editable:focus{outline:none;background:var(--teal-l);border-radius:4px;padding:2px 4px;}
+.cal-wrap{background:var(--white);border:1px solid var(--border);border-radius:12px;overflow:hidden;}
+.cal-nav{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--border);}
+.cal-nav-title{font-family:'Fraunces',serif;font-size:15px;font-weight:600;}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);}
+.cal-day-hdr{text-align:center;font-size:9px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--gray);padding:10px 4px;border-bottom:1px solid var(--border);}
+.cal-cell{min-height:70px;padding:6px;border-right:1px solid var(--border);border-bottom:1px solid var(--border);font-size:10px;cursor:pointer;}
+.cal-cell:hover{background:var(--gray-l);}
+.cal-cell:nth-child(7n){border-right:none;}
+.cal-cell.today{background:var(--teal-l);}
+.cal-cell.empty{background:var(--gray-l);opacity:.5;}
+.cal-num{font-weight:600;font-size:11px;margin-bottom:3px;}
+.cal-cell.today .cal-num{color:var(--teal);}
+.cal-event{font-size:9px;padding:1px 4px;border-radius:3px;margin:1px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.ev-t{background:#FFE8E4;color:var(--coral);}
+.ev-n{background:var(--teal-l);color:var(--teal);}
+.ev-r{background:var(--blue-l);color:var(--blue);}
+.retro-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.retro-section{border:1px solid var(--border);border-radius:10px;overflow:hidden;}
+.retro-head{padding:10px 14px;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;}
+.retro-head.good{background:var(--green-l);color:var(--green);}
+.retro-head.bad{background:var(--coral-l);color:var(--coral);}
+.retro-head.next{background:var(--amber-l);color:var(--amber);}
+.retro-head.ask{background:var(--purple-l);color:var(--purple);}
+.retro-body{padding:10px 14px;}
+textarea{width:100%;border:none;font-family:'DM Sans',sans-serif;font-size:12px;resize:vertical;min-height:70px;background:transparent;color:var(--ink);}
+textarea:focus{outline:none;}
+.pipe-wrap{display:flex;gap:12px;overflow-x:auto;padding-bottom:8px;}
+.pipe-col{min-width:160px;flex-shrink:0;}
+.pipe-col-hdr{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--gray);padding:6px 2px;margin-bottom:6px;display:flex;justify-content:space-between;align-items:center;}
+.pipe-count{background:var(--border);border-radius:99px;width:18px;height:18px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;}
+.pipe-card{background:var(--white);border:1px solid var(--border);border-radius:8px;padding:9px 10px;margin-bottom:6px;font-size:11px;}
+.pipe-card strong{display:block;color:var(--ink);margin-bottom:1px;}
+.pipe-card span{color:var(--gray);font-size:10px;}
+.content-db{width:100%;border-collapse:collapse;font-size:12px;}
+.content-db th{padding:8px 12px;background:var(--gray-l);color:var(--gray);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;text-align:left;}
+.content-db td{padding:9px 12px;border-bottom:1px solid var(--border);}
+.content-db tr:hover td{background:var(--gray-l);}
+.status-pill{font-size:10px;font-weight:600;padding:2px 8px;border-radius:99px;}
+.sp-draft{background:var(--amber-l);color:var(--amber);}
+.sp-ready{background:var(--blue-l);color:var(--blue);}
+.sp-done{background:var(--green-l);color:var(--green);}
+</style>
+</head>
+<body>
+<div class="os">
+<div class="sidebar">
+  <div class="sb-top">
+    <div class="sb-wordmark">Seoulbound</div>
+    <div class="sb-sub">사업 운영 OS</div>
+  </div>
+  <div class="sb-scroll">
+    <div class="sb-section">메인</div>
+    <div class="nav-item active" onclick="go('hub',this)"><span class="nav-icon">🏠</span> 허브</div>
+    <div class="nav-item" onclick="go('daily',this)"><span class="nav-icon">☀️</span> 데일리 스케줄</div>
+    <div class="nav-item" onclick="go('tasks',this)"><span class="nav-icon">✅</span> 4월 태스크</div>
+    <div class="sb-section">수익</div>
+    <div class="nav-item" onclick="go('revenue',this)"><span class="nav-icon">💰</span> 수익 트래커</div>
+    <div class="nav-item" onclick="go('pipeline',this)"><span class="nav-icon">🔄</span> 고객 파이프라인</div>
+    <div class="sb-section">콘텐츠</div>
+    <div class="nav-item" onclick="go('content',this)"><span class="nav-icon">🎬</span> 콘텐츠 캘린더</div>
+    <div class="sb-section">회고</div>
+    <div class="nav-item" onclick="go('retro',this)"><span class="nav-icon">📝</span> 주간 회고</div>
+    <div class="nav-item" onclick="go('history',this)"><span class="nav-icon">📅</span> 날짜별 기록</div>
+  </div>
+  <div class="sb-bottom">
+    <div class="rev-pill">
+      <div style="font-size:9px;color:var(--gray);font-weight:600;letter-spacing:.06em;text-transform:uppercase;margin-bottom:2px">4월 목표</div>
+      <strong>$415</strong>
+      <div style="font-size:10px;color:var(--gray);margin-top:2px">투어 $315 · PDF $100</div>
+    </div>
+  </div>
+</div>
+<div class="main">
+
+<div id="hub" class="page active">
+  <div class="page-header">
+    <div class="page-title">🏠 Seoulbound 허브</div>
+    <div class="page-date">2026년 4월 14일 · 화요일</div>
+  </div>
+  <div class="g4">
+    <div class="metric t"><div class="m-label">퀴즈 완료</div><div class="m-val">0</div><div class="m-target">목표 20명/주</div><div class="m-bar"><div class="m-fill" style="width:0%;background:var(--teal)"></div></div></div>
+    <div class="metric a"><div class="m-label">투어 결제</div><div class="m-val">0</div><div class="m-target">목표 3건/주</div><div class="m-bar"><div class="m-fill" style="width:0%;background:var(--amber)"></div></div></div>
+    <div class="metric b"><div class="m-label">PDF 판매</div><div class="m-val">0</div><div class="m-target">목표 5개/주</div><div class="m-bar"><div class="m-fill" style="width:0%;background:var(--blue)"></div></div></div>
+    <div class="metric c"><div class="m-label">주간 수익</div><div class="m-val">$0</div><div class="m-target">목표 $300/주</div><div class="m-bar"><div class="m-fill" style="width:0%;background:var(--coral)"></div></div></div>
+  </div>
+  <div class="g3">
+    <div class="card">
+      <div class="card-title">Phase 현황</div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 10px;background:var(--teal-l);border-radius:8px"><div><span style="font-size:10px;font-weight:700;color:var(--teal)">PHASE 0</span><div style="font-size:12px;font-weight:600;margin-top:1px">투어 판매</div></div><span style="font-size:10px;background:var(--teal);color:white;padding:2px 8px;border-radius:99px;font-weight:700">진행 중</span></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 10px;background:var(--amber-l);border-radius:8px"><div><span style="font-size:10px;font-weight:700;color:var(--amber)">PHASE 1</span><div style="font-size:12px;font-weight:600;margin-top:1px">PDF 가이드</div></div><span style="font-size:10px;background:var(--amber);color:white;padding:2px 8px;border-radius:99px;font-weight:700">이번 주</span></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 10px;background:var(--blue-l);border-radius:8px"><div><span style="font-size:10px;font-weight:700;color:var(--blue)">PHASE 2</span><div style="font-size:12px;font-weight:600;margin-top:1px">뉴스레터</div></div><span style="font-size:10px;color:var(--gray);padding:2px 8px;border-radius:99px;font-weight:700;background:var(--border)">다음 주</span></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">오늘 할 일</div>
+      <div class="ci" onclick="chk(this)"><div class="cb"></div><div class="ct">퀴즈→결제 전체 플로우 테스트</div></div>
+      <div class="ci" onclick="chk(this)"><div class="cb"></div><div class="ct">로딩 문구 오타 수정 (Cursor)</div></div>
+      <div class="ci" onclick="chk(this)"><div class="cb"></div><div class="ct">Gumroad 계정 생성</div></div>
+      <div class="ci" onclick="chk(this)"><div class="cb"></div><div class="ct">이태원 인터뷰 촬영</div></div>
+    </div>
+    <div class="card">
+      <div class="card-title">수익 현황</div>
+      <div style="display:flex;flex-direction:column;gap:6px">
+        <div style="display:flex;justify-content:space-between;font-size:12px;padding:5px 0;border-bottom:1px solid var(--border)"><span>🗺️ 투어</span><span style="font-weight:600">$0 / $315</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:12px;padding:5px 0;border-bottom:1px solid var(--border)"><span>📄 PDF</span><span style="font-weight:600">$0 / $100</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:12px;padding:5px 0"><span>📧 뉴스레터</span><span style="font-weight:600">$0 / $0</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:13px;padding:8px 10px;background:var(--teal-l);border-radius:8px;margin-top:4px"><span style="font-weight:700;color:var(--teal)">합계</span><span style="font-weight:700;color:var(--teal)">$0 / $415</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="daily" class="page">
+  <div class="page-header">
+    <div class="page-title">☀️ 데일리 스케줄</div>
+    <div class="page-date">2026년 4월 14일 · 화요일</div>
+  </div>
+  <div class="card" style="margin-bottom:16px">
+    <div class="card-title">오늘 스케줄</div>
+    <div style="border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-top:8px">
+      <div class="daily-header"><div>시간</div><div>태스크</div><div>카테고리</div><div>완료</div></div>
+      <div id="schedule-body"></div>
+    </div>
+    <div class="add-task">
+      <input id="new-time" class="add-time" type="time" value="10:00">
+      <input id="new-task" class="add-input" placeholder="오늘 추가할 태스크...">
+      <select id="new-cat" style="border:1px solid var(--border);border-radius:8px;padding:8px 10px;font-size:12px;font-family:'DM Sans',sans-serif;background:var(--white)">
+        <option>📊 운영</option><option>🎬 콘텐츠</option><option>💰 수익</option><option>📧 마케팅</option><option>🛠 개발</option>
+      </select>
+      <button class="btn" onclick="addTask()">+ 추가</button>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">요일별 고정 루틴</div>
+    <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:8px;margin-top:8px">
+      <div style="text-align:center"><div style="font-size:10px;font-weight:700;color:var(--gray);margin-bottom:6px">월</div><div style="font-size:10px;line-height:1.6">기획<br>Claude 미팅</div></div>
+      <div style="text-align:center;background:var(--teal-l);border-radius:8px;padding:6px"><div style="font-size:10px;font-weight:700;color:var(--teal);margin-bottom:6px">화 ★</div><div style="font-size:10px;line-height:1.6">이태원<br>촬영</div></div>
+      <div style="text-align:center"><div style="font-size:10px;font-weight:700;color:var(--gray);margin-bottom:6px">수</div><div style="font-size:10px;line-height:1.6">편집<br>업로드</div></div>
+      <div style="text-align:center"><div style="font-size:10px;font-weight:700;color:var(--gray);margin-bottom:6px">목</div><div style="font-size:10px;line-height:1.6">뉴스레터<br>발송</div></div>
+      <div style="text-align:center"><div style="font-size:10px;font-weight:700;color:var(--gray);margin-bottom:6px">금</div><div style="font-size:10px;line-height:1.6">Reddit<br>5개</div></div>
+      <div style="text-align:center;background:var(--teal-l);border-radius:8px;padding:6px"><div style="font-size:10px;font-weight:700;color:var(--teal);margin-bottom:6px">토 ★</div><div style="font-size:10px;line-height:1.6">명동<br>촬영</div></div>
+      <div style="text-align:center"><div style="font-size:10px;font-weight:700;color:var(--gray);margin-bottom:6px">일</div><div style="font-size:10px;line-height:1.6">Buffer<br>예약</div></div>
+    </div>
+  </div>
+</div>
+
+<div id="tasks" class="page">
+  <div class="page-header">
+    <div class="page-title">✅ 4월 태스크</div>
+    <div class="page-date">Phase 0 · 1 · 2 동시 진행</div>
+  </div>
+  <div class="phase-block ph0">
+    <div class="ph-head"><div style="display:flex;align-items:center"><span class="ph-badge phb0">Phase 0</span><span class="ph-title">투어 판매</span></div><span class="ph-rev">목표 $300/월</span></div>
+    <div class="wk">1주차 (4/14~4/20)</div>
+    <div class="ci" onclick="chk(this)"><div class="cb"></div><div class="ct">퀴즈→결제 전체 플로우 테스트</div></div>
+    <div class="ci" onclick="chk(this)"><div class="cb"></div><div class="ct">로딩 문구 오타 수정 (Cursor)</div></div>
+    <div class="ci" onclick="chk(this)"><div class="cb"></div><div class="ct">Calendly 무료 계정 + 투어 슬롯 오픈</div></div>
+    <div class="ci" onclick="chk(this)"><div class="cb"></div><div class="ct">결제 완료 이메일에 Calendly 링크 추가</div></div>
+    <div class="ci" onclick="chk(this)"><div class="cb done"></div><div class="ct done">seoulbound.com 도메인 연결</div></div>
+    <div class="ci" onclick="chk(this)"><div class="cb done"></div><div class="ct done">Stripe 상품 3개 + 결제 연결</div></div>
+    <div class="wk">2주차 (4/21~4/27)</div>
+    <div class="ci" onclick="chk(this)"><div class="cb"></div><div class="ct">Reddit r/solotravel 답변 10개</div></div>
+    <div class="ci" onclick="chk(this)"><div class="cb"></div><div class="ct">TikTok 인터뷰 영상 3개 업로드</div></div>
+    <div class="ci" onclick="chk(this)"><div class="cb"></div><div class="ct">첫 투어 진행 → 후기 수집 → 홈페이지 게시</div></div>
+  </div>
+  <div class="phase-block ph1">
+    <div class="ph-head"><div style="display:flex;align-items:center"><span class="ph-badge phb1">Phase 1</span><span class="ph-title">PDF 디지털 가이드</span></div><span class="ph-rev">목표 $200/월</span></div>
+    <div class="wk">1주차 (4/14~4/20) — 지금 바로</div>
+    <div class="ci" onclick="chk(this)"><div class="cb"></div><div class="ct">Gumroad 계정 생성</div></div>
+    <div class="ci" onclick="chk(this)"><div class="cb"></div><div class="ct">Claude로 Seoul Survival Guide 초안 작성</div></div>
+    <div class="ci" onclick="chk(this)"><div class="cb"></div><div class="ct">Canva 디자인 완성 → PDF 내보내기</div></div>
+    <div class="ci" onclick="chk(this)"><div class="cb"></div><div class="ct">Gumroad에 $19로 올리기</div></div>
+    <div class="ci" onclick="chk(this)"><div class="cb"></div><div class="ct">seoulbound.com 홈에 PDF 섹션 추가</div></div>
+    <div class="wk">2주차 (4/21~4/27)</div>
+    <div class="ci" onclick="chk(this)"><div class="cb"></div><div class="ct">K-beauty Shopping Bible PDF ($29)</div></div>
+    <div class="ci" onclick="chk(this)"><div class="cb"></div><div class="ct">Seoul on $50/day PDF ($19)</div></div>
+  </div>
+  <div class="phase-block ph2">
+    <div class="ph-head"><div style="display:flex;align-items:center"><span class="ph-badge phb2">Phase 2</span><span class="ph-title">Seoul Insider 뉴스레터</span></div><span class="ph-rev">목표 $750/월</span></div>
+    <div class="wk">1주차 — 준비</div>
+    <div class="ci" onclick="chk(this)"><div class="cb"></div><div class="ct">Loops.so 계정 생성</div></div>
+    <div class="ci" onclick="chk(this)"><div class="cb"></div><div class="ct">뉴스레터 구독 폼 seoulbound.com 연결</div></div>
+    <div class="ci" onclick="chk(this)"><div class="cb"></div><div class="ct">Seoul Insider 1호 초안 (Claude)</div></div>
+    <div class="wk">2주차 — 첫 발송</div>
+    <div class="ci" onclick="chk(this)"><div class="cb"></div><div class="ct">목요일 첫 발송 (목표 구독자 50명)</div></div>
+    <div class="wk">3주차 — 유료화</div>
+    <div class="ci" onclick="chk(this)"><div class="cb"></div><div class="ct">Seoul Insider Pro $15/월 플랜 세팅</div></div>
+    <div class="ci" onclick="chk(this)"><div class="cb"></div><div class="ct">Stripe 구독 결제 연결</div></div>
+  </div>
+</div>
+
+<div id="revenue" class="page">
+  <div class="page-header">
+    <div class="page-title">💰 수익 트래커</div>
+    <div class="page-date">4월 — 3개 수익원 동시 운영</div>
+  </div>
+  <div class="card" style="margin-bottom:16px">
+    <div class="card-title">4월 수익 목표 vs 실제</div>
+    <table class="rev-table" style="margin-top:8px">
+      <tr><th>수익원</th><th>단가</th><th>4월 목표</th><th>4월 실제</th><th>5월 목표</th></tr>
+      <tr><td>🗺️ Eat Local 투어</td><td>$90</td><td>$180</td><td><input class="editable" placeholder="$0"></td><td>$270</td></tr>
+      <tr><td>🗺️ Glow Local 투어</td><td>$135</td><td>$135</td><td><input class="editable" placeholder="$0"></td><td>$270</td></tr>
+      <tr><td>🗺️ Stan Seoul 투어</td><td>$115</td><td>$0</td><td><input class="editable" placeholder="$0"></td><td>$115</td></tr>
+      <tr><td>📄 Seoul Survival Guide</td><td>$19</td><td>$57</td><td><input class="editable" placeholder="$0"></td><td>$114</td></tr>
+      <tr><td>📄 K-beauty Bible</td><td>$29</td><td>$29</td><td><input class="editable" placeholder="$0"></td><td>$87</td></tr>
+      <tr><td>📧 Seoul Insider Pro</td><td>$15/월</td><td>$0</td><td><input class="editable" placeholder="$0"></td><td>$150</td></tr>
+      <tr><td>🔗 제휴 커미션</td><td>변동</td><td>$14</td><td><input class="editable" placeholder="$0"></td><td>$100</td></tr>
+      <tr class="rev-total"><td><strong>합계</strong></td><td></td><td><strong>$415</strong></td><td><input class="editable" style="font-weight:700;color:var(--teal)" placeholder="$0"></td><td><strong>$1,106</strong></td></tr>
+    </table>
+  </div>
+  <div class="g3">
+    <div class="card"><div class="card-title">Phase 0 목표</div><div style="font-family:'Fraunces',serif;font-size:32px;color:var(--teal)">$500<span style="font-size:14px;color:var(--gray)">/월</span></div><div style="font-size:11px;color:var(--gray);margin-top:4px">4월 말 달성 목표</div></div>
+    <div class="card"><div class="card-title">Phase 1 목표</div><div style="font-family:'Fraunces',serif;font-size:32px;color:var(--amber)">$200<span style="font-size:14px;color:var(--gray)">/월</span></div><div style="font-size:11px;color:var(--gray);margin-top:4px">5월 초 달성 목표</div></div>
+    <div class="card"><div class="card-title">Phase 2 목표</div><div style="font-family:'Fraunces',serif;font-size:32px;color:var(--blue)">$750<span style="font-size:14px;color:var(--gray)">/월</span></div><div style="font-size:11px;color:var(--gray);margin-top:4px">6월 달성 목표</div></div>
+  </div>
+</div>
+
+<div id="pipeline" class="page">
+  <div class="page-header">
+    <div class="page-title">🔄 고객 파이프라인</div>
+    <div class="page-date">퀴즈 완료 → 결제 → 투어 완료</div>
+  </div>
+  <div class="pipe-wrap">
+    <div class="pipe-col"><div class="pipe-col-hdr">퀴즈 완료<span class="pipe-count">0</span></div><div class="pipe-card"><strong>신규 유입</strong><span>이름/이메일 확인</span></div></div>
+    <div class="pipe-col"><div class="pipe-col-hdr">이메일 수신<span class="pipe-count">0</span></div><div class="pipe-card"><strong>여정 발송됨</strong><span>48시간 리마인더 대기</span></div></div>
+    <div class="pipe-col"><div class="pipe-col-hdr">투어 결제<span class="pipe-count">0</span></div><div class="pipe-card"><strong>결제 완료</strong><span>Calendly 예약 확인</span></div></div>
+    <div class="pipe-col"><div class="pipe-col-hdr">투어 완료<span class="pipe-count">0</span></div><div class="pipe-card"><strong>투어 진행됨</strong><span>후기 수집 이메일</span></div></div>
+    <div class="pipe-col"><div class="pipe-col-hdr">후기 게시<span class="pipe-count">0</span></div><div class="pipe-card"><strong>홈페이지 게시</strong><span>소셜 증거 확보</span></div></div>
+  </div>
+</div>
+
+<div id="content" class="page">
+  <div class="page-header">
+    <div class="page-title">🎬 콘텐츠 캘린더</div>
+    <div class="page-date">4월 — 채널별 배포</div>
+  </div>
+  <div class="cal-wrap" style="margin-bottom:16px">
+    <div class="cal-nav">
+      <div class="cal-nav-title">2026년 4월</div>
+      <div style="display:flex;gap:16px;font-size:11px"><span>🔴 TikTok/Reels</span><span>🟢 뉴스레터</span><span>🔵 Reddit</span></div>
+    </div>
+    <div class="cal-grid">
+      <div class="cal-day-hdr">월</div><div class="cal-day-hdr">화</div><div class="cal-day-hdr">수</div><div class="cal-day-hdr">목</div><div class="cal-day-hdr">금</div><div class="cal-day-hdr">토</div><div class="cal-day-hdr">일</div>
+      <div class="cal-cell empty"></div>
+      <div class="cal-cell today"><div class="cal-num">14</div><div class="cal-event ev-t">이태원 촬영</div></div>
+      <div class="cal-cell"><div class="cal-num">15</div><div class="cal-event ev-t">편집+업로드</div></div>
+      <div class="cal-cell"><div class="cal-num">16</div><div class="cal-event ev-n">뉴스레터 준비</div></div>
+      <div class="cal-cell"><div class="cal-num">17</div><div class="cal-event ev-r">Reddit 5개</div></div>
+      <div class="cal-cell"><div class="cal-num">18</div><div class="cal-event ev-t">명동 촬영</div></div>
+      <div class="cal-cell"><div class="cal-num">19</div></div>
+      <div class="cal-cell"><div class="cal-num">20</div></div>
+      <div class="cal-cell"><div class="cal-num">21</div><div class="cal-event ev-t">남대문 촬영</div></div>
+      <div class="cal-cell"><div class="cal-num">22</div><div class="cal-event ev-t">편집+업로드</div></div>
+      <div class="cal-cell"><div class="cal-num">23</div><div class="cal-event ev-n">Seoul Insider 1호</div></div>
+      <div class="cal-cell"><div class="cal-num">24</div><div class="cal-event ev-r">Reddit 5개</div></div>
+      <div class="cal-cell"><div class="cal-num">25</div><div class="cal-event ev-t">이태원 촬영</div></div>
+      <div class="cal-cell"><div class="cal-num">26</div></div>
+      <div class="cal-cell"><div class="cal-num">27</div></div>
+      <div class="cal-cell"><div class="cal-num">28</div><div class="cal-event ev-t">명동 촬영</div></div>
+      <div class="cal-cell"><div class="cal-num">29</div><div class="cal-event ev-t">편집+업로드</div></div>
+      <div class="cal-cell"><div class="cal-num">30</div><div class="cal-event ev-n">Seoul Insider 2호</div></div>
+      <div class="cal-cell empty"></div><div class="cal-cell empty"></div><div class="cal-cell empty"></div><div class="cal-cell empty"></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">콘텐츠 DB</div>
+    <table class="content-db" style="margin-top:8px">
+      <tr><th>제목</th><th>채널</th><th>상태</th><th>발행일</th></tr>
+      <tr><td>이태원 외국인 인터뷰 — "Why Korea over Japan?"</td><td>TikTok</td><td><span class="status-pill sp-draft">초안</span></td><td>4/15</td></tr>
+      <tr><td>Seoul Survival Guide 출시 소개</td><td>Instagram</td><td><span class="status-pill sp-draft">초안</span></td><td>4/16</td></tr>
+      <tr><td>Seoul Insider 창간호</td><td>뉴스레터</td><td><span class="status-pill sp-ready">준비중</span></td><td>4/24</td></tr>
+    </table>
+  </div>
+</div>
+
+<div id="retro" class="page">
+  <div class="page-header">
+    <div class="page-title">📝 주간 회고</div>
+    <div class="page-date">4월 2주차</div>
+  </div>
+  <div class="retro-grid" style="margin-bottom:14px">
+    <div class="retro-section"><div class="retro-head good">✅ 잘 된 것</div><div class="retro-body"><textarea placeholder="이번 주 잘 된 것들..."></textarea></div></div>
+    <div class="retro-section"><div class="retro-head bad">❌ 안 된 것</div><div class="retro-body"><textarea placeholder="이번 주 안 된 것들..."></textarea></div></div>
+    <div class="retro-section"><div class="retro-head next">🔄 다음 주 바꿀 것</div><div class="retro-body"><textarea placeholder="개선할 것들..."></textarea></div></div>
+    <div class="retro-section"><div class="retro-head ask">💬 Claude에게 물어볼 것</div><div class="retro-body"><textarea placeholder="Claude에게 물어볼 것들..."></textarea></div></div>
+  </div>
+  <div class="card">
+    <div class="card-title">이번 주 수치</div>
+    <div class="g4" style="margin-top:8px;margin-bottom:0">
+      <div class="card-sm"><div style="font-size:10px;color:var(--gray);margin-bottom:4px">퀴즈 완료</div><input class="editable" style="font-size:22px;font-weight:700;font-family:'Fraunces',serif" placeholder="0"></div>
+      <div class="card-sm"><div style="font-size:10px;color:var(--gray);margin-bottom:4px">투어 결제</div><input class="editable" style="font-size:22px;font-weight:700;font-family:'Fraunces',serif" placeholder="0"></div>
+      <div class="card-sm"><div style="font-size:10px;color:var(--gray);margin-bottom:4px">PDF 판매</div><input class="editable" style="font-size:22px;font-weight:700;font-family:'Fraunces',serif" placeholder="0"></div>
+      <div class="card-sm"><div style="font-size:10px;color:var(--gray);margin-bottom:4px">주간 수익</div><input class="editable" style="font-size:22px;font-weight:700;font-family:'Fraunces',serif" placeholder="$0"></div>
+    </div>
+  </div>
+</div>
+
+<div id="history" class="page">
+  <div class="page-header">
+    <div class="page-title">📅 날짜별 기록</div>
+    <div class="page-date">매일 자동 저장 — 쌓이는 히스토리</div>
+  </div>
+  <div id="history-list"></div>
+</div>
+
+</div>
+</div>
+<script>
+function go(id,el){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  el.classList.add('active');
+}
+function chk(el){
+  const cb=el.querySelector('.cb');
+  const ct=el.querySelector('.ct');
+  cb.classList.toggle('done');
+  ct.classList.toggle('done');
+}
+const fixedTasks=[
+  {time:'09:00',task:'Stripe/Supabase 지표 확인',cat:'📊 운영',fixed:true},
+  {time:'09:30',task:'퀴즈 완료 수 & 전환율 확인',cat:'📊 운영',fixed:true},
+  {time:'10:00',task:'이태원 인터뷰 촬영',cat:'🎬 콘텐츠',fixed:true},
+  {time:'11:30',task:'CapCut 편집 + 업로드',cat:'🎬 콘텐츠',fixed:false},
+  {time:'14:00',task:'Reddit r/solotravel 답변 3개',cat:'📧 마케팅',fixed:true},
+  {time:'15:00',task:'Gumroad 계정 생성',cat:'💰 수익',fixed:false},
+  {time:'16:00',task:'Seoul Survival Guide Claude 초안',cat:'💰 수익',fixed:false},
+  {time:'20:00',task:'인스타 스토리 + 댓글 답변',cat:'📧 마케팅',fixed:true},
+];
+// ── 날짜 유틸 ─────────────────────────────────────────
+const today = () => new Date().toISOString().slice(0,10); // "2026-04-14"
+const todayLabel = () => {
+  const d = new Date();
+  const days = ['일','월','화','수','목','금','토'];
+  return d.getFullYear()+'년 '+(d.getMonth()+1)+'월 '+d.getDate()+'일 · '+days[d.getDay()]+'요일';
+};
+
+// ── localStorage ────────────────────────────────────
+const STORE = 'seoulbound_os_v2';
+function save(key, val){ try{ localStorage.setItem(STORE+'_'+key, JSON.stringify(val)); }catch(e){} }
+function load(key, def){ try{ const v=localStorage.getItem(STORE+'_'+key); return v!=null?JSON.parse(v):def; }catch(e){ return def; } }
+
+// ── 날짜별 자동 분리 저장 ───────────────────────────
+const LAST_DATE_KEY = 'lastDate';
+function checkNewDay(){
+  const last = load(LAST_DATE_KEY, null);
+  const now = today();
+  if(last && last !== now){
+    // 어제 기록을 히스토리에 저장
+    archiveDay(last);
+    // 오늘 날짜로 리셋
+    save('rowDone', {});
+    save('userTasks', []);
+    userTasks = [];
+  }
+  save(LAST_DATE_KEY, now);
+}
+
+function archiveDay(dateStr){
+  const history = load('history', {});
+  const doneRows = load('rowDone', {});
+  const ut = load('userTasks', []);
+  const all = [...fixedTasks, ...ut];
+  const completed = all.filter((_,i) => doneRows[i]).map(t=>t.task);
+  const total = all.length;
+  history[dateStr] = { completed, total, userTasks: ut };
+  save('history', history);
+}
+
+// ── 체크박스 ────────────────────────────────────────
+function chk(el){
+  const cb=el.querySelector('.cb');
+  const ct=el.querySelector('.ct');
+  cb.classList.toggle('done');
+  ct.classList.toggle('done');
+  saveAllChecks();
+}
+function saveAllChecks(){
+  const state={};
+  document.querySelectorAll('.ci').forEach((el,i)=>{
+    state[i]=el.querySelector('.cb').classList.contains('done');
+  });
+  save('checks', state);
+}
+function loadAllChecks(){
+  const state=load('checks',{});
+  document.querySelectorAll('.ci').forEach((el,i)=>{
+    if(state[i]){
+      el.querySelector('.cb').classList.add('done');
+      el.querySelector('.ct').classList.add('done');
+    }
+  });
+}
+
+// ── 수치/텍스트 저장 ─────────────────────────────────
+function saveInputs(){
+  const vals={};
+  document.querySelectorAll('.editable').forEach((el,i)=>{ vals[i]=el.value; });
+  save('inputs', vals);
+}
+function loadInputs(){
+  const vals=load('inputs',{});
+  document.querySelectorAll('.editable').forEach((el,i)=>{ if(vals[i]) el.value=vals[i]; });
+}
+function saveTextareas(){
+  const vals={};
+  document.querySelectorAll('textarea').forEach((el,i)=>{ vals[i]=el.value; });
+  save('textareas', vals);
+}
+function loadTextareas(){
+  const vals=load('textareas',{});
+  document.querySelectorAll('textarea').forEach((el,i)=>{ if(vals[i]) el.value=vals[i]; });
+}
+
+// ── 데일리 스케줄 ────────────────────────────────────
+let userTasks = load('userTasks', []);
+
+function renderSchedule(){
+  const all=[...fixedTasks,...userTasks].sort((a,b)=>a.time.localeCompare(b.time));
+  const catColors={'📊 운영':'#E1F5EE','🎬 콘텐츠':'#FFE8E4','💰 수익':'#FFF3DC','📧 마케팅':'#EDF4FF','🛠 개발':'#F0EFFD'};
+  const catText={'📊 운영':'#0F5F4A','🎬 콘텐츠':'#A33C1D','💰 수익':'#BA7517','📧 마케팅':'#1A5FA3','🛠 개발':'#3C3489'};
+  const doneRows = load('rowDone', {});
+  const done = Object.values(doneRows).filter(Boolean).length;
+  const total = all.length;
+
+  // 완료/미완료 분리
+  const pending = all.filter((_,i) => !doneRows[i]);
+  const completed = all.filter((_,i) => doneRows[i]);
+  const sorted = [...pending, ...completed];
+
+  document.getElementById('schedule-body').innerHTML = sorted.map((t,si) => {
+    const origIdx = all.indexOf(t);
+    const isDone = doneRows[origIdx];
+    return `
+    <div class="daily-row" onclick="chkRow(this,${origIdx})" style="opacity:${isDone?'.5':'1'}">
+      <div class="time-cell">${t.time}</div>
+      <div class="task-cell">${t.task}${t.fixed?'<span class="fixed-tag">고정</span>':''}</div>
+      <div><span class="cat-pill" style="background:${catColors[t.cat]||'#f5f3ee'};color:${catText[t.cat]||'#6b6863'}">${t.cat}</span></div>
+      <div class="check-cell"><div class="cb ${isDone?'done':''}"></div></div>
+    </div>`;
+  }).join('') + (completed.length > 0 ? `
+    <div style="padding:8px 12px;background:var(--teal-l);font-size:10px;font-weight:700;color:var(--teal);letter-spacing:.05em;text-transform:uppercase">
+      ✅ 완료 ${done}/${total} — 완료된 항목은 아래로
+    </div>` : '');
+}
+
+function chkRow(el, idx){
+  const cb=el.querySelector('.cb');
+  cb.classList.toggle('done');
+  const isDone = cb.classList.contains('done');
+  const doneRows = load('rowDone', {});
+  doneRows[idx] = isDone;
+  save('rowDone', doneRows);
+  renderSchedule();
+}
+
+function addTask(){
+  const time=document.getElementById('new-time').value;
+  const task=document.getElementById('new-task').value.trim();
+  const cat=document.getElementById('new-cat').value;
+  if(!task) return;
+  userTasks.push({time,task,cat,fixed:false});
+  save('userTasks', userTasks);
+  document.getElementById('new-task').value='';
+  renderSchedule();
+}
+
+// ── 히스토리 페이지 렌더 ─────────────────────────────
+function renderHistory(){
+  const history = load('history', {});
+  const dates = Object.keys(history).sort().reverse();
+  const el = document.getElementById('history-list');
+  if(!dates.length){
+    el.innerHTML = '<div style="text-align:center;padding:60px;color:var(--gray);font-size:13px">아직 기록이 없어요.<br>매일 사용하면 여기에 쌓여요 📅</div>';
+    return;
+  }
+  el.innerHTML = dates.map(d => {
+    const rec = history[d];
+    const pct = Math.round((rec.completed.length / rec.total) * 100);
+    const dateObj = new Date(d);
+    const days = ['일','월','화','수','목','금','토'];
+    const label = (dateObj.getMonth()+1)+'월 '+dateObj.getDate()+'일 '+days[dateObj.getDay()]+'요일';
+    return `
+    <div style="background:var(--white);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:12px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+        <div>
+          <div style="font-family:'Fraunces',serif;font-size:16px;font-weight:600">${label}</div>
+          <div style="font-size:10px;color:var(--gray);margin-top:2px">${d}</div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:${pct>=80?'var(--teal)':pct>=50?'var(--amber)':'var(--coral)'}">${pct}%</div>
+          <div style="font-size:10px;color:var(--gray)">${rec.completed.length}/${rec.total} 완료</div>
+        </div>
+      </div>
+      <div style="height:4px;background:var(--border);border-radius:99px;margin-bottom:10px;overflow:hidden">
+        <div style="height:100%;border-radius:99px;background:${pct>=80?'var(--teal)':pct>=50?'var(--amber)':'var(--coral)'};width:${pct}%;transition:width .6s"></div>
+      </div>
+      ${rec.completed.length ? `<div style="font-size:11px;color:var(--gray)">
+        ${rec.completed.map(t=>`<span style="display:inline-block;background:var(--teal-l);color:var(--teal);border-radius:99px;padding:2px 8px;margin:2px;font-size:10px;font-weight:600">✓ ${t}</span>`).join('')}
+      </div>` : '<div style="font-size:11px;color:var(--gray)">완료된 태스크 없음</div>'}
+      ${rec.userTasks && rec.userTasks.length ? `<div style="margin-top:8px;font-size:10px;color:var(--gray)">추가 태스크: ${rec.userTasks.map(t=>t.task).join(', ')}</div>` : ''}
+    </div>`;
+  }).join('');
+}
+
+// ── 자정 체크 (매 1분마다) ──────────────────────────
+setInterval(()=>{
+  const last = load(LAST_DATE_KEY, null);
+  if(last && last !== today()){
+    archiveDay(last);
+    save('rowDone', {});
+    save('userTasks', []);
+    userTasks = [];
+    save(LAST_DATE_KEY, today());
+    renderSchedule();
+    alert('🌅 새로운 하루가 시작됐어요! 어제 기록은 "날짜별 기록"에 저장됐어요.');
+  }
+}, 60000);
+
+// ── 초기화 ────────────────────────────────────────────
+checkNewDay();
+renderSchedule();
+setTimeout(()=>{
+  loadAllChecks();
+  loadInputs();
+  loadTextareas();
+  document.querySelectorAll('.editable').forEach(el=>el.addEventListener('input', saveInputs));
+  document.querySelectorAll('textarea').forEach(el=>el.addEventListener('input', saveTextareas));
+  // 날짜 업데이트
+  document.querySelectorAll('.page-date').forEach(el=>{
+    if(el.textContent.includes('14일')) el.textContent = todayLabel();
+  });
+}, 100);
+
+// history 페이지 열 때 렌더
+const origGo = go;
+function go(id, el){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  el.classList.add('active');
+  if(id === 'history') renderHistory();
+}
+
+// ── 모바일 사이드바 ──────────────────────────────────
+function toggleSidebar(){
+  document.querySelector('.sidebar').classList.toggle('open');
+  document.getElementById('sb-overlay').classList.toggle('open');
+}
+function closeSidebar(){
+  document.querySelector('.sidebar').classList.remove('open');
+  document.getElementById('sb-overlay').classList.remove('open');
+}
+function mobileGo(id, el){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item,.mobile-nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  el.classList.add('active');
+  // 사이드바도 동기화
+  document.querySelectorAll('.nav-item').forEach(n=>{
+    if(n.getAttribute('onclick') && n.getAttribute('onclick').includes("'"+id+"'")) n.classList.add('active');
+  });
+  window.scrollTo(0,0);
+  if(id==='history') renderHistory();
+}
+// 데스크탑 go 함수에 모바일 탭바 동기화 추가
+const _go = go;
+go = function(id, el){
+  _go(id, el);
+  document.querySelectorAll('.mobile-nav-item').forEach(n=>n.classList.remove('active'));
+  document.querySelectorAll('.mobile-nav-item').forEach(n=>{
+    if(n.getAttribute('onclick') && n.getAttribute('onclick').includes("'"+id+"'")) n.classList.add('active');
+  });
+  window.scrollTo(0,0);
+}
+
+</script>
+
+<!-- 모바일 오버레이 -->
+<div class="sidebar-overlay" id="sb-overlay" onclick="closeSidebar()"></div>
+<!-- 모바일 메뉴 버튼 -->
+<button class="mobile-menu-btn" onclick="toggleSidebar()">☰</button>
+<!-- 모바일 하단 탭바 -->
+<nav class="mobile-nav">
+  <button class="mobile-nav-item active" onclick="mobileGo('hub',this)"><span class="mn-icon">🏠</span>허브</button>
+  <button class="mobile-nav-item" onclick="mobileGo('daily',this)"><span class="mn-icon">☀️</span>데일리</button>
+  <button class="mobile-nav-item" onclick="mobileGo('tasks',this)"><span class="mn-icon">✅</span>태스크</button>
+  <button class="mobile-nav-item" onclick="mobileGo('revenue',this)"><span class="mn-icon">💰</span>수익</button>
+  <button class="mobile-nav-item" onclick="mobileGo('retro',this)"><span class="mn-icon">📝</span>회고</button>
+</nav>
+
+</body>
+</html>
