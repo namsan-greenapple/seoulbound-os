@@ -2041,20 +2041,21 @@ function renderPastHistory(){
   }).join('');
 }
 
-// daily 페이지 열 때 렌더
-const _origGoBase = go;
+// daily 페이지 열 때 렌더 (go 함수에 daily 훅 추가)
+const _goBeforeWG = go;
 go = function(id, el){
-  _origGoBase(id, el);
+  _goBeforeWG(id, el);
   if(id==='daily'){
-    renderWeeklyGoals();
-    renderPastHistory();
+    setTimeout(()=>{ renderWeeklyGoals(); renderPastHistory(); }, 50);
   }
+  if(id==='history') renderHistory();
 };
 
+// 초기 로드시 데일리 페이지가 활성화돼 있으면 렌더
 setTimeout(()=>{
-  const dp = document.getElementById('wg-grid');
-  if(dp) { renderWeeklyGoals(); renderPastHistory(); }
-}, 200);
+  renderWeeklyGoals();
+  renderPastHistory();
+}, 300);
 
 </script>
 
