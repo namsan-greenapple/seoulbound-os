@@ -1074,13 +1074,7 @@ function archiveDay(dateStr){
 }
 
 // ── 체크박스 ────────────────────────────────────────
-function chk(el){
-  const cb=el.querySelector('.cb');
-  const ct=el.querySelector('.ct');
-  cb.classList.toggle('done');
-  ct.classList.toggle('done');
-  saveAllChecks();
-}
+
 function saveAllChecks(){
   const state={};
   document.querySelectorAll('.ci').forEach((el,i)=>{
@@ -1330,9 +1324,6 @@ function closeSidebar(){
   document.getElementById('sb-overlay').classList.remove('open');
 }
 
-// 데스크탑 go 함수에 모바일 탭바 동기화 추가
-  window.scrollTo(0,0);
-}
 
 
 // ── 캘린더 JS ────────────────────────────────────
@@ -1887,44 +1878,8 @@ function loadWeeklyToday(){
 }
 
 // ── 지난 날 히스토리 렌더 ─────────────────────────
-function renderPastHistory(){
-  const el = document.getElementById('past-history-list');
-  if(!el) return;
-  const history = load('history', {});
-  const dates = Object.keys(history).sort().reverse().slice(0,7);
-  if(!dates.length){
-    el.innerHTML='<div style="text-align:center;padding:24px;color:var(--gray);font-size:11px">아직 기록이 없어요.<br>매일 사용하면 여기에 날짜별로 쌓여요 📅</div>';
-    return;
-  }
-  el.innerHTML = dates.map(d=>{
-    const rec = history[d];
-    const pct = rec.total>0 ? Math.round(rec.completed.length/rec.total*100) : 0;
-    const dateObj = new Date(d);
-    const dayNames=['일','월','화','수','목','금','토'];
-    const label=(dateObj.getMonth()+1)+'월 '+dateObj.getDate()+'일 '+dayNames[dateObj.getDay()]+'요일';
-    const color=pct>=80?'var(--teal)':pct>=50?'var(--amber)':'var(--coral)';
-    const uid='hist-'+d.replace(/-/g,'');
-    return `<div style="border:1px solid var(--border);border-radius:9px;overflow:hidden;margin-bottom:8px">
-      <div onclick="document.getElementById('${uid}').classList.toggle('open')" style="display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:var(--gray-l);cursor:pointer">
-        <div>
-          <div style="font-size:12px;font-weight:700;color:var(--ink)">${label}</div>
-          <div style="height:3px;background:var(--border);border-radius:99px;width:120px;margin-top:4px;overflow:hidden">
-            <div style="height:100%;background:${color};width:${pct}%;border-radius:99px;transition:width .6s"></div>
-          </div>
-        </div>
-        <div style="font-size:12px;font-weight:700;color:${color}">${pct}% (${rec.completed.length}/${rec.total})</div>
-      </div>
-      <div id="${uid}" style="display:none;padding:8px 12px">
-        ${rec.completed.map(t=>`<div style="display:flex;align-items:center;gap:6px;padding:4px 0;border-bottom:1px solid var(--border);font-size:11px"><span style="color:var(--teal);font-size:10px">✓</span>${t}</div>`).join('')}
-        ${rec.userTasks&&rec.userTasks.length?`<div style="font-size:10px;color:var(--gray);margin-top:6px;padding-top:4px">추가 태스크: ${rec.userTasks.map(t=>t.task).join(', ')}</div>`:''}
-      </div>
-    </div>`;
-  }).join('');
-}
 
-// daily 페이지 열 때 렌더 (go 함수에 daily 훅 추가)
-  if(id==='history') renderHistory();
-};
+
 
 // 초기 로드시 데일리 페이지가 활성화돼 있으면 렌더
 setTimeout(()=>{
