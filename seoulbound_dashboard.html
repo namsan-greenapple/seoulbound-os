@@ -2,2074 +2,970 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Seoulbound OS</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,600;0,700;1,300&family=DM+Sans:wght@300;400;500;600&display=swap');
 *{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --teal:#0F5F4A;--teal-l:#E1F5EE;--teal-m:#1D9E75;
-  --amber:#BA7517;--amber-l:#FFF3DC;
-  --gray:#6B6863;--gray-l:#F5F3EE;--border:#E8E5DF;
-  --black:#1C1A17;--white:#FEFCF8;
-  --blue:#1A5FA3;--blue-l:#EDF4FF;
-  --coral:#A33C1D;--coral-l:#FFF0EB;
-  --purple:#3C3489;--purple-l:#F0EFFD;
-  --green:#2D7A3A;--green-l:#EDFAF0;
-  --ink:#2C2A26;
-}
-body{font-family:'DM Sans',sans-serif;background:var(--gray-l);color:var(--ink);font-size:13px;line-height:1.55;overflow:hidden;height:100vh;}
-.os{display:grid;grid-template-columns:220px 1fr;height:100vh;}
-.sidebar{background:var(--white);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden;}
-
-/* ── 모바일 반응형 ────────────────────────── */
+body{font-family:'DM Sans',sans-serif;background:#F5F3EE;color:#2C2A26;font-size:13px}
+.os{display:grid;grid-template-columns:210px 1fr;height:100vh;overflow:hidden}
+/* SIDEBAR */
+.sb{background:#FEFCF8;border-right:1px solid #E8E5DF;display:flex;flex-direction:column;height:100vh;overflow:hidden}
+.sb-top{padding:16px;border-bottom:1px solid #E8E5DF}
+.sb-logo{font-size:18px;font-weight:700;color:#0F5F4A}
+.sb-sub{font-size:9px;color:#6B6863;letter-spacing:.07em;text-transform:uppercase;margin-top:2px}
+.sb-nav{overflow-y:auto;flex:1;padding:6px 0}
+.sb-sec{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#C2BFB8;padding:12px 14px 4px}
+.ni{display:flex;align-items:center;gap:8px;padding:7px 14px;color:#6B6863;cursor:pointer;font-size:12px;border-left:3px solid transparent;user-select:none;transition:background .1s}
+.ni:hover{background:#F5F3EE;color:#2C2A26}
+.ni.on{background:#E1F5EE;color:#0F5F4A;font-weight:600;border-left-color:#0F5F4A}
+.sb-bot{padding:10px 12px;border-top:1px solid #E8E5DF}
+.rpill{background:#E1F5EE;border-radius:8px;padding:8px 10px}
+/* MAIN */
+.main{overflow-y:auto;height:100vh}
+.pg{display:none;padding:28px 32px;min-height:100vh}
+.pg.on{display:block}
+.pt{font-size:24px;font-weight:700;color:#2C2A26;margin-bottom:2px}
+.ps{font-size:11px;color:#6B6863;margin-bottom:18px}
+/* CARDS */
+.card{background:#FEFCF8;border:1px solid #E8E5DF;border-radius:12px;padding:14px 16px;margin-bottom:14px}
+.ct{font-size:9px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:#6B6863;margin-bottom:10px}
+/* GRID */
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:14px}
+/* METRICS */
+.metric{background:#FEFCF8;border:1px solid #E8E5DF;border-radius:10px;padding:12px 14px;position:relative;overflow:hidden}
+.metric::before{content:'';position:absolute;top:0;left:0;width:100%;height:3px}
+.m-teal::before{background:#0F5F4A}.m-amber::before{background:#BA7517}.m-blue::before{background:#1A5FA3}.m-coral::before{background:#A33C1D}
+.ml{font-size:9px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#6B6863;margin-bottom:4px}
+.mv{font-size:24px;font-weight:700;color:#2C2A26}
+.ms{font-size:10px;color:#6B6863;margin-top:2px}
+/* CHECKLIST */
+.ci{display:flex;align-items:center;gap:8px;padding:5px 0;cursor:pointer}
+.ci:hover{background:rgba(0,0,0,.03);border-radius:5px;padding-left:4px}
+.cb{width:16px;height:16px;min-width:16px;border:1.5px solid #C8C5BE;border-radius:4px;display:flex;align-items:center;justify-content:center;background:white;flex-shrink:0;transition:all .15s}
+.cb.on{background:#0F5F4A;border-color:#0F5F4A}
+.cb.on::after{content:'✓';color:white;font-size:9px;font-weight:800}
+.cx{font-size:12px;flex:1}
+.cx.on{text-decoration:line-through;color:#B0ADA7}
+/* SCHEDULE */
+.sch-hdr{display:grid;grid-template-columns:70px 1fr 90px 44px 28px;background:#F5F3EE;border-radius:8px 8px 0 0;font-size:9px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#6B6863}
+.sch-hdr>div,.sr>div{padding:7px 10px;display:flex;align-items:center}
+.sr{display:grid;grid-template-columns:70px 1fr 90px 44px 28px;border-bottom:1px solid #E8E5DF;background:#FEFCF8;cursor:pointer}
+.sr:hover{background:#F5F3EE}
+.sr:last-child{border-bottom:none}
+.tc{font-size:10px;font-weight:600;color:#6B6863}
+.cp{font-size:9px;font-weight:700;padding:2px 6px;border-radius:99px}
+/* WEEKLY GOALS */
+.wg-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin-top:8px}
+.wg-col{border:1px solid #E8E5DF;border-radius:8px;padding:7px 6px;min-height:80px}
+.wg-today{border-color:#0F5F4A;background:#E1F5EE}
+.wg-dh{font-size:9px;font-weight:700;text-align:center;color:#6B6863;margin-bottom:5px}
+.wg-today .wg-dh{color:#0F5F4A}
+/* MONTHLY */
+.mt-wrap{display:grid;grid-template-columns:140px 1fr;background:#FEFCF8;border:1px solid #E8E5DF;border-radius:12px;overflow:hidden;height:calc(100vh - 160px)}
+.mt-tabs{border-right:1px solid #E8E5DF;overflow-y:auto}
+.mt-tab{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;cursor:pointer;font-size:12px;color:#6B6863;border-left:3px solid transparent;user-select:none}
+.mt-tab:hover{background:#F5F3EE}
+.mt-tab.on{background:#E1F5EE;color:#0F5F4A;font-weight:700;border-left-color:#0F5F4A}
+.mt-cnt{font-size:9px;background:#E8E5DF;border-radius:99px;padding:1px 6px;font-weight:700}
+.mt-tab.on .mt-cnt{background:#0F5F4A;color:white}
+.mt-detail{overflow-y:auto;padding:14px 18px}
+/* TABLES */
+.rtbl{width:100%;border-collapse:collapse;font-size:12px}
+.rtbl th{padding:8px 10px;background:#F5F3EE;color:#6B6863;font-weight:700;font-size:9px;text-transform:uppercase;letter-spacing:.05em;text-align:left}
+.rtbl td{padding:9px 10px;border-bottom:1px solid #E8E5DF}
+.rtbl tr:last-child td{border:none}
+.ed{background:transparent;border:none;width:100%;font-size:12px;font-family:inherit;color:#2C2A26}
+.ed:focus{outline:none;background:#E1F5EE;border-radius:3px;padding:1px 4px}
+/* INPUTS */
+.inp{border:1px solid #E8E5DF;border-radius:7px;padding:7px 10px;font-size:12px;font-family:inherit;background:#FEFCF8}
+.inp:focus{outline:none;border-color:#0F5F4A}
+.btn-teal{background:#0F5F4A;color:white;border:none;border-radius:7px;padding:7px 12px;font-size:12px;font-weight:700;cursor:pointer}
+.btn-sm{background:#E1F5EE;color:#0F5F4A;border:none;border-radius:5px;padding:3px 8px;font-size:10px;font-weight:700;cursor:pointer}
+/* TOOLS GRID */
+.tg{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:10px}
+.tc-a{border:1px solid #E8E5DF;border-radius:9px;padding:12px;text-align:center;text-decoration:none;display:block;color:#2C2A26}
+.tc-a:hover{border-color:#0F5F4A;background:#E1F5EE}
+/* MOBILE */
 @media(max-width:768px){
-  body{overflow:auto;height:auto;}
-  .os{grid-template-columns:1fr;height:auto;}
-  .sidebar{display:none;position:fixed;top:0;left:0;width:80vw;height:100vh;z-index:999;transform:translateX(-100%);transition:transform .25s ease;border-right:1px solid var(--border);}
-  .sidebar.open{display:flex;transform:translateX(0);}
-  .sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:998;}
-  .sidebar-overlay.open{display:block;}
-  .main{height:auto;overflow:visible;padding-bottom:80px;}
-  .page{padding:16px;}
-  .page-title{font-size:22px;}
-  .g4{grid-template-columns:1fr 1fr;gap:8px;}
-  .g3{grid-template-columns:1fr;gap:10px;}
-  .g2{grid-template-columns:1fr;gap:10px;}
-  .retro-grid{grid-template-columns:1fr;}
-  .daily-header{grid-template-columns:60px 1fr 60px 36px 28px;font-size:9px;}
-  .daily-row{grid-template-columns:60px 1fr 60px 36px 28px;}
-  .cal-cell{min-height:44px;padding:3px;}
-  .cal-event{display:none;}
-  .pipe-col{min-width:130px;}
-
-  /* 모바일 하단 탭바 */
-  .mobile-nav{display:flex;position:fixed;bottom:0;left:0;right:0;background:var(--white);border-top:1px solid var(--border);z-index:100;padding:4px 0 env(safe-area-inset-bottom);}
-  .mobile-nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 4px;cursor:pointer;color:var(--gray);font-size:9px;font-weight:600;border:none;background:none;}
-  .mobile-nav-item.active{color:var(--teal);}
-  .mobile-nav-item .mn-icon{font-size:20px;}
-  .mobile-menu-btn{display:flex;align-items:center;justify-content:center;width:40px;height:40px;border:none;background:var(--teal-l);border-radius:10px;cursor:pointer;font-size:18px;position:fixed;top:12px;right:12px;z-index:1000;}
-  .metric{padding:12px;}
-  .m-val{font-size:24px;}
-  .cb{width:22px;height:22px;border-radius:6px;}
-  .ci{padding:8px 4px;}
-  .ct{font-size:13px;}
+  .os{grid-template-columns:1fr;height:auto;overflow:auto}
+  .sb{display:none;position:fixed;top:0;left:0;width:80vw;height:100vh;z-index:999}
+  .sb.open{display:flex}
+  .sb-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:998}
+  .sb-ov.open{display:block}
+  .main{height:auto;padding-bottom:72px}
+  .pg{padding:14px}
+  .g4,.g3{grid-template-columns:1fr 1fr}
+  .g2{grid-template-columns:1fr}
+  .mob-nav{display:flex;position:fixed;bottom:0;left:0;right:0;background:#FEFCF8;border-top:1px solid #E8E5DF;z-index:100}
+  .mob-ni{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:7px 2px;cursor:pointer;color:#6B6863;font-size:9px;font-weight:600;border:none;background:none}
+  .mob-ni.on{color:#0F5F4A}
+  .mob-ni span{font-size:18px}
+  .mob-btn{position:fixed;top:10px;right:10px;z-index:1000;border:none;background:#E1F5EE;border-radius:8px;padding:8px 10px;font-size:16px;cursor:pointer}
+  .mt-wrap{height:auto}
+  .mt-tabs{display:flex;overflow-x:auto;border-right:none;border-bottom:1px solid #E8E5DF}
+  .mt-tab{white-space:nowrap}
+  .wg-grid{grid-template-columns:repeat(4,1fr)}
+  .tg{grid-template-columns:repeat(3,1fr)}
+  .sch-hdr,.sr{grid-template-columns:60px 1fr 70px 36px 24px}
 }
-@media(min-width:769px){
-  .mobile-nav{display:none;}
-  .mobile-menu-btn{display:none;}
-  .sidebar-overlay{display:none!important;}
-}
-.sb-top{padding:18px 16px 14px;border-bottom:1px solid var(--border);}
-.sb-wordmark{font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:var(--teal);letter-spacing:-.02em;}
-.sb-sub{font-size:10px;color:var(--gray);letter-spacing:.07em;text-transform:uppercase;margin-top:1px;}
-.sb-scroll{overflow-y:auto;flex:1;padding:8px 0;}
-.sb-section{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#C2BFB8;padding:14px 16px 5px;}
-.nav-item{display:flex;align-items:center;gap:9px;padding:7px 16px;color:var(--gray);cursor:pointer;transition:all .12s;font-size:12.5px;font-weight:400;border-left:3px solid transparent;}
-.nav-item:hover{background:var(--gray-l);color:var(--ink);}
-.nav-item.active{background:var(--teal-l);color:var(--teal);font-weight:600;border-left-color:var(--teal);}
-.nav-icon{font-size:14px;width:18px;text-align:center;flex-shrink:0;}
-.sb-bottom{padding:12px 16px;border-top:1px solid var(--border);}
-.rev-pill{background:var(--teal-l);border-radius:8px;padding:8px 10px;font-size:11px;}
-.rev-pill strong{color:var(--teal);display:block;font-size:13px;font-family:'Fraunces',serif;}
-.main{overflow-y:auto;height:100vh;}
-.page{display:none;padding:32px 36px;animation:fadeUp .2s ease;}
-.page.active{display:block;}
-@keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
-.page-header{margin-bottom:24px;}
-.page-title{font-family:'Fraunces',serif;font-size:28px;font-weight:700;color:var(--ink);letter-spacing:-.02em;}
-.page-date{font-size:11px;color:var(--gray);margin-top:3px;}
-.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;}
-.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:20px;}
-.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px;}
-.card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:16px;}
-.card-title{font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--gray);margin-bottom:10px;}
-.card-sm{background:var(--gray-l);border-radius:8px;padding:10px 12px;}
-.metric{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:14px 16px;position:relative;overflow:hidden;}
-.metric::before{content:'';position:absolute;top:0;left:0;width:100%;height:3px;}
-.metric.t::before{background:var(--teal);}
-.metric.a::before{background:var(--amber);}
-.metric.b::before{background:var(--blue);}
-.metric.c::before{background:var(--coral);}
-.m-label{font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--gray);margin-bottom:5px;}
-.m-val{font-family:'Fraunces',serif;font-size:28px;font-weight:600;color:var(--ink);line-height:1;}
-.m-target{font-size:10px;color:var(--gray);margin-top:4px;}
-.m-bar{height:3px;background:var(--border);border-radius:99px;margin-top:10px;overflow:hidden;}
-.m-fill{height:100%;border-radius:99px;transition:width .6s ease;}
-.phase-block{border-radius:10px;padding:14px 16px;margin-bottom:12px;}
-.ph0{background:var(--teal-l);border-left:4px solid var(--teal);}
-.ph1{background:var(--amber-l);border-left:4px solid var(--amber);}
-.ph2{background:var(--blue-l);border-left:4px solid var(--blue);}
-.ph-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
-.ph-badge{font-size:10px;font-weight:700;padding:3px 9px;border-radius:99px;letter-spacing:.05em;}
-.phb0{background:var(--teal);color:white;}
-.phb1{background:var(--amber);color:white;}
-.phb2{background:var(--blue);color:white;}
-.ph-title{font-size:13px;font-weight:600;margin-left:10px;}
-.ph-rev{font-size:11px;color:var(--gray);}
-.wk{font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--teal);padding:10px 0 5px;border-bottom:1px solid rgba(15,95,74,.15);margin-bottom:5px;}
-.ci{display:flex;align-items:flex-start;gap:9px;padding:5px 0;cursor:pointer;border-radius:6px;transition:background .1s;}
-.ci:hover{background:rgba(0,0,0,.03);}
-.cb{width:16px;height:16px;border:1.5px solid #C8C5BE;border-radius:4px;flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;transition:all .15s;background:white;}
-.cb.done{background:var(--teal);border-color:var(--teal);}
-.cb.done::after{content:'✓';color:white;font-size:9px;font-weight:800;}
-.ct{font-size:12px;line-height:1.5;color:var(--ink);transition:all .15s;}
-.ct.done{text-decoration:line-through;color:#B0ADA7;}
-.daily-header{display:grid;grid-template-columns:80px 1fr 110px 50px 36px;background:var(--gray-l);border-radius:8px 8px 0 0;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--gray);}
-.daily-header>div{padding:8px 12px;}
-.daily-row{display:grid;grid-template-columns:80px 1fr 110px 50px 36px;border-bottom:1px solid var(--border);background:var(--white);transition:background .1s;cursor:pointer;}
-.daily-row:hover{background:var(--gray-l);}
-.daily-row:last-child{border-bottom:none;border-radius:0 0 8px 8px;}
-.daily-row>div{padding:9px 12px;display:flex;align-items:center;}
-.time-cell{font-size:11px;font-weight:600;color:var(--gray);}
-.task-cell{font-size:12px;}
-.cat-pill{font-size:9px;font-weight:700;padding:2px 8px;border-radius:99px;white-space:nowrap;}
-.check-cell{justify-content:center;}
-.fixed-tag{font-size:9px;color:var(--gray);background:var(--gray-l);border-radius:99px;padding:1px 6px;margin-left:6px;}
-.add-task{display:flex;gap:8px;margin-top:12px;}
-.add-input{flex:1;border:1px solid var(--border);border-radius:8px;padding:8px 12px;font-size:12px;font-family:'DM Sans',sans-serif;background:var(--white);}
-.add-input:focus{outline:none;border-color:var(--teal);}
-.add-time{width:80px;border:1px solid var(--border);border-radius:8px;padding:8px 10px;font-size:12px;font-family:'DM Sans',sans-serif;}
-.btn{background:var(--teal);color:white;border:none;border-radius:8px;padding:8px 14px;font-size:12px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;}
-.btn:hover{background:var(--teal-m);}
-.btn-ghost{background:transparent;color:var(--teal);border:1px solid var(--teal);border-radius:8px;padding:6px 12px;font-size:11px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;}
-.rev-table{width:100%;border-collapse:collapse;font-size:12px;}
-.rev-table th{padding:9px 12px;background:var(--gray-l);color:var(--gray);font-weight:700;font-size:10px;text-transform:uppercase;letter-spacing:.05em;text-align:left;}
-.rev-table td{padding:10px 12px;border-bottom:1px solid var(--border);}
-.rev-table tr:last-child td{border:none;}
-.rev-total td{background:var(--teal-l);color:var(--teal);font-weight:700;}
-.editable{background:transparent;border:none;width:100%;font-size:12px;font-family:'DM Sans',sans-serif;color:var(--ink);}
-.editable:focus{outline:none;background:var(--teal-l);border-radius:4px;padding:2px 4px;}
-.cal-wrap{background:var(--white);border:1px solid var(--border);border-radius:12px;overflow:hidden;}
-.cal-nav{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--border);}
-.cal-nav-title{font-family:'Fraunces',serif;font-size:15px;font-weight:600;}
-.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);}
-.cal-day-hdr{text-align:center;font-size:9px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--gray);padding:10px 4px;border-bottom:1px solid var(--border);}
-.cal-cell{min-height:70px;padding:6px;border-right:1px solid var(--border);border-bottom:1px solid var(--border);font-size:10px;cursor:pointer;}
-.cal-cell:hover{background:var(--gray-l);}
-.cal-cell:nth-child(7n){border-right:none;}
-.cal-cell.today{background:var(--teal-l);}
-.cal-cell.empty{background:var(--gray-l);opacity:.5;}
-.cal-num{font-weight:600;font-size:11px;margin-bottom:3px;}
-.cal-cell.today .cal-num{color:var(--teal);}
-.cal-event{font-size:9px;padding:1px 4px;border-radius:3px;margin:1px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.ev-t{background:#FFE8E4;color:var(--coral);}
-.ev-n{background:var(--teal-l);color:var(--teal);}
-.ev-r{background:var(--blue-l);color:var(--blue);}
-.retro-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
-.retro-section{border:1px solid var(--border);border-radius:10px;overflow:hidden;}
-.retro-head{padding:10px 14px;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;}
-.retro-head.good{background:var(--green-l);color:var(--green);}
-.retro-head.bad{background:var(--coral-l);color:var(--coral);}
-.retro-head.next{background:var(--amber-l);color:var(--amber);}
-.retro-head.ask{background:var(--purple-l);color:var(--purple);}
-.retro-body{padding:10px 14px;}
-textarea{width:100%;border:none;font-family:'DM Sans',sans-serif;font-size:12px;resize:vertical;min-height:70px;background:transparent;color:var(--ink);}
-textarea:focus{outline:none;}
-.pipe-wrap{display:flex;gap:12px;overflow-x:auto;padding-bottom:8px;}
-.pipe-col{min-width:160px;flex-shrink:0;}
-.pipe-col-hdr{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--gray);padding:6px 2px;margin-bottom:6px;display:flex;justify-content:space-between;align-items:center;}
-.pipe-count{background:var(--border);border-radius:99px;width:18px;height:18px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;}
-.pipe-card{background:var(--white);border:1px solid var(--border);border-radius:8px;padding:9px 10px;margin-bottom:6px;font-size:11px;}
-.pipe-card strong{display:block;color:var(--ink);margin-bottom:1px;}
-.pipe-card span{color:var(--gray);font-size:10px;}
-.content-db{width:100%;border-collapse:collapse;font-size:12px;}
-.content-db th{padding:8px 12px;background:var(--gray-l);color:var(--gray);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;text-align:left;}
-.content-db td{padding:9px 12px;border-bottom:1px solid var(--border);}
-.content-db tr:hover td{background:var(--gray-l);}
-.status-pill{font-size:10px;font-weight:600;padding:2px 8px;border-radius:99px;}
-.sp-draft{background:var(--amber-l);color:var(--amber);}
-.sp-ready{background:var(--blue-l);color:var(--blue);}
-.sp-done{background:var(--green-l);color:var(--green);}
-
-/* ── 캘린더 CSS ─────────────────────────────── */
-.cal-section{padding:14px 16px;border-bottom:1px solid var(--border);}
-.year-grid-cal{display:grid;grid-template-columns:repeat(9,1fr);gap:5px;margin-bottom:0;}
-.mini-cal-c{border:1px solid var(--border);border-radius:7px;overflow:hidden;cursor:pointer;transition:all .15s;}
-.mini-cal-c:hover{border-color:var(--teal);}
-.mini-cal-c.active-c{border-color:var(--teal);box-shadow:0 0 0 2px var(--teal-l);}
-.mini-hdr-c{font-size:9px;font-weight:700;padding:4px 0;text-align:center;background:var(--gray-l);color:var(--gray);}
-.mini-cal-c.active-c .mini-hdr-c{background:var(--teal);color:white;}
-.mini-grid-c{display:grid;grid-template-columns:repeat(7,1fr);padding:2px;}
-.mini-dc{text-align:center;font-size:7px;padding:1px 0;border-radius:2px;}
-.mini-dc.today-c{background:var(--teal);color:white;}
-.mini-dc.has-ev-c{color:var(--teal);font-weight:700;}
-.mini-dc.empty-c{color:transparent;}
-.mini-dhdr-c{text-align:center;font-size:6px;color:var(--gray);font-weight:600;}
-.cal-split{display:grid;grid-template-columns:130px 1fr;}
-.cal-month-list{border-right:1px solid var(--border);padding:6px 0;}
-.cal-mpill{display:flex;align-items:center;justify-content:space-between;padding:5px 10px;cursor:pointer;font-size:11px;color:var(--gray);transition:all .1s;}
-.cal-mpill:hover{background:var(--gray-l);color:var(--ink);}
-.cal-mpill.active-m{background:var(--teal-l);color:var(--teal);font-weight:700;border-right:2px solid var(--teal);}
-.cal-mcnt{font-size:9px;background:var(--border);border-radius:99px;padding:1px 5px;font-weight:700;min-width:14px;text-align:center;}
-.cal-mpill.active-m .cal-mcnt{background:var(--teal);color:white;}
-.cal-detail{padding:12px 14px;}
-.cal-dhdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
-.cal-dtitle{font-size:13px;font-weight:700;color:var(--ink);}
-.cal-add-btn{background:var(--teal);color:white;border:none;border-radius:6px;padding:4px 9px;font-size:11px;font-weight:700;cursor:pointer;}
-.cal-ev-row{display:flex;align-items:flex-start;gap:8px;padding:6px 0;border-bottom:1px solid var(--border);}
-.cal-ev-row:last-child{border-bottom:none;}
-.cal-ev-day{font-size:11px;font-weight:700;color:var(--teal);min-width:28px;}
-.cal-ev-title{font-size:12px;font-weight:600;color:var(--ink);}
-.cal-ev-memo{font-size:10px;color:var(--gray);margin-top:1px;}
-.cal-ev-tag{display:inline-block;font-size:9px;font-weight:700;padding:1px 5px;border-radius:99px;margin-top:2px;}
-.cal-tag-t{background:#FFE8E4;color:var(--coral);}
-.cal-tag-n{background:var(--teal-l);color:var(--teal);}
-.cal-tag-r{background:var(--blue-l);color:var(--blue);}
-.cal-ev-del{font-size:10px;color:var(--gray);cursor:pointer;padding:2px 5px;border-radius:4px;border:none;background:none;margin-left:auto;}
-.cal-ev-del:hover{background:var(--gray-l);color:var(--coral);}
-.cal-empty{text-align:center;padding:24px;color:var(--gray);font-size:11px;}
-.cal-form{background:var(--gray-l);border-radius:8px;padding:10px;margin-bottom:10px;display:none;}
-.cal-form.open{display:block;}
-.cal-frow{display:flex;gap:6px;margin-bottom:6px;}
-.cal-finput{flex:1;border:1px solid var(--border);border-radius:6px;padding:5px 8px;font-size:11px;font-family:'DM Sans',sans-serif;background:white;}
-.cal-finput:focus{outline:none;border-color:var(--teal);}
-.cal-fsel{border:1px solid var(--border);border-radius:6px;padding:5px 8px;font-size:11px;font-family:'DM Sans',sans-serif;background:white;}
-.cal-fbtns{display:flex;gap:6px;}
-.cal-fsave{background:var(--teal);color:white;border:none;border-radius:6px;padding:5px 10px;font-size:11px;font-weight:700;cursor:pointer;}
-.cal-fcancel{background:white;color:var(--gray);border:1px solid var(--border);border-radius:6px;padding:5px 10px;font-size:11px;cursor:pointer;}
-/* ── 드래그 CSS ─────────────────────────────── */
-.daily-row{cursor:grab;}
-.daily-row.dragging{opacity:.4;background:var(--teal-l);}
-.daily-row.drag-over{border-top:2px solid var(--teal);}
-.time-edit{border:none;background:transparent;font-size:11px;font-weight:600;color:var(--gray);width:58px;font-family:'DM Sans',sans-serif;cursor:text;border-radius:4px;padding:2px 4px;}
-.time-edit:focus{outline:none;background:var(--teal-l);border-radius:4px;color:var(--teal);}
-
-
-/* ── 월별 태스크 CSS ─────────────────────────── */
-.mt-tab{padding:8px 14px;cursor:pointer;font-size:12px;border-left:3px solid transparent;color:var(--gray);transition:all .12s;display:flex;align-items:center;justify-content:space-between;}
-.mt-tab:hover{background:var(--gray-l);color:var(--ink);}
-.mt-tab.mt-active{background:var(--teal-l);color:var(--teal);font-weight:700;border-left-color:var(--teal);}
-.mt-cnt{font-size:9px;background:var(--border);border-radius:99px;padding:1px 6px;font-weight:700;}
-.mt-tab.mt-active .mt-cnt{background:var(--teal);color:white;}
-.mt-goal-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px;}
-.mt-goal-card{background:var(--gray-l);border-radius:8px;padding:8px 10px;}
-.mt-goal-label{font-size:9px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--gray);margin-bottom:3px;}
-.mt-goal-in{border:none;background:transparent;font-size:16px;font-weight:700;color:var(--teal);width:100%;font-family:'DM Sans',sans-serif;}
-.mt-goal-in:focus{outline:none;}
-.mt-goal-unit{font-size:10px;color:var(--gray);}
-.mt-phase{border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:10px;}
-.mt-phase-head{display:flex;align-items:center;justify-content:space-between;padding:9px 14px;border-bottom:1px solid var(--border);}
-.mt-phase-badge{font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px;}
-.mt-phase-title{font-size:11px;font-weight:700;color:var(--ink);margin-left:8px;}
-.mt-task-row{display:flex;align-items:center;gap:8px;padding:6px 14px;border-bottom:1px solid var(--border);transition:background .1s;}
-.mt-task-row:last-child{border-bottom:none;}
-.mt-task-row:hover{background:var(--gray-l);}
-.mt-task-row.mt-dragging{opacity:.4;background:var(--teal-l);}
-.mt-task-row.mt-dragover{border-top:2px solid var(--teal);}
-.mt-drag-handle{color:#C8C5BE;cursor:grab;font-size:13px;flex-shrink:0;user-select:none;}
-.mt-cb{width:16px;height:16px;border:1.5px solid #C8C5BE;border-radius:4px;flex-shrink:0;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;background:white;}
-.mt-cb.mt-done{background:var(--teal);border-color:var(--teal);}
-.mt-cb.mt-done::after{content:'✓';color:white;font-size:9px;font-weight:800;}
-.mt-task-txt{flex:1;font-size:12px;color:var(--ink);cursor:pointer;}
-.mt-task-txt.mt-done{text-decoration:line-through;color:#B0ADA7;}
-.mt-task-edit{flex:1;border:1px solid var(--teal);border-radius:4px;padding:2px 6px;font-size:12px;font-family:'DM Sans',sans-serif;display:none;}
-.mt-del-btn{font-size:11px;color:#C8C5BE;cursor:pointer;padding:2px 5px;border:none;background:none;border-radius:4px;}
-.mt-del-btn:hover{color:var(--coral);background:var(--coral-l);}
-.mt-add-form{display:none;flex;gap:6px;padding:8px 14px;background:var(--gray-l);border-top:1px solid var(--border);}
-.mt-add-form.open{display:flex;}
-.mt-add-in{flex:1;border:1px solid var(--border);border-radius:6px;padding:5px 8px;font-size:11px;font-family:'DM Sans',sans-serif;}
-.mt-add-in:focus{outline:none;border-color:var(--teal);}
-.mt-add-save{background:var(--teal);color:white;border:none;border-radius:6px;padding:5px 10px;font-size:11px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;}
-.mt-add-cancel{background:var(--white);color:var(--gray);border:1px solid var(--border);border-radius:6px;padding:5px 10px;font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif;}
-.mt-add-section-btn{width:100%;background:var(--white);border:1px dashed var(--border);border-radius:10px;padding:10px;font-size:12px;color:var(--gray);cursor:pointer;margin-top:4px;font-family:'DM Sans',sans-serif;}
-.to-daily-btn{font-size:9px;background:var(--teal-l);color:var(--teal);border:none;border-radius:5px;padding:2px 7px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap;flex-shrink:0;opacity:0;transition:opacity .15s;}
-.mt-task-row:hover .to-daily-btn{opacity:1;}
-.mt-add-btn{font-size:10px;background:var(--teal-l);color:var(--teal);border:none;border-radius:6px;padding:3px 8px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;}
-
-
-/* ── 주간 목표 CSS ─────────────────────────── */
-.wg-day{border:1px solid var(--border);border-radius:8px;padding:8px 6px;min-height:90px;}
-.wg-day.today-col{border-color:var(--teal);background:var(--teal-l);}
-.wg-day-hdr{font-size:9px;font-weight:700;text-align:center;color:var(--gray);margin-bottom:6px;}
-.wg-day.today-col .wg-day-hdr{color:var(--teal);}
-.wg-item{display:flex;align-items:flex-start;gap:4px;margin-bottom:3px;font-size:10px;}
-.wg-cb{width:11px;height:11px;border:1.5px solid #C8C5BE;border-radius:2px;flex-shrink:0;margin-top:1px;cursor:pointer;}
-.wg-cb.done{background:var(--teal);border-color:var(--teal);}
-.wg-txt{flex:1;line-height:1.4;color:var(--ink);cursor:text;outline:none;}
-.wg-txt:focus{background:var(--teal-l);border-radius:2px;padding:1px 2px;}
-.wg-del{border:none;background:none;color:#C8C5BE;cursor:pointer;font-size:9px;padding:0;flex-shrink:0;}
-.wg-del:hover{color:var(--coral);}
-.wg-add{width:100%;border:none;background:none;color:var(--gray);font-size:9px;cursor:pointer;text-align:left;padding:2px 0;margin-top:2px;}
-.wg-add:hover{color:var(--teal);}
-/* 히스토리 */
-.hist-day{border:1px solid var(--border);border-radius:9px;overflow:hidden;margin-bottom:8px;}
-.hist-hdr{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:var(--gray-l);cursor:pointer;}
-.hist-date{font-size:12px;font-weight:700;color:var(--ink);}
-.hist-pct{font-size:11px;color:var(--gray);}
-.hist-body{padding:8px 12px;display:none;}
-.hist-body.open{display:block;}
-.hist-task{font-size:11px;padding:3px 0;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:6px;}
-.hist-task:last-child{border-bottom:none;}
-
+@media(min-width:769px){.mob-nav,.mob-btn,.sb-ov{display:none!important}}
 </style>
 </head>
 <body>
+
+<div class="sb-ov" id="sb-ov"></div>
+<button class="mob-btn" id="mob-btn">☰</button>
+
 <div class="os">
-<div class="sidebar">
+<div class="sb" id="sidebar">
   <div class="sb-top">
-    <div class="sb-wordmark">Seoulbound</div>
+    <div class="sb-logo">Seoulbound</div>
     <div class="sb-sub">사업 운영 OS</div>
   </div>
-  <div class="sb-scroll">
-    <div class="sb-section">메인</div>
-    <div class="nav-item active" onclick="go('hub',this)"><span class="nav-icon">🏠</span> 허브</div>
-    <div class="nav-item" onclick="go('daily',this)"><span class="nav-icon">☀️</span> 데일리 스케줄</div>
-    <div class="nav-item" onclick="go('tasks',this)"><span class="nav-icon">✅</span> 월별 목표</div>
-    <div class="sb-section">수익</div>
-    <div class="nav-item" onclick="go('revenue',this)"><span class="nav-icon">💰</span> 수익 트래커</div>
-    <div class="nav-item" onclick="go('pipeline',this)"><span class="nav-icon">🔄</span> 고객 파이프라인</div>
-    <div class="sb-section">콘텐츠</div>
-    <div class="nav-item" onclick="go('content',this)"><span class="nav-icon">🎬</span> 콘텐츠 캘린더</div>
-    <div class="sb-section">회고</div>
-    <div class="nav-item" onclick="go('retro',this)"><span class="nav-icon">📝</span> 주간 회고</div>
-    <div class="nav-item" onclick="go('history',this)"><span class="nav-icon">📅</span> 날짜별 기록</div>
-    <div class="sb-section">AI 운영</div>
-    <div class="nav-item" onclick="go('aiops',this)"><span class="nav-icon">🤖</span> AI 마케팅 운영</div>
-    <div class="sb-section">관리</div>
-    <div class="nav-item" onclick="go('expense',this)"><span class="nav-icon">💸</span> 지출 현황</div>
-    <div class="nav-item" onclick="go('accounts',this)"><span class="nav-icon">🔑</span> 계정 정보</div>
+  <div class="sb-nav">
+    <div class="sb-sec">메인</div>
+    <div class="ni on" data-page="hub">🏠 허브</div>
+    <div class="ni" data-page="daily">☀️ 데일리 스케줄</div>
+    <div class="ni" data-page="tasks">✅ 월별 목표</div>
+    <div class="sb-sec">수익</div>
+    <div class="ni" data-page="revenue">💰 수익 트래커</div>
+    <div class="ni" data-page="pipeline">🔄 고객 파이프라인</div>
+    <div class="sb-sec">콘텐츠</div>
+    <div class="ni" data-page="content">🎬 콘텐츠 캘린더</div>
+    <div class="sb-sec">AI 운영</div>
+    <div class="ni" data-page="aiops">🤖 AI 마케팅 운영</div>
+    <div class="sb-sec">회고</div>
+    <div class="ni" data-page="retro">📝 주간 회고</div>
+    <div class="ni" data-page="history">📅 날짜별 기록</div>
+    <div class="sb-sec">관리</div>
+    <div class="ni" data-page="expense">💸 지출 현황</div>
+    <div class="ni" data-page="accounts">🔑 계정 & 즐겨찾기</div>
   </div>
-  <div class="sb-bottom">
-    <div class="rev-pill">
-      <div style="font-size:9px;color:var(--gray);font-weight:600;letter-spacing:.06em;text-transform:uppercase;margin-bottom:2px">4월 목표</div>
-      <strong>$415</strong>
-      <div style="font-size:10px;color:var(--gray);margin-top:2px">투어 $315 · PDF $100</div>
+  <div class="sb-bot">
+    <div class="rpill">
+      <div style="font-size:8px;color:#6B6863;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-bottom:2px">4월 목표</div>
+      <div style="font-size:15px;font-weight:700;color:#0F5F4A">$415</div>
+      <div style="font-size:10px;color:#6B6863;margin-top:1px">MVP D-<span id="dday-sb">?</span></div>
     </div>
   </div>
 </div>
+
 <div class="main">
 
-<div id="hub" class="page active">
-  <div class="page-header">
-    <div class="page-title">🏠 Seoulbound 허브</div>
-    <div class="page-date">2026년 4월 14일 · 화요일</div>
-  </div>
-  <div id="hub-metrics"></div>
-  <!-- MVP 론칭 배너 -->
-  <div id="mvp-banner"></div>
-
+<!-- HUB -->
+<div class="pg on" id="p-hub">
+  <div class="pt">🏠 Seoulbound 허브</div>
+  <div class="ps" id="hub-ps">loading...</div>
+  <div id="hub-banner"></div>
+  <div class="g4" id="hub-metrics"></div>
   <div class="g3">
     <div class="card">
-      <div class="card-title">Phase 현황</div>
-      <div style="display:flex;flex-direction:column;gap:8px">
-        <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 10px;background:var(--teal-l);border-radius:8px"><div><span style="font-size:10px;font-weight:700;color:var(--teal)">PHASE 0</span><div style="font-size:12px;font-weight:600;margin-top:1px">투어 판매</div></div><span style="font-size:10px;background:var(--teal);color:white;padding:2px 8px;border-radius:99px;font-weight:700">진행 중</span></div>
-        <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 10px;background:var(--amber-l);border-radius:8px"><div><span style="font-size:10px;font-weight:700;color:var(--amber)">PHASE 1</span><div style="font-size:12px;font-weight:600;margin-top:1px">PDF 가이드</div></div><span style="font-size:10px;background:var(--amber);color:white;padding:2px 8px;border-radius:99px;font-weight:700">이번 주</span></div>
-        <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 10px;background:var(--blue-l);border-radius:8px"><div><span style="font-size:10px;font-weight:700;color:var(--blue)">PHASE 2</span><div style="font-size:12px;font-weight:600;margin-top:1px">뉴스레터</div></div><span style="font-size:10px;color:var(--gray);padding:2px 8px;border-radius:99px;font-weight:700;background:var(--border)">다음 주</span></div>
+      <div class="ct">Phase 현황</div>
+      <div style="display:flex;flex-direction:column;gap:7px">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:7px 9px;background:#E1F5EE;border-radius:8px">
+          <div><div style="font-size:9px;font-weight:700;color:#0F5F4A">MVP 론칭 준비</div><div style="font-size:12px;font-weight:700">투어 판매</div></div>
+          <span style="font-size:9px;background:#0F5F4A;color:white;padding:2px 8px;border-radius:99px;font-weight:700">진행 중</span>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:7px 9px;background:#FFF3DC;border-radius:8px">
+          <div><div style="font-size:9px;font-weight:700;color:#BA7517">Phase 1</div><div style="font-size:12px;font-weight:700">PDF 가이드</div></div>
+          <span style="font-size:9px;background:#BA7517;color:white;padding:2px 8px;border-radius:99px;font-weight:700">이번 주</span>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:7px 9px;background:#EDF4FF;border-radius:8px">
+          <div><div style="font-size:9px;font-weight:700;color:#1A5FA3">Phase 2</div><div style="font-size:12px;font-weight:700">뉴스레터</div></div>
+          <span style="font-size:9px;background:#E8E5DF;color:#6B6863;padding:2px 8px;border-radius:99px;font-weight:700">다음 주</span>
+        </div>
       </div>
     </div>
     <div class="card">
-      <div class="card-title">이번 주 핵심 할 일 <span style="font-size:9px;background:var(--amber-l);color:var(--amber);padding:2px 6px;border-radius:99px;font-weight:700;margin-left:4px">4/22 론칭 준비</span></div>
-      <div style="font-size:10px;font-weight:700;color:var(--teal);padding:6px 0 3px;border-bottom:1px solid var(--border);margin-bottom:4px;letter-spacing:.04em;text-transform:uppercase">웹사이트 & 상품 수정</div>
-      <div class="ci" onclick="chk(this)"><div class="cb"></div><div class="ct">로딩 문구 오타 수정 (Cursor)</div></div>
-      <div class="ci" onclick="chk(this)"><div class="cb"></div><div class="ct">퀴즈 질문/답변 내용 수정 (Cursor)</div></div>
-      <div class="ci" onclick="chk(this)"><div class="cb"></div><div class="ct">AI 여정 결과값 시나리오 업데이트</div></div>
-      <div class="ci" onclick="chk(this)"><div class="cb"></div><div class="ct">투어 상품 설명/이미지 업데이트</div></div>
-      <div class="ci" onclick="chk(this)"><div class="cb"></div><div class="ct">Calendly 투어 슬롯 오픈 (화/목/토)</div></div>
-      <div style="font-size:10px;font-weight:700;color:var(--amber);padding:6px 0 3px;border-bottom:1px solid var(--border);margin-bottom:4px;letter-spacing:.04em;text-transform:uppercase">MVP 론칭 준비 (4/22 이전)</div>
-      <div class="ci" onclick="chk(this)"><div class="cb"></div><div class="ct">뉴욕 친구에게 테스트 링크 발송</div></div>
-      <div class="ci" onclick="chk(this)"><div class="cb"></div><div class="ct">전체 플로우 최종 테스트 (퀴즈→결제)</div></div>
-      <div class="ci" onclick="chk(this)"><div class="cb"></div><div class="ct">결제 완료 이메일 Calendly 링크 확인</div></div>
-    </div>
-    <div class="card">
-      <div class="card-title">수익 현황</div>
-      <div style="display:flex;flex-direction:column;gap:6px">
-        <div style="display:flex;justify-content:space-between;font-size:12px;padding:5px 0;border-bottom:1px solid var(--border)"><span>🗺️ 투어</span><span style="font-weight:600">$0 / $315</span></div>
-        <div style="display:flex;justify-content:space-between;font-size:12px;padding:5px 0;border-bottom:1px solid var(--border)"><span>📄 PDF</span><span style="font-weight:600">$0 / $100</span></div>
-        <div style="display:flex;justify-content:space-between;font-size:12px;padding:5px 0"><span>📧 뉴스레터</span><span style="font-weight:600">$0 / $0</span></div>
-        <div style="display:flex;justify-content:space-between;font-size:13px;padding:8px 10px;background:var(--teal-l);border-radius:8px;margin-top:4px"><span style="font-weight:700;color:var(--teal)">합계</span><span style="font-weight:700;color:var(--teal)">$0 / $415</span></div>
+      <div class="ct">이번 주 핵심 할 일</div>
+      <div id="hub-todos"></div>
+      <div style="margin-top:8px;display:flex;gap:6px">
+        <input id="hub-todo-inp" class="inp" placeholder="할 일 추가..." style="flex:1;font-size:11px">
+        <button class="btn-sm" id="hub-todo-add">추가</button>
       </div>
     </div>
-  </div>
-  <div class="card" style="margin-top:0;padding:0;overflow:hidden;">
-    <div class="cal-section">
-      <div class="card-title" style="margin-bottom:10px">📅 2026년 일정 캘린더</div>
-      <div class="year-grid-cal" id="cal-year-grid"></div>
-    </div>
-    <div class="cal-split">
-      <div class="cal-month-list" id="cal-month-list"></div>
-      <div class="cal-detail">
-        <div class="cal-dhdr">
-          <div class="cal-dtitle" id="cal-detail-title">4월 일정</div>
-          <button class="cal-add-btn" onclick="calToggleForm()">+ 추가</button>
-        </div>
-        <div class="cal-form" id="cal-add-form">
-          <div class="cal-frow">
-            <input class="cal-finput" id="cal-ev-day" type="number" min="1" max="31" placeholder="날짜(일)" style="width:70px;flex:none;">
-            <input class="cal-finput" id="cal-ev-title" placeholder="일정 제목">
-          </div>
-          <div class="cal-frow">
-            <select class="cal-fsel" id="cal-ev-tag">
-              <option value="t">🔴 TikTok/콘텐츠</option>
-              <option value="n">🟢 뉴스레터</option>
-              <option value="r">🔵 마케팅/Reddit</option>
-            </select>
-            <input class="cal-finput" id="cal-ev-memo" placeholder="메모 (선택)">
-          </div>
-          <div class="cal-fbtns">
-            <button class="cal-fsave" onclick="calSaveEvent()">저장</button>
-            <button class="cal-fcancel" onclick="calToggleForm()">취소</button>
-          </div>
-        </div>
-        <div id="cal-event-list"></div>
+    <div class="card">
+      <div class="ct">수익 현황</div>
+      <div style="display:flex;flex-direction:column;gap:4px">
+        <div style="display:flex;justify-content:space-between;font-size:12px;padding:4px 0;border-bottom:1px solid #E8E5DF"><span>🗺️ 투어</span><input class="ed" id="rev-tour" placeholder="$0" style="text-align:right;width:80px"></div>
+        <div style="display:flex;justify-content:space-between;font-size:12px;padding:4px 0;border-bottom:1px solid #E8E5DF"><span>📄 PDF</span><input class="ed" id="rev-pdf" placeholder="$0" style="text-align:right;width:80px"></div>
+        <div style="display:flex;justify-content:space-between;font-size:12px;padding:4px 0"><span>📧 뉴스레터</span><input class="ed" id="rev-nl" placeholder="$0" style="text-align:right;width:80px"></div>
       </div>
     </div>
   </div>
 </div>
 
-<div id="daily" class="page">
-  <div class="page-header">
-    <div class="page-title">☀️ 데일리 스케줄</div>
-    <div class="page-date" id="daily-date-label">2026년 4월 14일 · 화요일</div>
-  </div>
-
-  <!-- 1. 이번 주 목표 -->
-  <div class="card" style="margin-bottom:14px">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
-      <div class="card-title" style="margin-bottom:0">📅 이번 주 목표 <span style="font-size:9px;color:var(--gray);font-weight:400;margin-left:4px">클릭해서 수정 · ✕ 삭제 · + 추가</span></div>
+<!-- DAILY -->
+<div class="pg" id="p-daily">
+  <div class="pt">☀️ 데일리 스케줄</div>
+  <div class="ps" id="daily-ps">loading...</div>
+  <div class="card">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+      <div class="ct" style="margin-bottom:0">📅 이번 주 목표 <span style="font-size:9px;color:#6B6863;font-weight:400">클릭수정 · ✕삭제 · +추가</span></div>
     </div>
-    <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:6px" id="wg-grid"></div>
+    <div class="wg-grid" id="wg-grid"></div>
   </div>
-
-  <!-- 2. 오늘 스케줄 -->
-  <div class="card" style="margin-bottom:14px">
+  <div class="card">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
       <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
-        <div class="card-title" style="margin-bottom:0">오늘 스케줄</div>
+        <div class="ct" style="margin-bottom:0">오늘 스케줄</div>
         <div style="display:flex;gap:4px;flex-wrap:wrap">
-          <span style="font-size:9px;font-weight:700;padding:2px 7px;border-radius:99px;background:#E1F5EE;color:#0F5F4A">📊 운영</span>
-          <span style="font-size:9px;font-weight:700;padding:2px 7px;border-radius:99px;background:#FFE8E4;color:#A33C1D">🎬 콘텐츠</span>
-          <span style="font-size:9px;font-weight:700;padding:2px 7px;border-radius:99px;background:#EDF4FF;color:#1A5FA3">📣 마케팅</span>
-          <span style="font-size:9px;font-weight:700;padding:2px 7px;border-radius:99px;background:#F0EFFD;color:#3C3489">🛠 플랫폼</span>
-          <span style="font-size:9px;font-weight:700;padding:2px 7px;border-radius:99px;background:#FFF3DC;color:#BA7517">💼 영업</span>
+          <span style="font-size:9px;font-weight:700;padding:2px 6px;border-radius:99px;background:#E1F5EE;color:#0F5F4A">📊 운영</span>
+          <span style="font-size:9px;font-weight:700;padding:2px 6px;border-radius:99px;background:#FFE8E4;color:#A33C1D">🎬 콘텐츠</span>
+          <span style="font-size:9px;font-weight:700;padding:2px 6px;border-radius:99px;background:#EDF4FF;color:#1A5FA3">📣 마케팅</span>
+          <span style="font-size:9px;font-weight:700;padding:2px 6px;border-radius:99px;background:#F0EFFD;color:#3C3489">🛠 플랫폼</span>
+          <span style="font-size:9px;font-weight:700;padding:2px 6px;border-radius:99px;background:#FFF3DC;color:#BA7517">💼 영업</span>
         </div>
       </div>
-      <button onclick="loadWeeklyToday()" style="font-size:10px;background:var(--teal-l);color:var(--teal);border:none;border-radius:6px;padding:4px 10px;font-weight:700;cursor:pointer;white-space:nowrap;flex-shrink:0">↓ 주간목표 불러오기</button>
+      <button class="btn-sm" id="load-weekly-btn">↓ 주간목표 불러오기</button>
     </div>
-    <div style="border:1px solid var(--border);border-radius:10px;overflow:hidden">
-      <div class="daily-header"><div>시간</div><div>태스크</div><div>카테고리</div><div>완료</div><div></div></div>
-      <div id="schedule-body"></div>
+    <div style="border:1px solid #E8E5DF;border-radius:10px;overflow:hidden">
+      <div class="sch-hdr"><div>시간</div><div>태스크</div><div>카테고리</div><div>완료</div><div></div></div>
+      <div id="sch-body"></div>
     </div>
-    <div class="add-task" style="margin-top:10px">
-      <input id="new-time" class="add-time" type="text" placeholder="09:00" value="09:00">
-      <input id="new-task" class="add-input" placeholder="오늘 추가할 태스크...">
-      <select id="new-cat" style="border:1px solid var(--border);border-radius:8px;padding:8px 10px;font-size:12px;font-family:'DM Sans',sans-serif;background:var(--white)">
-        <option>📊 운영</option>
-        <option>🎬 콘텐츠</option>
-        <option>📣 마케팅</option>
-        <option>🛠 플랫폼</option>
-        <option>💼 영업</option>
+    <div style="display:flex;gap:6px;margin-top:10px">
+      <input id="ni-time" class="inp" type="text" placeholder="09:00" value="09:00" style="width:70px">
+      <input id="ni-task" class="inp" placeholder="오늘 추가할 태스크..." style="flex:1">
+      <select id="ni-cat" class="inp">
+        <option>📊 운영</option><option>🎬 콘텐츠</option><option>📣 마케팅</option><option>🛠 플랫폼</option><option>💼 영업</option>
       </select>
-      <button class="btn" onclick="addTask()">+ 추가</button>
+      <button class="btn-teal" id="add-sch-btn">+ 추가</button>
     </div>
   </div>
-
-  <!-- 3. 지난 날 기록 -->
   <div class="card">
-    <div class="card-title" style="margin-bottom:10px">📆 지난 날 기록 <span style="font-size:9px;color:var(--gray);font-weight:400">클릭해서 펼치기</span></div>
-    <div id="past-history-list"></div>
+    <div class="ct">📆 지난 날 기록</div>
+    <div id="hist-daily"></div>
   </div>
 </div>
 
-<div id="tasks" class="page">
-  <div class="page-header">
-    <div class="page-title">✅ 월별 목표</div>
-    <div class="page-date">4월 ~ 12월 · 편집/추가/삭제/드래그 가능</div>
-  </div>
-
-  <div style="display:grid;grid-template-columns:150px 1fr;gap:0;background:var(--white);border:1px solid var(--border);border-radius:12px;overflow:hidden;height:calc(100vh - 140px)">
-    <!-- 왼쪽 월 탭 -->
-    <div style="border-right:1px solid var(--border);overflow-y:auto;">
-      <div style="padding:10px 14px;border-bottom:1px solid var(--border);font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--gray)">월별 태스크</div>
-      <div id="mt-tab-list"></div>
-    </div>
-    <!-- 오른쪽 콘텐츠 -->
-    <div style="overflow-y:auto;padding:16px 20px;" id="mt-content"></div>
+<!-- MONTHLY TASKS -->
+<div class="pg" id="p-tasks">
+  <div class="pt">✅ 월별 목표</div>
+  <div class="ps">4월~12월 · 더블클릭 수정 · ✕ 삭제 · → 데일리 추가</div>
+  <div class="mt-wrap">
+    <div class="mt-tabs" id="mt-tabs"></div>
+    <div class="mt-detail" id="mt-detail"></div>
   </div>
 </div>
 
-
-<div id="revenue" class="page">
-  <div class="page-header">
-    <div class="page-title">💰 수익 트래커</div>
-    <div class="page-date">4월 — 3개 수익원 동시 운영</div>
-  </div>
-  <div class="card" style="margin-bottom:16px">
-    <div class="card-title">4월 수익 목표 vs 실제</div>
-    <table class="rev-table" style="margin-top:8px">
+<!-- REVENUE -->
+<div class="pg" id="p-revenue">
+  <div class="pt">💰 수익 트래커</div>
+  <div class="ps">4월 — 3개 수익원 동시 운영</div>
+  <div class="card">
+    <div class="ct">4월 수익 목표 vs 실제</div>
+    <table class="rtbl" style="margin-top:8px">
       <tr><th>수익원</th><th>단가</th><th>4월 목표</th><th>4월 실제</th><th>5월 목표</th></tr>
-      <tr><td>🗺️ Eat Local 투어</td><td>$90</td><td>$180</td><td><input class="editable" placeholder="$0"></td><td>$270</td></tr>
-      <tr><td>🗺️ Glow Local 투어</td><td>$135</td><td>$135</td><td><input class="editable" placeholder="$0"></td><td>$270</td></tr>
-      <tr><td>🗺️ Stan Seoul 투어</td><td>$115</td><td>$0</td><td><input class="editable" placeholder="$0"></td><td>$115</td></tr>
-      <tr><td>📄 Seoul Survival Guide</td><td>$19</td><td>$57</td><td><input class="editable" placeholder="$0"></td><td>$114</td></tr>
-      <tr><td>📄 K-beauty Bible</td><td>$29</td><td>$29</td><td><input class="editable" placeholder="$0"></td><td>$87</td></tr>
-      <tr><td>📧 Seoul Insider Pro</td><td>$15/월</td><td>$0</td><td><input class="editable" placeholder="$0"></td><td>$150</td></tr>
-      <tr><td>🔗 제휴 커미션</td><td>변동</td><td>$14</td><td><input class="editable" placeholder="$0"></td><td>$100</td></tr>
-      <tr class="rev-total"><td><strong>합계</strong></td><td></td><td><strong>$415</strong></td><td><input class="editable" style="font-weight:700;color:var(--teal)" placeholder="$0"></td><td><strong>$1,106</strong></td></tr>
+      <tr><td>🗺️ Eat Local</td><td>$90</td><td>$180</td><td><input class="ed" placeholder="$0"></td><td>$270</td></tr>
+      <tr><td>🗺️ Glow Local</td><td>$135</td><td>$135</td><td><input class="ed" placeholder="$0"></td><td>$270</td></tr>
+      <tr><td>🗺️ Stan Seoul</td><td>$115</td><td>$0</td><td><input class="ed" placeholder="$0"></td><td>$115</td></tr>
+      <tr><td>📄 Seoul Survival Guide</td><td>$19</td><td>$57</td><td><input class="ed" placeholder="$0"></td><td>$114</td></tr>
+      <tr><td>📄 K-beauty Bible</td><td>$29</td><td>$29</td><td><input class="ed" placeholder="$0"></td><td>$87</td></tr>
+      <tr><td>📧 Seoul Insider Pro</td><td>$15/월</td><td>$0</td><td><input class="ed" placeholder="$0"></td><td>$150</td></tr>
     </table>
   </div>
   <div class="g3">
-    <div class="card"><div class="card-title">Phase 0 목표</div><div style="font-family:'Fraunces',serif;font-size:32px;color:var(--teal)">$500<span style="font-size:14px;color:var(--gray)">/월</span></div><div style="font-size:11px;color:var(--gray);margin-top:4px">4월 말 달성 목표</div></div>
-    <div class="card"><div class="card-title">Phase 1 목표</div><div style="font-family:'Fraunces',serif;font-size:32px;color:var(--amber)">$200<span style="font-size:14px;color:var(--gray)">/월</span></div><div style="font-size:11px;color:var(--gray);margin-top:4px">5월 초 달성 목표</div></div>
-    <div class="card"><div class="card-title">Phase 2 목표</div><div style="font-family:'Fraunces',serif;font-size:32px;color:var(--blue)">$750<span style="font-size:14px;color:var(--gray)">/월</span></div><div style="font-size:11px;color:var(--gray);margin-top:4px">6월 달성 목표</div></div>
+    <div class="card"><div class="ct">Phase 0</div><div style="font-size:26px;font-weight:700;color:#0F5F4A">$500<span style="font-size:13px;color:#6B6863">/월</span></div><div style="font-size:10px;color:#6B6863">4월 말 목표</div></div>
+    <div class="card"><div class="ct">Phase 1</div><div style="font-size:26px;font-weight:700;color:#BA7517">$200<span style="font-size:13px;color:#6B6863">/월</span></div><div style="font-size:10px;color:#6B6863">5월 초 목표</div></div>
+    <div class="card"><div class="ct">Phase 2</div><div style="font-size:26px;font-weight:700;color:#1A5FA3">$750<span style="font-size:13px;color:#6B6863">/월</span></div><div style="font-size:10px;color:#6B6863">6월 목표</div></div>
   </div>
 </div>
 
-<div id="pipeline" class="page">
-  <div class="page-header">
-    <div class="page-title">🔄 고객 파이프라인</div>
-    <div class="page-date">퀴즈 완료 → 결제 → 투어 완료</div>
-  </div>
-  <div class="pipe-wrap">
-    <div class="pipe-col"><div class="pipe-col-hdr">퀴즈 완료<span class="pipe-count">0</span></div><div class="pipe-card"><strong>신규 유입</strong><span>이름/이메일 확인</span></div></div>
-    <div class="pipe-col"><div class="pipe-col-hdr">이메일 수신<span class="pipe-count">0</span></div><div class="pipe-card"><strong>여정 발송됨</strong><span>48시간 리마인더 대기</span></div></div>
-    <div class="pipe-col"><div class="pipe-col-hdr">투어 결제<span class="pipe-count">0</span></div><div class="pipe-card"><strong>결제 완료</strong><span>Calendly 예약 확인</span></div></div>
-    <div class="pipe-col"><div class="pipe-col-hdr">투어 완료<span class="pipe-count">0</span></div><div class="pipe-card"><strong>투어 진행됨</strong><span>후기 수집 이메일</span></div></div>
-    <div class="pipe-col"><div class="pipe-col-hdr">후기 게시<span class="pipe-count">0</span></div><div class="pipe-card"><strong>홈페이지 게시</strong><span>소셜 증거 확보</span></div></div>
+<!-- PIPELINE -->
+<div class="pg" id="p-pipeline">
+  <div class="pt">🔄 고객 파이프라인</div>
+  <div class="ps">퀴즈 완료 → 이메일 → 결제 → 투어 완료</div>
+  <div style="display:flex;gap:10px;overflow-x:auto;padding-bottom:8px">
+    <div style="min-width:150px"><div style="font-size:9px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#6B6863;padding:5px 0;margin-bottom:6px">퀴즈 완료</div><div style="background:#FEFCF8;border:1px solid #E8E5DF;border-radius:8px;padding:9px;font-size:11px">신규 유입<br><span style="color:#6B6863;font-size:10px">이메일 자동 발송</span></div></div>
+    <div style="min-width:150px"><div style="font-size:9px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#6B6863;padding:5px 0;margin-bottom:6px">이메일 수신</div><div style="background:#FEFCF8;border:1px solid #E8E5DF;border-radius:8px;padding:9px;font-size:11px">여정 발송됨<br><span style="color:#6B6863;font-size:10px">48h 리마인더 대기</span></div></div>
+    <div style="min-width:150px"><div style="font-size:9px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#0F5F4A;padding:5px 0;margin-bottom:6px">투어 결제 💰</div><div style="background:#E1F5EE;border:1px solid #0F5F4A;border-radius:8px;padding:9px;font-size:11px">결제 완료<br><span style="color:#0F5F4A;font-size:10px">Calendly 예약 확인</span></div></div>
+    <div style="min-width:150px"><div style="font-size:9px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#6B6863;padding:5px 0;margin-bottom:6px">투어 완료</div><div style="background:#FEFCF8;border:1px solid #E8E5DF;border-radius:8px;padding:9px;font-size:11px">투어 진행됨<br><span style="color:#6B6863;font-size:10px">후기 수집 이메일</span></div></div>
+    <div style="min-width:150px"><div style="font-size:9px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#6B6863;padding:5px 0;margin-bottom:6px">후기 게시</div><div style="background:#FEFCF8;border:1px solid #E8E5DF;border-radius:8px;padding:9px;font-size:11px">홈페이지 게시<br><span style="color:#6B6863;font-size:10px">소셜 증거 확보</span></div></div>
   </div>
 </div>
 
-<div id="content" class="page">
-  <div class="page-header">
-    <div class="page-title">🎬 콘텐츠 캘린더</div>
-    <div class="page-date">4월 — 채널별 배포</div>
-  </div>
-  <div class="cal-wrap" style="margin-bottom:16px">
-    <div class="cal-nav">
-      <div class="cal-nav-title">2026년 4월</div>
-      <div style="display:flex;gap:16px;font-size:11px"><span>🔴 TikTok/Reels</span><span>🟢 뉴스레터</span><span>🔵 Reddit</span></div>
+<!-- CONTENT -->
+<div class="pg" id="p-content">
+  <div class="pt">🎬 콘텐츠 캘린더</div>
+  <div class="ps">일정 추가/삭제 가능</div>
+  <div class="card">
+    <div class="ct">월 선택</div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px" id="cal-tabs"></div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+      <div style="font-size:13px;font-weight:700" id="cal-title">4월 일정</div>
+      <button class="btn-sm" id="cal-add-btn">+ 추가</button>
     </div>
-    <div class="cal-grid">
-      <div class="cal-day-hdr">월</div><div class="cal-day-hdr">화</div><div class="cal-day-hdr">수</div><div class="cal-day-hdr">목</div><div class="cal-day-hdr">금</div><div class="cal-day-hdr">토</div><div class="cal-day-hdr">일</div>
-      <div class="cal-cell empty"></div>
-      <div class="cal-cell today"><div class="cal-num">14</div><div class="cal-event ev-t">이태원 촬영</div></div>
-      <div class="cal-cell"><div class="cal-num">15</div><div class="cal-event ev-t">편집+업로드</div></div>
-      <div class="cal-cell"><div class="cal-num">16</div><div class="cal-event ev-n">뉴스레터 준비</div></div>
-      <div class="cal-cell"><div class="cal-num">17</div><div class="cal-event ev-r">Reddit 5개</div></div>
-      <div class="cal-cell"><div class="cal-num">18</div><div class="cal-event ev-t">명동 촬영</div></div>
-      <div class="cal-cell"><div class="cal-num">19</div></div>
-      <div class="cal-cell"><div class="cal-num">20</div></div>
-      <div class="cal-cell"><div class="cal-num">21</div><div class="cal-event ev-t">남대문 촬영</div></div>
-      <div class="cal-cell"><div class="cal-num">22</div><div class="cal-event ev-t">편집+업로드</div></div>
-      <div class="cal-cell"><div class="cal-num">23</div><div class="cal-event ev-n">Seoul Insider 1호</div></div>
-      <div class="cal-cell"><div class="cal-num">24</div><div class="cal-event ev-r">Reddit 5개</div></div>
-      <div class="cal-cell"><div class="cal-num">25</div><div class="cal-event ev-t">이태원 촬영</div></div>
-      <div class="cal-cell"><div class="cal-num">26</div></div>
-      <div class="cal-cell"><div class="cal-num">27</div></div>
-      <div class="cal-cell"><div class="cal-num">28</div><div class="cal-event ev-t">명동 촬영</div></div>
-      <div class="cal-cell"><div class="cal-num">29</div><div class="cal-event ev-t">편집+업로드</div></div>
-      <div class="cal-cell"><div class="cal-num">30</div><div class="cal-event ev-n">Seoul Insider 2호</div></div>
-      <div class="cal-cell empty"></div><div class="cal-cell empty"></div><div class="cal-cell empty"></div><div class="cal-cell empty"></div>
+    <div id="cal-form" style="display:none;background:#F5F3EE;border-radius:8px;padding:10px;margin-bottom:10px">
+      <div style="display:flex;gap:6px;margin-bottom:6px">
+        <input class="inp" id="cal-day" type="number" min="1" max="31" placeholder="날짜" style="width:70px">
+        <input class="inp" id="cal-etitle" placeholder="일정 제목" style="flex:1">
+      </div>
+      <div style="display:flex;gap:6px">
+        <select class="inp" id="cal-tag" style="flex:none"><option value="t">🎬 콘텐츠</option><option value="n">📧 뉴스레터</option><option value="r">📣 마케팅</option></select>
+        <input class="inp" id="cal-memo" placeholder="메모" style="flex:1">
+        <button class="btn-teal" id="cal-save-btn" style="font-size:11px">저장</button>
+        <button class="btn-sm" id="cal-cancel-btn">취소</button>
+      </div>
+    </div>
+    <div id="cal-evlist"></div>
+  </div>
+</div>
+
+<!-- AI OPS -->
+<div class="pg" id="p-aiops">
+  <div class="pt">🤖 AI 마케팅 운영</div>
+  <div class="ps">에스더 직접: 촬영 · 의사결정 · Claude 브리핑 — 나머지는 AI</div>
+  <div style="background:#0F5F4A;border-radius:10px;padding:14px;margin-bottom:14px;color:white">
+    <div style="font-size:9px;opacity:.8;font-weight:700;letter-spacing:.05em;text-transform:uppercase;margin-bottom:8px">하루 2시간 루틴</div>
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px">
+      <div style="background:rgba(255,255,255,.15);border-radius:7px;padding:9px;text-align:center"><div style="font-size:9px;font-weight:700">09:00</div><div style="font-size:10px;font-weight:700;margin-top:2px">Claude 브리핑</div><div style="font-size:8px;opacity:.8;margin-top:2px">20분</div></div>
+      <div style="background:rgba(255,255,255,.15);border-radius:7px;padding:9px;text-align:center"><div style="font-size:9px;font-weight:700">10:00</div><div style="font-size:10px;font-weight:700;margin-top:2px">촬영</div><div style="font-size:8px;opacity:.8;margin-top:2px">30분</div></div>
+      <div style="background:rgba(255,255,255,.15);border-radius:7px;padding:9px;text-align:center"><div style="font-size:9px;font-weight:700">10:30</div><div style="font-size:10px;font-weight:700;margin-top:2px">AI 편집+발행</div><div style="font-size:8px;opacity:.8;margin-top:2px">30분</div></div>
+      <div style="background:rgba(255,255,255,.15);border-radius:7px;padding:9px;text-align:center"><div style="font-size:9px;font-weight:700">14:00</div><div style="font-size:10px;font-weight:700;margin-top:2px">Reddit 확인</div><div style="font-size:8px;opacity:.8;margin-top:2px">20분</div></div>
+      <div style="background:rgba(255,255,255,.15);border-radius:7px;padding:9px;text-align:center"><div style="font-size:9px;font-weight:700">이후</div><div style="font-size:10px;font-weight:700;margin-top:2px">AI 전부</div><div style="font-size:8px;opacity:.8;margin-top:2px">자동</div></div>
     </div>
   </div>
   <div class="card">
-    <div class="card-title">콘텐츠 DB</div>
-    <table class="content-db" style="margin-top:8px">
-      <tr><th>제목</th><th>채널</th><th>상태</th><th>발행일</th></tr>
-      <tr><td>이태원 외국인 인터뷰 — "Why Korea over Japan?"</td><td>TikTok</td><td><span class="status-pill sp-draft">초안</span></td><td>4/15</td></tr>
-      <tr><td>Seoul Survival Guide 출시 소개</td><td>Instagram</td><td><span class="status-pill sp-draft">초안</span></td><td>4/16</td></tr>
-      <tr><td>Seoul Insider 창간호</td><td>뉴스레터</td><td><span class="status-pill sp-ready">준비중</span></td><td>4/24</td></tr>
+    <div class="ct">AI 에이전트 역할표</div>
+    <table class="rtbl" style="margin-top:8px">
+      <tr><th>역할</th><th>도구</th><th>하는 일</th><th>비용</th><th>세팅</th></tr>
+      <tr><td>전략·카피</td><td>Claude</td><td>브리핑·스크립트·캡션·Reddit 초안</td><td>$20/월</td><td style="color:#0F5F4A;font-weight:700">✅</td></tr>
+      <tr><td>영상 편집</td><td>CapCut AI</td><td>자막 자동생성·편집</td><td>무료</td><td style="color:#0F5F4A;font-weight:700">✅</td></tr>
+      <tr><td>SNS 배포</td><td>Buffer</td><td>TikTok+Reels+Shorts 동시 예약</td><td>무료</td><td style="color:#BA7517;font-weight:700">⚠️</td></tr>
+      <tr><td>이메일</td><td>Loops.so</td><td>퀴즈→이메일 시퀀스</td><td>무료</td><td style="color:#BA7517;font-weight:700">⚠️</td></tr>
+      <tr><td>DM 자동화</td><td>ManyChat</td><td>인스타 댓글→링크 자동 DM</td><td>무료</td><td style="color:#A33C1D;font-weight:700">❌</td></tr>
     </table>
   </div>
+  <div class="card">
+    <div class="ct">매일 아침 Claude 브리핑 템플릿</div>
+    <div style="background:#F5F3EE;border-radius:8px;padding:12px;font-size:11px;line-height:1.8;font-family:monospace;border-left:3px solid #0F5F4A;margin-top:8px">오늘 현황:<br>- Stripe 결제: [건수]건 / 퀴즈 완료: [명]명<br>- TikTok 어제 조회수: [수] / 뉴스레터: [명]명<br><br>오늘 [요일], 촬영 장소: [장소]<br>할 일 3개 + TikTok 스크립트 + 캡션 + Reddit 초안 줘.</div>
+  </div>
 </div>
 
-<div id="retro" class="page">
-  <div class="page-header">
-    <div class="page-title">📝 주간 회고</div>
-    <div class="page-date">4월 2주차</div>
-  </div>
-  <div class="retro-grid" style="margin-bottom:14px">
-    <div class="retro-section"><div class="retro-head good">✅ 잘 된 것</div><div class="retro-body"><textarea placeholder="이번 주 잘 된 것들..."></textarea></div></div>
-    <div class="retro-section"><div class="retro-head bad">❌ 안 된 것</div><div class="retro-body"><textarea placeholder="이번 주 안 된 것들..."></textarea></div></div>
-    <div class="retro-section"><div class="retro-head next">🔄 다음 주 바꿀 것</div><div class="retro-body"><textarea placeholder="개선할 것들..."></textarea></div></div>
-    <div class="retro-section"><div class="retro-head ask">💬 Claude에게 물어볼 것</div><div class="retro-body"><textarea placeholder="Claude에게 물어볼 것들..."></textarea></div></div>
+<!-- RETRO -->
+<div class="pg" id="p-retro">
+  <div class="pt">📝 주간 회고</div>
+  <div class="ps">매주 작성 · 자동 저장</div>
+  <div class="g2">
+    <div class="card"><div class="ct" style="color:#2D7A3A">✅ 잘 된 것</div><textarea class="ret-ta" data-key="ret-good" placeholder="이번 주 잘 된 것들..."></textarea></div>
+    <div class="card"><div class="ct" style="color:#A33C1D">❌ 안 된 것</div><textarea class="ret-ta" data-key="ret-bad" placeholder="이번 주 안 된 것들..."></textarea></div>
+    <div class="card"><div class="ct" style="color:#BA7517">🔄 다음 주 바꿀 것</div><textarea class="ret-ta" data-key="ret-next" placeholder="개선할 것들..."></textarea></div>
+    <div class="card"><div class="ct" style="color:#3C3489">💬 Claude에게 물어볼 것</div><textarea class="ret-ta" data-key="ret-claude" placeholder="물어볼 것들..."></textarea></div>
   </div>
   <div class="card">
-    <div class="card-title">이번 주 수치</div>
+    <div class="ct">이번 주 수치</div>
     <div class="g4" style="margin-top:8px;margin-bottom:0">
-      <div class="card-sm"><div style="font-size:10px;color:var(--gray);margin-bottom:4px">퀴즈 완료</div><input class="editable" style="font-size:22px;font-weight:700;font-family:'Fraunces',serif" placeholder="0"></div>
-      <div class="card-sm"><div style="font-size:10px;color:var(--gray);margin-bottom:4px">투어 결제</div><input class="editable" style="font-size:22px;font-weight:700;font-family:'Fraunces',serif" placeholder="0"></div>
-      <div class="card-sm"><div style="font-size:10px;color:var(--gray);margin-bottom:4px">PDF 판매</div><input class="editable" style="font-size:22px;font-weight:700;font-family:'Fraunces',serif" placeholder="0"></div>
-      <div class="card-sm"><div style="font-size:10px;color:var(--gray);margin-bottom:4px">주간 수익</div><input class="editable" style="font-size:22px;font-weight:700;font-family:'Fraunces',serif" placeholder="$0"></div>
+      <div style="background:#F5F3EE;border-radius:8px;padding:8px 10px"><div style="font-size:9px;color:#6B6863;margin-bottom:3px">퀴즈 완료</div><input class="ed" placeholder="0명" style="font-size:20px;font-weight:700"></div>
+      <div style="background:#F5F3EE;border-radius:8px;padding:8px 10px"><div style="font-size:9px;color:#6B6863;margin-bottom:3px">투어 결제</div><input class="ed" placeholder="0건" style="font-size:20px;font-weight:700"></div>
+      <div style="background:#F5F3EE;border-radius:8px;padding:8px 10px"><div style="font-size:9px;color:#6B6863;margin-bottom:3px">PDF 판매</div><input class="ed" placeholder="0개" style="font-size:20px;font-weight:700"></div>
+      <div style="background:#F5F3EE;border-radius:8px;padding:8px 10px"><div style="font-size:9px;color:#6B6863;margin-bottom:3px">주간 수익</div><input class="ed" placeholder="$0" style="font-size:20px;font-weight:700"></div>
     </div>
   </div>
 </div>
 
+<!-- HISTORY -->
+<div class="pg" id="p-history">
+  <div class="pt">📅 날짜별 기록</div>
+  <div class="ps">매일 자동 저장</div>
+  <div id="hist-page"></div>
+</div>
 
-
-<div id="aiops" class="page">
-  <div class="page-header">
-    <div class="page-title">🤖 AI 마케팅 운영</div>
-    <div class="page-date">1인 창업가 + AI 에이전트 = 10인팀</div>
-  </div>
-
-  <!-- 핵심 원칙 -->
-  <div style="background:var(--teal);border-radius:12px;padding:16px 20px;margin-bottom:16px;color:white;">
-    <div style="font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;opacity:.8;margin-bottom:6px">핵심 원칙</div>
-    <div style="font-size:15px;font-weight:700;margin-bottom:4px">에스더가 직접 하는 건 딱 3가지</div>
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:10px">
-      <div style="background:rgba(255,255,255,.15);border-radius:8px;padding:10px;text-align:center">
-        <div style="font-size:20px;margin-bottom:4px">📸</div>
-        <div style="font-size:12px;font-weight:700">① 촬영</div>
-        <div style="font-size:10px;opacity:.8;margin-top:2px">이태원/명동 인터뷰 30분</div>
-      </div>
-      <div style="background:rgba(255,255,255,.15);border-radius:8px;padding:10px;text-align:center">
-        <div style="font-size:20px;margin-bottom:4px">✅</div>
-        <div style="font-size:12px;font-weight:700">② 의사결정</div>
-        <div style="font-size:10px;opacity:.8;margin-top:2px">"이 영상 올릴까?" 최종 확인</div>
-      </div>
-      <div style="background:rgba(255,255,255,.15);border-radius:8px;padding:10px;text-align:center">
-        <div style="font-size:20px;margin-bottom:4px">💬</div>
-        <div style="font-size:12px;font-weight:700">③ Claude 브리핑</div>
-        <div style="font-size:10px;opacity:.8;margin-top:2px">매일 오전 현황 공유</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- 콘텐츠 자동화 파이프라인 -->
-  <div class="card" style="margin-bottom:16px">
-    <div class="card-title">콘텐츠 자동화 파이프라인</div>
-    <div style="margin-top:12px">
-      <div style="display:flex;flex-direction:column;gap:0">
-        <div style="display:flex;align-items:center;gap:0">
-          <div style="background:var(--teal);color:white;border-radius:8px;padding:8px 12px;font-size:11px;font-weight:700;min-width:160px;text-align:center">📸 에스더 촬영<br><span style="font-weight:400;opacity:.8">30분</span></div>
-          <div style="flex:1;height:2px;background:var(--border);"></div>
-          <div style="color:var(--gray);font-size:11px;padding:0 8px">→</div>
-        </div>
-        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:8px 0">
-          <div style="background:var(--blue-l);border:1px solid var(--blue);border-radius:8px;padding:10px;text-align:center">
-            <div style="font-size:10px;font-weight:700;color:var(--blue);margin-bottom:3px">🤖 CapCut AI</div>
-            <div style="font-size:9px;color:var(--gray)">자막 자동 생성</div>
-          </div>
-          <div style="background:var(--purple-l);border:1px solid var(--purple);border-radius:8px;padding:10px;text-align:center">
-            <div style="font-size:10px;font-weight:700;color:var(--purple);margin-bottom:3px">🤖 Claude</div>
-            <div style="font-size:9px;color:var(--gray)">캡션+해시태그 생성</div>
-          </div>
-          <div style="background:var(--amber-l);border:1px solid var(--amber);border-radius:8px;padding:10px;text-align:center">
-            <div style="font-size:10px;font-weight:700;color:var(--amber);margin-bottom:3px">🤖 Buffer</div>
-            <div style="font-size:9px;color:var(--gray)">3채널 동시 예약</div>
-          </div>
-        </div>
-        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:8px 0">
-          <div style="background:var(--coral-l);border:1px solid var(--coral);border-radius:8px;padding:10px;text-align:center">
-            <div style="font-size:10px;font-weight:700;color:var(--coral);margin-bottom:3px">🤖 ManyChat</div>
-            <div style="font-size:9px;color:var(--gray)">댓글 → DM 자동응답</div>
-          </div>
-          <div style="background:var(--teal-l);border:1px solid var(--teal);border-radius:8px;padding:10px;text-align:center">
-            <div style="font-size:10px;font-weight:700;color:var(--teal);margin-bottom:3px">🤖 Loops.so</div>
-            <div style="font-size:9px;color:var(--gray)">퀴즈→이메일 시퀀스</div>
-          </div>
-          <div style="background:var(--green-l);border:1px solid var(--green);border-radius:8px;padding:10px;text-align:center">
-            <div style="font-size:10px;font-weight:700;color:var(--green);margin-bottom:3px">🤖 Make</div>
-            <div style="font-size:9px;color:var(--gray)">결제→캘린더 자동화</div>
-          </div>
-        </div>
-        <div style="background:var(--teal-l);border-radius:8px;padding:10px;text-align:center;font-size:11px;font-weight:700;color:var(--teal)">
-          💰 Stripe 결제 → Calendly 예약 → 투어 완료
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- AI 에이전트 역할 분담 -->
-  <div class="card" style="margin-bottom:16px">
-    <div class="card-title">AI 에이전트 역할 분담표</div>
-    <table class="rev-table" style="margin-top:8px">
-      <tr><th>역할</th><th>담당 AI</th><th>하는 일</th><th>비용</th><th>세팅 여부</th></tr>
-      <tr><td>전략가 + 카피라이터</td><td>Claude (나)</td><td>매일 브리핑 · 스크립트 · 캡션 · Reddit 답변 초안 · 의사결정</td><td>$20/월</td><td style="color:var(--teal);font-weight:700">✅ 완료</td></tr>
-      <tr><td>영상 편집 AI</td><td>CapCut AI</td><td>자막 자동생성 · 편집 · 9:16 출력</td><td>무료</td><td style="color:var(--teal);font-weight:700">✅ 완료</td></tr>
-      <tr><td>SNS 배포 매니저</td><td>Buffer</td><td>TikTok + Reels + Shorts 동시 예약 발행</td><td>무료</td><td style="color:var(--amber);font-weight:700">⚠️ 세팅 필요</td></tr>
-      <tr><td>이메일 마케터</td><td>Loops.so</td><td>퀴즈완료→이메일→48h 리마인더→7일 팁→14일 CTA</td><td>무료</td><td style="color:var(--amber);font-weight:700">⚠️ 세팅 필요</td></tr>
-      <tr><td>DM 어시스턴트</td><td>ManyChat</td><td>인스타 "QUIZ" 댓글 → seoulbound.com 링크 자동 DM</td><td>무료/$15</td><td style="color:var(--coral);font-weight:700">❌ 미세팅</td></tr>
-      <tr><td>리서처</td><td>Perplexity</td><td>서울 여행 트렌드 · 경쟁사 분석</td><td>무료</td><td style="color:var(--coral);font-weight:700">❌ 미세팅</td></tr>
-      <tr><td>Reddit 모니터</td><td>Make</td><td>키워드 감지 → 에스더 알림 → Claude 답변 초안</td><td>무료</td><td style="color:var(--coral);font-weight:700">❌ 미세팅</td></tr>
-      <tr><td>자동화 허브</td><td>Make</td><td>Stripe→Calendar · 리뷰수집 · 리드등록</td><td>무료</td><td style="color:var(--coral);font-weight:700">❌ 미세팅</td></tr>
-      <tr><td>이미지 생성</td><td>Canva AI</td><td>썸네일 · 캐러셀 · PDF 디자인</td><td>무료</td><td style="color:var(--amber);font-weight:700">⚠️ 계정만</td></tr>
-    </table>
-  </div>
-
-  <!-- 하루 2시간 루틴 -->
-  <div class="card" style="margin-bottom:16px">
-    <div class="card-title">에스더 하루 2시간 루틴 (나머지는 AI)</div>
-    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:10px">
-      <div style="background:var(--teal-l);border-radius:8px;padding:10px;text-align:center">
-        <div style="font-size:10px;font-weight:700;color:var(--teal);margin-bottom:4px">09:00</div>
-        <div style="font-size:11px;font-weight:700">Claude 브리핑</div>
-        <div style="font-size:9px;color:var(--gray);margin-top:3px">지표 공유 → 오늘 스크립트 받기</div>
-        <div style="font-size:9px;background:var(--teal);color:white;border-radius:99px;padding:1px 6px;margin-top:4px">20분</div>
-      </div>
-      <div style="background:var(--coral-l);border-radius:8px;padding:10px;text-align:center">
-        <div style="font-size:10px;font-weight:700;color:var(--coral);margin-bottom:4px">10:00</div>
-        <div style="font-size:11px;font-weight:700">촬영</div>
-        <div style="font-size:9px;color:var(--gray);margin-top:3px">이태원/명동 인터뷰 3명</div>
-        <div style="font-size:9px;background:var(--coral);color:white;border-radius:99px;padding:1px 6px;margin-top:4px">30분</div>
-      </div>
-      <div style="background:var(--blue-l);border-radius:8px;padding:10px;text-align:center">
-        <div style="font-size:10px;font-weight:700;color:var(--blue);margin-bottom:4px">10:30</div>
-        <div style="font-size:11px;font-weight:700">AI 편집+발행</div>
-        <div style="font-size:9px;color:var(--gray);margin-top:3px">CapCut AI → Buffer 예약</div>
-        <div style="font-size:9px;background:var(--blue);color:white;border-radius:99px;padding:1px 6px;margin-top:4px">30분</div>
-      </div>
-      <div style="background:var(--amber-l);border-radius:8px;padding:10px;text-align:center">
-        <div style="font-size:10px;font-weight:700;color:var(--amber);margin-bottom:4px">14:00</div>
-        <div style="font-size:11px;font-weight:700">Reddit 확인</div>
-        <div style="font-size:9px;color:var(--gray);margin-top:3px">Claude 초안 검토 → 발행</div>
-        <div style="font-size:9px;background:var(--amber);color:white;border-radius:99px;padding:1px 6px;margin-top:4px">20분</div>
-      </div>
-      <div style="background:var(--gray-l);border-radius:8px;padding:10px;text-align:center">
-        <div style="font-size:10px;font-weight:700;color:var(--gray);margin-bottom:4px">이후</div>
-        <div style="font-size:11px;font-weight:700">AI가 전부</div>
-        <div style="font-size:9px;color:var(--gray);margin-top:3px">ManyChat · Loops · Make</div>
-        <div style="font-size:9px;background:var(--gray);color:white;border-radius:99px;padding:1px 6px;margin-top:4px">자동</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Claude 매일 브리핑 프롬프트 -->
-  <div class="card" style="margin-bottom:16px">
-    <div class="card-title">매일 아침 Claude 브리핑 템플릿 (복붙)</div>
-    <div style="background:var(--gray-l);border-radius:8px;padding:12px;font-size:11px;line-height:1.7;font-family:monospace;margin-top:8px;border-left:3px solid var(--teal)">
-      오늘 Seoulbound 현황:<br>
-      - Stripe 결제: [건수]건<br>
-      - 퀴즈 완료: [명]명<br>
-      - TikTok 어제 영상 조회수: [수]<br>
-      - 뉴스레터 구독자: [명]명<br><br>
-      오늘 [요일], 촬영 장소: [이태원/명동/남대문]<br>
-      인터뷰 주제: [주제 or 모르면 추천해줘]<br><br>
-      오늘 할 일 3개 + TikTok 스크립트 + 인스타 캡션 + Reddit 답변 초안 줘.
-    </div>
-    <button onclick="navigator.clipboard&&navigator.clipboard.writeText(document.querySelector('.aiops-copy').innerText)" style="margin-top:8px;background:var(--teal-l);color:var(--teal);border:none;border-radius:6px;padding:5px 10px;font-size:11px;font-weight:700;cursor:pointer">복사</button>
-  </div>
-
-  <!-- 세팅 체크리스트 -->
+<!-- EXPENSE -->
+<div class="pg" id="p-expense">
+  <div class="pt">💸 지출 현황</div>
+  <div class="ps">월별 고정 지출</div>
   <div class="card">
-    <div class="card-title">AI 자동화 세팅 체크리스트</div>
-    <div style="margin-top:10px">
-      <div style="font-size:10px;font-weight:700;color:var(--teal);padding:6px 0 4px;text-transform:uppercase;letter-spacing:.05em">이번 주 (MVP 론칭 후)</div>
-      <div class="ci" onclick="chk(this)"><div class="cb done"></div><div class="ct done">Buffer 계정 + TikTok/인스타/YouTube 연결</div></div>
-      <div class="ci" onclick="chk(this)"><div class="cb"></div><div class="ct">Loops.so 이메일 시퀀스 4개 세팅 (즉시/48h/7일/14일)</div></div>
-      <div class="ci" onclick="chk(this)"><div class="cb"></div><div class="ct">ManyChat 인스타 QUIZ 댓글 → DM 자동화</div></div>
-      <div style="font-size:10px;font-weight:700;color:var(--amber);padding:10px 0 4px;text-transform:uppercase;letter-spacing:.05em">다음 달</div>
-      <div class="ci" onclick="chk(this)"><div class="cb"></div><div class="ct">Make 자동화: Stripe→Google Calendar 자동 일정</div></div>
-      <div class="ci" onclick="chk(this)"><div class="cb"></div><div class="ct">Make 자동화: 투어 완료 24h 후 리뷰 이메일</div></div>
-      <div class="ci" onclick="chk(this)"><div class="cb"></div><div class="ct">Make 자동화: Reddit 키워드 감지 → 알림</div></div>
-      <div class="ci" onclick="chk(this)"><div class="cb"></div><div class="ct">GummySearch Reddit 모니터링 세팅</div></div>
-    </div>
+    <table class="rtbl">
+      <tr><th>서비스</th><th>용도</th><th>금액</th><th>메모</th></tr>
+      <tr><td>Claude Pro</td><td>AI 전략/카피</td><td>$20/월</td><td><input class="ed" placeholder="메모"></td></tr>
+      <tr><td>Cursor</td><td>AI 코딩</td><td>$20/월</td><td><input class="ed" placeholder="메모"></td></tr>
+      <tr><td>Vercel</td><td>호스팅</td><td>$20/월</td><td><input class="ed" placeholder="메모"></td></tr>
+      <tr><td>Supabase</td><td>DB</td><td>무료</td><td><input class="ed" placeholder="메모"></td></tr>
+      <tr><td>Stripe</td><td>결제 수수료</td><td>2.9%+30¢</td><td><input class="ed" placeholder="메모"></td></tr>
+      <tr><td>Namecheap</td><td>도메인</td><td>$15/년</td><td><input class="ed" placeholder="메모"></td></tr>
+    </table>
   </div>
 </div>
 
-<div id="expense" class="page">
-  <div class="page-header">
-    <div class="page-title">💸 지출 현황</div>
-    <div class="page-date">월별 지출 추적</div>
-  </div>
-
-  <div class="card" style="margin-bottom:16px">
-    <div class="card-title">월간 고정 지출 (구독)</div>
-    <table class="rev-table" style="margin-top:8px">
-      <tr><th>서비스</th><th>용도</th><th>금액</th><th>결제일</th><th>메모</th></tr>
-      <tr><td>Claude Pro</td><td>AI 전략/카피</td><td>$20/월</td><td>매월</td><td><input class="editable" placeholder="메모"></td></tr>
-      <tr><td>Cursor</td><td>AI 코딩</td><td>$20/월</td><td>매월</td><td><input class="editable" placeholder="메모"></td></tr>
-      <tr><td>Vercel Pro</td><td>호스팅</td><td>$20/월</td><td>매월</td><td><input class="editable" placeholder="메모"></td></tr>
-      <tr><td>Supabase</td><td>DB</td><td>무료</td><td>—</td><td><input class="editable" placeholder="메모"></td></tr>
-      <tr><td>Resend</td><td>이메일</td><td>무료</td><td>—</td><td><input class="editable" placeholder="메모"></td></tr>
-      <tr><td>Stripe</td><td>결제 수수료</td><td>2.9%+30¢</td><td>건당</td><td><input class="editable" placeholder="메모"></td></tr>
-      <tr><td>Namecheap</td><td>도메인</td><td>$15/년</td><td>연간</td><td><input class="editable" placeholder="메모"></td></tr>
-      <tr><td>Calendly</td><td>예약</td><td>무료</td><td>—</td><td><input class="editable" placeholder="메모"></td></tr>
-      <tr><td><input class="editable" placeholder="추가 서비스"></td><td><input class="editable" placeholder="용도"></td><td><input class="editable" placeholder="금액"></td><td><input class="editable" placeholder="결제일"></td><td><input class="editable" placeholder="메모"></td></tr>
-      <tr class="rev-total"><td><strong>월 고정 지출</strong></td><td></td><td><strong>~$60/월</strong></td><td></td><td></td></tr>
-    </table>
-  </div>
-
-  <div class="card" style="margin-bottom:16px">
-    <div class="card-title">변동 지출 추가</div>
-    <table class="rev-table" style="margin-top:8px">
-      <tr><th>날짜</th><th>항목</th><th>카테고리</th><th>금액</th><th>메모</th></tr>
-      <tr><td><input class="editable" placeholder="4/14"></td><td><input class="editable" placeholder="지출 항목"></td><td><input class="editable" placeholder="카테고리"></td><td><input class="editable" placeholder="$0"></td><td><input class="editable" placeholder="메모"></td></tr>
-      <tr><td><input class="editable" placeholder="날짜"></td><td><input class="editable" placeholder="지출 항목"></td><td><input class="editable" placeholder="카테고리"></td><td><input class="editable" placeholder="$0"></td><td><input class="editable" placeholder="메모"></td></tr>
-      <tr><td><input class="editable" placeholder="날짜"></td><td><input class="editable" placeholder="지출 항목"></td><td><input class="editable" placeholder="카테고리"></td><td><input class="editable" placeholder="$0"></td><td><input class="editable" placeholder="메모"></td></tr>
-    </table>
-  </div>
-
-  <div class="g3">
-    <div class="card">
-      <div class="card-title">4월 지출 합계</div>
-      <div style="font-family:serif;font-size:28px;font-weight:700;color:var(--coral)"><input class="editable" style="font-size:28px;font-weight:700;color:var(--coral);width:120px" placeholder="$0"></div>
-      <div style="font-size:11px;color:var(--gray);margin-top:4px">고정 $60 + 변동</div>
-    </div>
-    <div class="card">
-      <div class="card-title">4월 순이익</div>
-      <div style="font-family:serif;font-size:28px;font-weight:700;color:var(--teal)"><input class="editable" style="font-size:28px;font-weight:700;color:var(--teal);width:120px" placeholder="$0"></div>
-      <div style="font-size:11px;color:var(--gray);margin-top:4px">수익 - 지출</div>
-    </div>
-    <div class="card">
-      <div class="card-title">손익분기점</div>
-      <div style="font-family:serif;font-size:28px;font-weight:700;color:var(--amber)">$60</div>
-      <div style="font-size:11px;color:var(--gray);margin-top:4px">월 고정 지출 커버</div>
-    </div>
-  </div>
-</div>
-
-<div id="accounts" class="page">
-  <div class="page-header">
-    <div class="page-title">🔑 계정 & 즐겨찾기</div>
-    <div class="page-date">AI 도구 링크 + 계정 정보</div>
-  </div>
-  <div style="background:var(--amber-l);border:1px solid var(--amber);border-radius:8px;padding:10px 14px;margin-bottom:16px;font-size:11px;color:var(--amber)">
-    <strong>보안 주의:</strong> 이 파일은 로컬에서만 사용해요. GitHub에 올리지 마세요!
-  </div>
-
-  <!-- AI 도구 빠른 링크 -->
-  <div class="card" style="margin-bottom:14px">
-    <div class="card-title">⚡ AI 도구 빠른 링크</div>
-    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:10px">
-      <a href="https://claude.ai" target="_blank" style="text-decoration:none">
-        <div style="background:var(--teal-l);border:1px solid var(--teal);border-radius:10px;padding:12px;text-align:center;cursor:pointer;transition:all .15s">
-          <div style="font-size:20px;margin-bottom:4px">🤖</div>
-          <div style="font-size:11px;font-weight:700;color:var(--teal)">Claude</div>
-          <div style="font-size:9px;color:var(--gray);margin-top:2px">전략 · 카피 · 코드</div>
-        </div>
-      </a>
-      <a href="https://cursor.com" target="_blank" style="text-decoration:none">
-        <div style="background:var(--blue-l);border:1px solid var(--blue);border-radius:10px;padding:12px;text-align:center;cursor:pointer;transition:all .15s">
-          <div style="font-size:20px;margin-bottom:4px">💻</div>
-          <div style="font-size:11px;font-weight:700;color:var(--blue)">Cursor</div>
-          <div style="font-size:9px;color:var(--gray);margin-top:2px">AI 코딩 에디터</div>
-        </div>
-      </a>
-      <a href="https://chatgpt.com" target="_blank" style="text-decoration:none">
-        <div style="background:var(--green-l);border:1px solid var(--green);border-radius:10px;padding:12px;text-align:center;cursor:pointer;transition:all .15s">
-          <div style="font-size:20px;margin-bottom:4px">💬</div>
-          <div style="font-size:11px;font-weight:700;color:var(--green)">ChatGPT</div>
-          <div style="font-size:9px;color:var(--gray);margin-top:2px">카피 · 이메일</div>
-        </div>
-      </a>
-      <a href="https://v0.dev" target="_blank" style="text-decoration:none">
-        <div style="background:var(--gray-l);border:1px solid var(--border);border-radius:10px;padding:12px;text-align:center;cursor:pointer;transition:all .15s">
-          <div style="font-size:20px;margin-bottom:4px">🎨</div>
-          <div style="font-size:11px;font-weight:700;color:var(--ink)">v0.dev</div>
-          <div style="font-size:9px;color:var(--gray);margin-top:2px">UI 컴포넌트</div>
-        </div>
-      </a>
-      <a href="https://perplexity.ai" target="_blank" style="text-decoration:none">
-        <div style="background:var(--purple-l);border:1px solid var(--purple);border-radius:10px;padding:12px;text-align:center;cursor:pointer;transition:all .15s">
-          <div style="font-size:20px;margin-bottom:4px">🔍</div>
-          <div style="font-size:11px;font-weight:700;color:var(--purple)">Perplexity</div>
-          <div style="font-size:9px;color:var(--gray);margin-top:2px">AI 리서치</div>
-        </div>
-      </a>
-      <a href="https://canva.com" target="_blank" style="text-decoration:none">
-        <div style="background:var(--coral-l);border:1px solid var(--coral);border-radius:10px;padding:12px;text-align:center;cursor:pointer;transition:all .15s">
-          <div style="font-size:20px;margin-bottom:4px">🖼️</div>
-          <div style="font-size:11px;font-weight:700;color:var(--coral)">Canva</div>
-          <div style="font-size:9px;color:var(--gray);margin-top:2px">디자인 · 이미지</div>
-        </div>
-      </a>
-      <a href="https://capcut.com" target="_blank" style="text-decoration:none">
-        <div style="background:var(--amber-l);border:1px solid var(--amber);border-radius:10px;padding:12px;text-align:center;cursor:pointer;transition:all .15s">
-          <div style="font-size:20px;margin-bottom:4px">🎬</div>
-          <div style="font-size:11px;font-weight:700;color:var(--amber)">CapCut</div>
-          <div style="font-size:9px;color:var(--gray);margin-top:2px">영상 편집</div>
-        </div>
-      </a>
-      <a href="https://midjourney.com" target="_blank" style="text-decoration:none">
-        <div style="background:var(--gray-l);border:1px solid var(--border);border-radius:10px;padding:12px;text-align:center;cursor:pointer;transition:all .15s">
-          <div style="font-size:20px;margin-bottom:4px">🖌️</div>
-          <div style="font-size:11px;font-weight:700;color:var(--ink)">Midjourney</div>
-          <div style="font-size:9px;color:var(--gray);margin-top:2px">AI 이미지</div>
-        </div>
-      </a>
-    </div>
-  </div>
-
-  <!-- Seoulbound 핵심 도구 링크 -->
-  <div class="card" style="margin-bottom:14px">
-    <div class="card-title">🚀 Seoulbound 핵심 도구</div>
-    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:10px">
-      <a href="https://seoulbound.com" target="_blank" style="text-decoration:none">
-        <div style="background:var(--teal-l);border:2px solid var(--teal);border-radius:10px;padding:12px;text-align:center">
-          <div style="font-size:20px;margin-bottom:4px">🌐</div>
-          <div style="font-size:11px;font-weight:700;color:var(--teal)">seoulbound.com</div>
-          <div style="font-size:9px;color:var(--gray);margin-top:2px">라이브 사이트</div>
-        </div>
-      </a>
-      <a href="https://vercel.com" target="_blank" style="text-decoration:none">
-        <div style="background:var(--gray-l);border:1px solid var(--border);border-radius:10px;padding:12px;text-align:center">
-          <div style="font-size:20px;margin-bottom:4px">▲</div>
-          <div style="font-size:11px;font-weight:700;color:var(--ink)">Vercel</div>
-          <div style="font-size:9px;color:var(--gray);margin-top:2px">배포 · 로그</div>
-        </div>
-      </a>
-      <a href="https://stripe.com/dashboard" target="_blank" style="text-decoration:none">
-        <div style="background:var(--purple-l);border:1px solid var(--purple);border-radius:10px;padding:12px;text-align:center">
-          <div style="font-size:20px;margin-bottom:4px">💳</div>
-          <div style="font-size:11px;font-weight:700;color:var(--purple)">Stripe</div>
-          <div style="font-size:9px;color:var(--gray);margin-top:2px">결제 대시보드</div>
-        </div>
-      </a>
-      <a href="https://supabase.com" target="_blank" style="text-decoration:none">
-        <div style="background:var(--green-l);border:1px solid var(--green);border-radius:10px;padding:12px;text-align:center">
-          <div style="font-size:20px;margin-bottom:4px">🗄️</div>
-          <div style="font-size:11px;font-weight:700;color:var(--green)">Supabase</div>
-          <div style="font-size:9px;color:var(--gray);margin-top:2px">DB · 퀴즈 데이터</div>
-        </div>
-      </a>
-      <a href="https://github.com/namsan-greenapple" target="_blank" style="text-decoration:none">
-        <div style="background:var(--gray-l);border:1px solid var(--border);border-radius:10px;padding:12px;text-align:center">
-          <div style="font-size:20px;margin-bottom:4px">🐙</div>
-          <div style="font-size:11px;font-weight:700;color:var(--ink)">GitHub</div>
-          <div style="font-size:9px;color:var(--gray);margin-top:2px">코드 저장소</div>
-        </div>
-      </a>
-      <a href="https://calendly.com" target="_blank" style="text-decoration:none">
-        <div style="background:var(--blue-l);border:1px solid var(--blue);border-radius:10px;padding:12px;text-align:center">
-          <div style="font-size:20px;margin-bottom:4px">📅</div>
-          <div style="font-size:11px;font-weight:700;color:var(--blue)">Calendly</div>
-          <div style="font-size:9px;color:var(--gray);margin-top:2px">투어 예약</div>
-        </div>
-      </a>
-      <a href="https://gumroad.com" target="_blank" style="text-decoration:none">
-        <div style="background:var(--coral-l);border:1px solid var(--coral);border-radius:10px;padding:12px;text-align:center">
-          <div style="font-size:20px;margin-bottom:4px">📄</div>
-          <div style="font-size:11px;font-weight:700;color:var(--coral)">Gumroad</div>
-          <div style="font-size:9px;color:var(--gray);margin-top:2px">PDF 판매</div>
-        </div>
-      </a>
-      <a href="https://loops.so" target="_blank" style="text-decoration:none">
-        <div style="background:var(--amber-l);border:1px solid var(--amber);border-radius:10px;padding:12px;text-align:center">
-          <div style="font-size:20px;margin-bottom:4px">📧</div>
-          <div style="font-size:11px;font-weight:700;color:var(--amber)">Loops.so</div>
-          <div style="font-size:9px;color:var(--gray);margin-top:2px">뉴스레터</div>
-        </div>
-      </a>
-    </div>
-  </div>
-
-  <!-- 계정 정보 테이블 -->
-  <div class="card" style="margin-bottom:14px">
-    <div class="card-title">개발 & 호스팅 계정</div>
-    <table class="rev-table" style="margin-top:8px">
-      <tr><th>서비스</th><th>이메일/아이디</th><th>비밀번호 힌트</th><th>URL 바로가기</th><th>메모</th></tr>
-      <tr><td>GitHub</td><td>namsan-greenapple</td><td><input class="editable" placeholder="힌트"></td><td><a href="https://github.com" target="_blank" style="color:var(--teal);font-size:11px">열기 →</a></td><td><input class="editable" placeholder="메모"></td></tr>
-      <tr><td>Vercel</td><td><input class="editable" placeholder="이메일"></td><td><input class="editable" placeholder="힌트"></td><td><a href="https://vercel.com" target="_blank" style="color:var(--teal);font-size:11px">열기 →</a></td><td><input class="editable" placeholder="메모"></td></tr>
-      <tr><td>Supabase</td><td><input class="editable" placeholder="이메일"></td><td><input class="editable" placeholder="힌트"></td><td><a href="https://supabase.com" target="_blank" style="color:var(--teal);font-size:11px">열기 →</a></td><td><input class="editable" placeholder="메모"></td></tr>
-      <tr><td>Namecheap</td><td><input class="editable" placeholder="이메일"></td><td><input class="editable" placeholder="힌트"></td><td><a href="https://namecheap.com" target="_blank" style="color:var(--teal);font-size:11px">열기 →</a></td><td>seoulbound.com</td></tr>
-      <tr><td>Cursor</td><td><input class="editable" placeholder="이메일"></td><td><input class="editable" placeholder="힌트"></td><td><a href="https://cursor.com" target="_blank" style="color:var(--teal);font-size:11px">열기 →</a></td><td>AI 코딩 에디터</td></tr>
-    </table>
-  </div>
-
-  <div class="card" style="margin-bottom:14px">
-    <div class="card-title">수익 & 결제 계정</div>
-    <table class="rev-table" style="margin-top:8px">
-      <tr><th>서비스</th><th>이메일/아이디</th><th>비밀번호 힌트</th><th>URL 바로가기</th><th>메모</th></tr>
-      <tr><td>Stripe</td><td><input class="editable" placeholder="이메일"></td><td><input class="editable" placeholder="힌트"></td><td><a href="https://stripe.com/dashboard" target="_blank" style="color:var(--teal);font-size:11px">열기 →</a></td><td>결제 처리</td></tr>
-      <tr><td>Gumroad</td><td><input class="editable" placeholder="이메일"></td><td><input class="editable" placeholder="힌트"></td><td><a href="https://gumroad.com" target="_blank" style="color:var(--teal);font-size:11px">열기 →</a></td><td>PDF 판매</td></tr>
-      <tr><td>Calendly</td><td><input class="editable" placeholder="이메일"></td><td><input class="editable" placeholder="힌트"></td><td><a href="https://calendly.com" target="_blank" style="color:var(--teal);font-size:11px">열기 →</a></td><td>투어 예약</td></tr>
-    </table>
-  </div>
-
-  <div class="card" style="margin-bottom:14px">
-    <div class="card-title">AI 도구 계정</div>
-    <table class="rev-table" style="margin-top:8px">
-      <tr><th>서비스</th><th>이메일/아이디</th><th>비밀번호 힌트</th><th>URL 바로가기</th><th>메모</th></tr>
-      <tr><td>Claude (Anthropic)</td><td><input class="editable" placeholder="이메일"></td><td><input class="editable" placeholder="힌트"></td><td><a href="https://claude.ai" target="_blank" style="color:var(--teal);font-size:11px">열기 →</a></td><td>전략 · 카피 · 코드</td></tr>
-      <tr><td>ChatGPT</td><td><input class="editable" placeholder="이메일"></td><td><input class="editable" placeholder="힌트"></td><td><a href="https://chatgpt.com" target="_blank" style="color:var(--teal);font-size:11px">열기 →</a></td><td>카피라이팅</td></tr>
-      <tr><td>Perplexity</td><td><input class="editable" placeholder="이메일"></td><td><input class="editable" placeholder="힌트"></td><td><a href="https://perplexity.ai" target="_blank" style="color:var(--teal);font-size:11px">열기 →</a></td><td>AI 리서치</td></tr>
-      <tr><td>Midjourney</td><td><input class="editable" placeholder="이메일"></td><td><input class="editable" placeholder="힌트"></td><td><a href="https://midjourney.com" target="_blank" style="color:var(--teal);font-size:11px">열기 →</a></td><td>AI 이미지</td></tr>
-      <tr><td>v0.dev</td><td><input class="editable" placeholder="이메일"></td><td><input class="editable" placeholder="힌트"></td><td><a href="https://v0.dev" target="_blank" style="color:var(--teal);font-size:11px">열기 →</a></td><td>UI 컴포넌트</td></tr>
-    </table>
-  </div>
-
-  <div class="card" style="margin-bottom:14px">
-    <div class="card-title">마케팅 & SNS 계정</div>
-    <table class="rev-table" style="margin-top:8px">
-      <tr><th>서비스</th><th>이메일/아이디</th><th>비밀번호 힌트</th><th>URL 바로가기</th><th>메모</th></tr>
-      <tr><td>Instagram</td><td><input class="editable" placeholder="@아이디"></td><td><input class="editable" placeholder="힌트"></td><td><a href="https://instagram.com" target="_blank" style="color:var(--teal);font-size:11px">열기 →</a></td><td>@seoulbound.guide</td></tr>
-      <tr><td>TikTok</td><td><input class="editable" placeholder="@아이디"></td><td><input class="editable" placeholder="힌트"></td><td><a href="https://tiktok.com" target="_blank" style="color:var(--teal);font-size:11px">열기 →</a></td><td><input class="editable" placeholder="메모"></td></tr>
-      <tr><td>Resend</td><td><input class="editable" placeholder="이메일"></td><td><input class="editable" placeholder="힌트"></td><td><a href="https://resend.com" target="_blank" style="color:var(--teal);font-size:11px">열기 →</a></td><td>트랜잭션 이메일</td></tr>
-      <tr><td>Loops.so</td><td><input class="editable" placeholder="이메일"></td><td><input class="editable" placeholder="힌트"></td><td><a href="https://loops.so" target="_blank" style="color:var(--teal);font-size:11px">열기 →</a></td><td>뉴스레터</td></tr>
-      <tr><td>Buffer</td><td><input class="editable" placeholder="이메일"></td><td><input class="editable" placeholder="힌트"></td><td><a href="https://buffer.com" target="_blank" style="color:var(--teal);font-size:11px">열기 →</a></td><td>SNS 예약</td></tr>
-    </table>
-  </div>
-
+<!-- ACCOUNTS -->
+<div class="pg" id="p-accounts">
+  <div class="pt">🔑 계정 & 즐겨찾기</div>
+  <div class="ps">AI 도구 빠른 링크 + 계정 정보</div>
   <div class="card">
-    <div class="card-title">API 키 힌트 (앞 8자리만 — 보안)</div>
-    <table class="rev-table" style="margin-top:8px">
-      <tr><th>서비스</th><th>키 힌트</th><th>저장 위치</th><th>메모</th></tr>
-      <tr><td>Anthropic API</td><td>sk-ant-ap...</td><td>Vercel 환경변수</td><td><input class="editable" placeholder="메모"></td></tr>
-      <tr><td>Stripe Secret</td><td>sk_test_5...</td><td>Vercel 환경변수</td><td><input class="editable" placeholder="메모"></td></tr>
-      <tr><td>Resend API</td><td>re_T8eLKJ...</td><td>Vercel 환경변수</td><td><input class="editable" placeholder="메모"></td></tr>
-      <tr><td>Supabase Service Role</td><td>eyJhbGci...</td><td>Vercel 환경변수</td><td><input class="editable" placeholder="메모"></td></tr>
-      <tr><td><input class="editable" placeholder="추가 서비스"></td><td><input class="editable" placeholder="힌트"></td><td><input class="editable" placeholder="저장 위치"></td><td><input class="editable" placeholder="메모"></td></tr>
+    <div class="ct">⚡ AI 도구</div>
+    <div class="tg">
+      <a class="tc-a" href="https://claude.ai" target="_blank"><div style="font-size:20px;margin-bottom:4px">🤖</div><div style="font-size:11px;font-weight:700;color:#0F5F4A">Claude</div><div style="font-size:9px;color:#6B6863">전략·카피·코드</div></a>
+      <a class="tc-a" href="https://cursor.com" target="_blank"><div style="font-size:20px;margin-bottom:4px">💻</div><div style="font-size:11px;font-weight:700;color:#1A5FA3">Cursor</div><div style="font-size:9px;color:#6B6863">AI 코딩</div></a>
+      <a class="tc-a" href="https://chatgpt.com" target="_blank"><div style="font-size:20px;margin-bottom:4px">💬</div><div style="font-size:11px;font-weight:700;color:#2D7A3A">ChatGPT</div><div style="font-size:9px;color:#6B6863">카피·이메일</div></a>
+      <a class="tc-a" href="https://perplexity.ai" target="_blank"><div style="font-size:20px;margin-bottom:4px">🔍</div><div style="font-size:11px;font-weight:700;color:#3C3489">Perplexity</div><div style="font-size:9px;color:#6B6863">AI 리서치</div></a>
+      <a class="tc-a" href="https://canva.com" target="_blank"><div style="font-size:20px;margin-bottom:4px">🖼️</div><div style="font-size:11px;font-weight:700;color:#A33C1D">Canva</div><div style="font-size:9px;color:#6B6863">디자인</div></a>
+      <a class="tc-a" href="https://capcut.com" target="_blank"><div style="font-size:20px;margin-bottom:4px">🎬</div><div style="font-size:11px;font-weight:700;color:#BA7517">CapCut</div><div style="font-size:9px;color:#6B6863">영상 편집</div></a>
+      <a class="tc-a" href="https://v0.dev" target="_blank"><div style="font-size:20px;margin-bottom:4px">🎨</div><div style="font-size:11px;font-weight:700">v0.dev</div><div style="font-size:9px;color:#6B6863">UI 컴포넌트</div></a>
+      <a class="tc-a" href="https://midjourney.com" target="_blank"><div style="font-size:20px;margin-bottom:4px">🖌️</div><div style="font-size:11px;font-weight:700">Midjourney</div><div style="font-size:9px;color:#6B6863">AI 이미지</div></a>
+    </div>
+  </div>
+  <div class="card">
+    <div class="ct">🚀 Seoulbound 핵심 도구</div>
+    <div class="tg">
+      <a class="tc-a" href="https://seoulbound.com" target="_blank"><div style="font-size:20px;margin-bottom:4px">🌐</div><div style="font-size:11px;font-weight:700;color:#0F5F4A">seoulbound.com</div><div style="font-size:9px;color:#6B6863">라이브 사이트</div></a>
+      <a class="tc-a" href="https://vercel.com" target="_blank"><div style="font-size:20px;margin-bottom:4px">▲</div><div style="font-size:11px;font-weight:700">Vercel</div><div style="font-size:9px;color:#6B6863">배포·로그</div></a>
+      <a class="tc-a" href="https://stripe.com/dashboard" target="_blank"><div style="font-size:20px;margin-bottom:4px">💳</div><div style="font-size:11px;font-weight:700;color:#3C3489">Stripe</div><div style="font-size:9px;color:#6B6863">결제 대시보드</div></a>
+      <a class="tc-a" href="https://supabase.com" target="_blank"><div style="font-size:20px;margin-bottom:4px">🗄️</div><div style="font-size:11px;font-weight:700;color:#2D7A3A">Supabase</div><div style="font-size:9px;color:#6B6863">DB·퀴즈 데이터</div></a>
+      <a class="tc-a" href="https://github.com/namsan-greenapple" target="_blank"><div style="font-size:20px;margin-bottom:4px">🐙</div><div style="font-size:11px;font-weight:700">GitHub</div><div style="font-size:9px;color:#6B6863">코드 저장소</div></a>
+      <a class="tc-a" href="https://calendly.com" target="_blank"><div style="font-size:20px;margin-bottom:4px">📅</div><div style="font-size:11px;font-weight:700;color:#1A5FA3">Calendly</div><div style="font-size:9px;color:#6B6863">투어 예약</div></a>
+      <a class="tc-a" href="https://gumroad.com" target="_blank"><div style="font-size:20px;margin-bottom:4px">📄</div><div style="font-size:11px;font-weight:700;color:#A33C1D">Gumroad</div><div style="font-size:9px;color:#6B6863">PDF 판매</div></a>
+      <a class="tc-a" href="https://loops.so" target="_blank"><div style="font-size:20px;margin-bottom:4px">📧</div><div style="font-size:11px;font-weight:700;color:#BA7517">Loops.so</div><div style="font-size:9px;color:#6B6863">뉴스레터</div></a>
+    </div>
+  </div>
+  <div class="card">
+    <div class="ct">계정 정보</div>
+    <table class="rtbl" style="margin-top:8px">
+      <tr><th>서비스</th><th>이메일/아이디</th><th>비밀번호 힌트</th><th>메모</th></tr>
+      <tr><td>GitHub</td><td>namsan-greenapple</td><td><input class="ed" placeholder="힌트"></td><td><input class="ed" placeholder="메모"></td></tr>
+      <tr><td>Vercel</td><td><input class="ed" placeholder="이메일"></td><td><input class="ed" placeholder="힌트"></td><td><input class="ed" placeholder="메모"></td></tr>
+      <tr><td>Stripe</td><td><input class="ed" placeholder="이메일"></td><td><input class="ed" placeholder="힌트"></td><td><input class="ed" placeholder="메모"></td></tr>
+      <tr><td>Instagram</td><td><input class="ed" placeholder="@아이디"></td><td><input class="ed" placeholder="힌트"></td><td>@seoulbound.guide</td></tr>
+      <tr><td>TikTok</td><td><input class="ed" placeholder="@아이디"></td><td><input class="ed" placeholder="힌트"></td><td><input class="ed" placeholder="메모"></td></tr>
     </table>
   </div>
 </div>
 
-<div id="history" class="page">
-  <div class="page-header">
-    <div class="page-title">📅 날짜별 기록</div>
-    <div class="page-date">매일 자동 저장 — 쌓이는 히스토리</div>
-  </div>
-  <div id="history-list"></div>
-</div>
+</div><!-- /main -->
+</div><!-- /os -->
 
-</div>
-</div>
+<nav class="mob-nav">
+  <button class="mob-ni on" data-page="hub"><span>🏠</span>허브</button>
+  <button class="mob-ni" data-page="daily"><span>☀️</span>데일리</button>
+  <button class="mob-ni" data-page="tasks"><span>✅</span>목표</button>
+  <button class="mob-ni" data-page="revenue"><span>💰</span>수익</button>
+  <button class="mob-ni" data-page="retro"><span>📝</span>회고</button>
+</nav>
+
 <script>
-function go(id,el){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  el.classList.add('active');
-}
-function chk(el){
-  const cb=el.querySelector('.cb');
-  const ct=el.querySelector('.ct');
-  cb.classList.toggle('done');
-  ct.classList.toggle('done');
-}
-const fixedTasks=[
-  {time:'09:00',task:'[AI] Stripe/Supabase 지표 → Claude에게 브리핑',cat:'📊 운영',fixed:true},
-  {time:'09:20',task:'[AI] Claude가 오늘 스크립트+캡션+Reddit 초안 생성',cat:'📊 운영',fixed:true},
-  {time:'10:00',task:'[촬영] 이태원/명동/남대문 인터뷰 3명 (30분)',cat:'🎬 콘텐츠',fixed:true},
-  {time:'10:30',task:'[AI] CapCut Auto Caption → 자막 자동 생성',cat:'🎬 콘텐츠',fixed:true},
-  {time:'11:00',task:'[배포] Buffer로 TikTok+Reels+Shorts 동시 예약',cat:'🎬 콘텐츠',fixed:true},
-  {time:'11:30',task:'[AI] ManyChat 댓글 자동응답 세팅 확인',cat:'📣 마케팅',fixed:true},
-  {time:'14:00',task:'[AI] Claude가 작성한 Reddit 답변 검토 후 발행',cat:'📣 마케팅',fixed:true},
-  {time:'15:00',task:'[AI] Loops.so 이메일 시퀀스 확인',cat:'📣 마케팅',fixed:true},
-  {time:'20:00',task:'[AI] ManyChat이 인스타 DM 자동처리 확인',cat:'📣 마케팅',fixed:true},
-];
-// ── 날짜 유틸 ─────────────────────────────────────────
-const today = () => new Date().toISOString().slice(0,10); // "2026-04-14"
-const todayLabel = () => {
-  const d = new Date();
-  const days = ['일','월','화','수','목','금','토'];
-  return d.getFullYear()+'년 '+(d.getMonth()+1)+'월 '+d.getDate()+'일 · '+days[d.getDay()]+'요일';
-};
+// ─── STORAGE ───
+var K = 'sb2_';
+function sv(k,v){try{localStorage.setItem(K+k,JSON.stringify(v));}catch(e){}}
+function ld(k,d){try{var v=localStorage.getItem(K+k);return v!=null?JSON.parse(v):d;}catch(e){return d;}}
 
-// ── localStorage ────────────────────────────────────
-const STORE = 'seoulbound_os_v2';
-function save(key, val){ try{ localStorage.setItem(STORE+'_'+key, JSON.stringify(val)); }catch(e){} }
-function load(key, def){ try{ const v=localStorage.getItem(STORE+'_'+key); return v!=null?JSON.parse(v):def; }catch(e){ return def; } }
-
-// ── 날짜별 자동 분리 저장 ───────────────────────────
-const LAST_DATE_KEY = 'lastDate';
-function checkNewDay(){
-  const last = load(LAST_DATE_KEY, null);
-  const now = today();
-  if(last && last !== now){
-    // 어제 기록을 히스토리에 저장
-    archiveDay(last);
-    // 오늘 날짜로 리셋
-    save('rowDone', {});
-    save('userTasks', []);
-    userTasks = [];
-  }
-  save(LAST_DATE_KEY, now);
-}
-
-function archiveDay(dateStr){
-  const history = load('history', {});
-  const doneRows = load('rowDone', {});
-  const ut = load('userTasks', []);
-  const all = [...fixedTasks, ...ut];
-  const completed = all.filter((_,i) => doneRows[i]).map(t=>t.task);
-  const total = all.length;
-  history[dateStr] = { completed, total, userTasks: ut };
-  save('history', history);
-}
-
-// ── 체크박스 ────────────────────────────────────────
-function chk(el){
-  const cb=el.querySelector('.cb');
-  const ct=el.querySelector('.ct');
-  cb.classList.toggle('done');
-  ct.classList.toggle('done');
-  saveAllChecks();
-}
-function saveAllChecks(){
-  const state={};
-  document.querySelectorAll('.ci').forEach((el,i)=>{
-    state[i]=el.querySelector('.cb').classList.contains('done');
-  });
-  save('checks', state);
-}
-function loadAllChecks(){
-  const state=load('checks',{});
-  document.querySelectorAll('.ci').forEach((el,i)=>{
-    if(state[i]){
-      el.querySelector('.cb').classList.add('done');
-      el.querySelector('.ct').classList.add('done');
-    }
-  });
-}
-
-// ── 수치/텍스트 저장 ─────────────────────────────────
-function saveInputs(){
-  const vals={};
-  document.querySelectorAll('.editable').forEach((el,i)=>{ vals[i]=el.value; });
-  save('inputs', vals);
-}
-function loadInputs(){
-  const vals=load('inputs',{});
-  document.querySelectorAll('.editable').forEach((el,i)=>{ if(vals[i]) el.value=vals[i]; });
-}
-function saveTextareas(){
-  const vals={};
-  document.querySelectorAll('textarea').forEach((el,i)=>{ vals[i]=el.value; });
-  save('textareas', vals);
-}
-function loadTextareas(){
-  const vals=load('textareas',{});
-  document.querySelectorAll('textarea').forEach((el,i)=>{ if(vals[i]) el.value=vals[i]; });
-}
-
-// ── 데일리 스케줄 ────────────────────────────────────
-let userTasks = load('userTasks', []);
-
-let dragSrcIdx = null;
-
-function renderSchedule(){
-  const allTasks=[...fixedTasks,...userTasks];
-  const order = load('taskOrder', allTasks.map((_,i)=>i));
-  const validOrder = order.filter(i=>i<allTasks.length);
-  const missing = allTasks.map((_,i)=>i).filter(i=>!validOrder.includes(i));
-  const finalOrder = [...validOrder, ...missing];
-
-  const catColors={'📊 운영':'#E1F5EE','🎬 콘텐츠':'#FFE8E4','📧 마케팅':'#EDF4FF','💰 수익':'#FFF3DC','🛠 개발':'#F0EFFD'};
-  const catText={'📊 운영':'#0F5F4A','🎬 콘텐츠':'#A33C1D','📧 마케팅':'#1A5FA3','💰 수익':'#BA7517','🛠 개발':'#3C3489'};
-  const doneRows = load('rowDone', {});
-  const done = Object.values(doneRows).filter(Boolean).length;
-  const total = allTasks.length;
-
-  const pending = finalOrder.filter(i=>!doneRows[i]);
-  const completed = finalOrder.filter(i=>doneRows[i]);
-  const sorted = [...pending, ...completed];
-
-  document.getElementById('schedule-body').innerHTML = sorted.map((origIdx,si) => {
-    const t = allTasks[origIdx];
-    if(!t) return '';
-    const isDone = doneRows[origIdx];
-    return `
-    <div class="daily-row" draggable="true"
-      ondragstart="dragStart(event,${si})"
-      ondragover="dragOver(event)"
-      ondrop="dragDrop(event,${si})"
-      ondragleave="dragLeave(event)"
-      style="opacity:${isDone?'.5':'1'}">
-      <div class="time-cell">
-        <input class="time-edit" type="text" value="${t.time}" placeholder="09:00"
-          onclick="event.stopPropagation()"
-          onblur="updateTime(${origIdx},this.value)"
-          onkeydown="if(event.key==='Enter'){updateTime(${origIdx},this.value);this.blur();event.stopPropagation();}">
-      </div>
-      <div class="task-cell" onclick="chkRow(this.parentElement,${origIdx})">${t.task}${t.fixed?'<span class="fixed-tag">고정</span>':''}</div>
-      <div onclick="chkRow(this.parentElement,${origIdx})"><span class="cat-pill" style="background:${catColors[t.cat]||'#f5f3ee'};color:${catText[t.cat]||'#6b6863'}">${t.cat}</span></div>
-      <div class="check-cell" onclick="chkRow(this.parentElement,${origIdx})"><div class="cb ${isDone?'done':''}"></div></div>
-      <div style="display:flex;align-items:center;justify-content:center;">
-        <button onclick="event.stopPropagation();deleteScheduleTask(${origIdx})" style="border:none;background:none;color:#C8C5BE;cursor:pointer;font-size:13px;padding:2px 4px;border-radius:4px;" onmouseover="this.style.color='#A33C1D';this.style.background='#FFF0EB'" onmouseout="this.style.color='#C8C5BE';this.style.background='none'">✕</button>
-      </div>
-    </div>`;
-  }).join('') + (completed.length > 0 ? `
-    <div style="padding:8px 12px;background:var(--teal-l);font-size:10px;font-weight:700;color:var(--teal);letter-spacing:.05em;text-transform:uppercase">
-      완료 ${done}/${total} — 완료된 항목은 아래로
-    </div>` : '');
-}
-
-function updateTime(idx, newTime){
-  const allTasks=[...fixedTasks,...userTasks];
-  if(idx < fixedTasks.length) fixedTasks[idx].time = newTime;
-  else {
-    const ui = idx - fixedTasks.length;
-    if(userTasks[ui]) userTasks[ui].time = newTime;
-    save('userTasks', userTasks);
-  }
-  renderSchedule();
-}
-
-function dragStart(e, si){
-  dragSrcIdx = si;
-  e.currentTarget.classList.add('dragging');
-  e.dataTransfer.effectAllowed='move';
-}
-function dragOver(e){
-  e.preventDefault();
-  e.currentTarget.classList.add('drag-over');
-  e.dataTransfer.dropEffect='move';
-}
-function dragLeave(e){ e.currentTarget.classList.remove('drag-over'); }
-function dragDrop(e, targetSi){
-  e.preventDefault();
-  e.currentTarget.classList.remove('drag-over');
-  if(dragSrcIdx===null||dragSrcIdx===targetSi) return;
-  const allTasks=[...fixedTasks,...userTasks];
-  const doneRows=load('rowDone',{});
-  const order=load('taskOrder',allTasks.map((_,i)=>i));
-  const validOrder=order.filter(i=>i<allTasks.length);
-  const missing=allTasks.map((_,i)=>i).filter(i=>!validOrder.includes(i));
-  const finalOrder=[...validOrder,...missing];
-  const pending=finalOrder.filter(i=>!doneRows[i]);
-  const completed=finalOrder.filter(i=>doneRows[i]);
-  const sorted=[...pending,...completed];
-  const moved=sorted.splice(dragSrcIdx,1)[0];
-  sorted.splice(targetSi,0,moved);
-  save('taskOrder',sorted);
-  dragSrcIdx=null;
-  renderSchedule();
-}
-
-function chkRow(el, idx){
-  const cb=el.querySelector('.cb');
-  cb.classList.toggle('done');
-  const isDone = cb.classList.contains('done');
-  const doneRows = load('rowDone', {});
-  doneRows[idx] = isDone;
-  save('rowDone', doneRows);
-  renderSchedule();
-}
-
-function deleteScheduleTask(origIdx){
-  // 확인 없이 바로 삭제 (월별과 동일)
-  if(origIdx < fixedTasks.length){
-    fixedTasks.splice(origIdx, 1);
-  } else {
-    const ui = origIdx - fixedTasks.length;
-    if(userTasks[ui] !== undefined){
-      userTasks.splice(ui, 1);
-      save('userTasks', userTasks);
-    }
-  }
-  // reset order
-  save('taskOrder', []);
-  renderSchedule();
-}
-
-function addTask(){
-  const time=document.getElementById('new-time').value;
-  const task=document.getElementById('new-task').value.trim();
-  const cat=document.getElementById('new-cat').value;
-  if(!task) return;
-  userTasks.push({time,task,cat,fixed:false});
-  save('userTasks', userTasks);
-  document.getElementById('new-task').value='';
-  renderSchedule();
-}
-
-// ── 히스토리 페이지 렌더 ─────────────────────────────
-function renderHistory(){
-  const history = load('history', {});
-  const dates = Object.keys(history).sort().reverse();
-  const el = document.getElementById('history-list');
-  if(!dates.length){
-    el.innerHTML = '<div style="text-align:center;padding:60px;color:var(--gray);font-size:13px">아직 기록이 없어요.<br>매일 사용하면 여기에 쌓여요 📅</div>';
-    return;
-  }
-  el.innerHTML = dates.map(d => {
-    const rec = history[d];
-    const pct = Math.round((rec.completed.length / rec.total) * 100);
-    const dateObj = new Date(d);
-    const days = ['일','월','화','수','목','금','토'];
-    const label = (dateObj.getMonth()+1)+'월 '+dateObj.getDate()+'일 '+days[dateObj.getDay()]+'요일';
-    return `
-    <div style="background:var(--white);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:12px;">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
-        <div>
-          <div style="font-family:'Fraunces',serif;font-size:16px;font-weight:600">${label}</div>
-          <div style="font-size:10px;color:var(--gray);margin-top:2px">${d}</div>
-        </div>
-        <div style="text-align:right">
-          <div style="font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:${pct>=80?'var(--teal)':pct>=50?'var(--amber)':'var(--coral)'}">${pct}%</div>
-          <div style="font-size:10px;color:var(--gray)">${rec.completed.length}/${rec.total} 완료</div>
-        </div>
-      </div>
-      <div style="height:4px;background:var(--border);border-radius:99px;margin-bottom:10px;overflow:hidden">
-        <div style="height:100%;border-radius:99px;background:${pct>=80?'var(--teal)':pct>=50?'var(--amber)':'var(--coral)'};width:${pct}%;transition:width .6s"></div>
-      </div>
-      ${rec.completed.length ? `<div style="font-size:11px;color:var(--gray)">
-        ${rec.completed.map(t=>`<span style="display:inline-block;background:var(--teal-l);color:var(--teal);border-radius:99px;padding:2px 8px;margin:2px;font-size:10px;font-weight:600">✓ ${t}</span>`).join('')}
-      </div>` : '<div style="font-size:11px;color:var(--gray)">완료된 태스크 없음</div>'}
-      ${rec.userTasks && rec.userTasks.length ? `<div style="margin-top:8px;font-size:10px;color:var(--gray)">추가 태스크: ${rec.userTasks.map(t=>t.task).join(', ')}</div>` : ''}
-    </div>`;
-  }).join('');
-}
-
-// ── 자정 체크 (매 1분마다) ──────────────────────────
-setInterval(()=>{
-  const last = load(LAST_DATE_KEY, null);
-  if(last && last !== today()){
-    archiveDay(last);
-    save('rowDone', {});
-    save('userTasks', []);
-    userTasks = [];
-    save(LAST_DATE_KEY, today());
-    renderSchedule();
-    alert('🌅 새로운 하루가 시작됐어요! 어제 기록은 "날짜별 기록"에 저장됐어요.');
-  }
-}, 60000);
-
-// ── 초기화 ────────────────────────────────────────────
-checkNewDay();
-renderSchedule();
-setTimeout(()=>{
-  loadAllChecks();
-  loadInputs();
-  loadTextareas();
-  document.querySelectorAll('.editable').forEach(el=>el.addEventListener('input', saveInputs));
-  document.querySelectorAll('textarea').forEach(el=>el.addEventListener('input', saveTextareas));
-  // 날짜 업데이트
-  document.querySelectorAll('.page-date').forEach(el=>{
-    if(el.textContent.includes('14일')) el.textContent = todayLabel();
-  });
-}, 100);
-
-// history 페이지 열 때 렌더
-const origGo = go;
-function go(id, el){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  el.classList.add('active');
-  if(id === 'history') renderHistory();
-}
-
-// ── 모바일 사이드바 ──────────────────────────────────
-function toggleSidebar(){
-  document.querySelector('.sidebar').classList.toggle('open');
-  document.getElementById('sb-overlay').classList.toggle('open');
-}
-function closeSidebar(){
-  document.querySelector('.sidebar').classList.remove('open');
-  document.getElementById('sb-overlay').classList.remove('open');
-}
-function mobileGo(id, el){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.nav-item,.mobile-nav-item').forEach(n=>n.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  el.classList.add('active');
-  // 사이드바도 동기화
-  document.querySelectorAll('.nav-item').forEach(n=>{
-    if(n.getAttribute('onclick') && n.getAttribute('onclick').includes("'"+id+"'")) n.classList.add('active');
-  });
+// ─── NAVIGATION ───
+function goPage(id) {
+  document.querySelectorAll('.pg').forEach(function(p){p.classList.remove('on');});
+  var pg = document.getElementById('p-'+id);
+  if (pg) pg.classList.add('on');
+  document.querySelectorAll('.ni').forEach(function(n){n.classList.remove('on');});
+  document.querySelectorAll('.ni[data-page="'+id+'"]').forEach(function(n){n.classList.add('on');});
+  document.querySelectorAll('.mob-ni').forEach(function(n){n.classList.remove('on');});
+  document.querySelectorAll('.mob-ni[data-page="'+id+'"]').forEach(function(n){n.classList.add('on');});
   window.scrollTo(0,0);
-  if(id==='history') renderHistory();
+  // page init
+  if (id==='daily') { wgRender(); schRender(); histDailyRender(); }
+  if (id==='tasks') { mtRender(); }
+  if (id==='history') { histPageRender(); }
+  if (id==='hub') { hubInit(); }
+  if (id==='content') { calRender(); }
+  closeSidebar();
 }
-// 데스크탑 go 함수에 모바일 탭바 동기화 추가
-const _go = go;
-go = function(id, el){
-  _go(id, el);
-  document.querySelectorAll('.mobile-nav-item').forEach(n=>n.classList.remove('active'));
-  document.querySelectorAll('.mobile-nav-item').forEach(n=>{
-    if(n.getAttribute('onclick') && n.getAttribute('onclick').includes("'"+id+"'")) n.classList.add('active');
+
+// nav clicks
+document.querySelectorAll('.ni, .mob-ni').forEach(function(el) {
+  el.addEventListener('click', function() {
+    var page = this.getAttribute('data-page');
+    if (page) goPage(page);
   });
-  window.scrollTo(0,0);
-}
-
-
-// ── 캘린더 JS ────────────────────────────────────
-const CAL_MONTHS = ['4월','5월','6월','7월','8월','9월','10월','11월','12월'];
-const CAL_MONTH_NUMS = [4,5,6,7,8,9,10,11,12];
-const CAL_DAYS = [30,31,30,31,31,30,31,30,31];
-const CAL_FIRST = [2,4,0,2,5,0,2,4,6];
-let calSelectedMonth = 0;
-let calEvents = load('calEvents', {});
-
-if(!calEvents['4']) calEvents['4'] = [
-  {day:14,title:'이태원 인터뷰 촬영',tag:'t',memo:''},
-  {day:21,title:'남대문 촬영',tag:'t',memo:''},
-  {day:24,title:'Seoul Insider 1호 발송',tag:'n',memo:'목요일'},
-];
-
-function calSaveAll(){ save('calEvents', calEvents); }
-
-function calRenderYearGrid(){
-  const grid = document.getElementById('cal-year-grid');
-  if(!grid) return;
-  grid.innerHTML = CAL_MONTHS.map((m,mi) => {
-    const key = String(CAL_MONTH_NUMS[mi]);
-    const evs = calEvents[key] || [];
-    const evDays = new Set(evs.map(e=>e.day));
-    const fd = CAL_FIRST[mi];
-    const days = CAL_DAYS[mi];
-    let cells = ['월','화','수','목','금','토','일'].map(d=>`<div class="mini-dhdr-c">${d}</div>`).join('');
-    for(let i=0;i<fd;i++) cells+=`<div class="mini-dc empty-c">.</div>`;
-    for(let d=1;d<=days;d++){
-      const isToday=mi===0&&d===14;
-      const hasEv=evDays.has(d);
-      cells+=`<div class="mini-dc ${isToday?'today-c':''} ${hasEv&&!isToday?'has-ev-c':''}">${d}</div>`;
-    }
-    return `<div class="mini-cal-c ${mi===calSelectedMonth?'active-c':''}" onclick="calSelectMonth(${mi})">
-      <div class="mini-hdr-c">${m}</div>
-      <div class="mini-grid-c">${cells}</div>
-    </div>`;
-  }).join('');
-}
-
-function calRenderMonthList(){
-  const list = document.getElementById('cal-month-list');
-  if(!list) return;
-  list.innerHTML = CAL_MONTHS.map((m,mi) => {
-    const key = String(CAL_MONTH_NUMS[mi]);
-    const cnt = (calEvents[key]||[]).length;
-    return `<div class="cal-mpill ${mi===calSelectedMonth?'active-m':''}" onclick="calSelectMonth(${mi})">
-      ${m} <span class="cal-mcnt">${cnt}</span>
-    </div>`;
-  }).join('');
-}
-
-function calRenderDetail(){
-  const key = String(CAL_MONTH_NUMS[calSelectedMonth]);
-  const evs = (calEvents[key]||[]).sort((a,b)=>a.day-b.day);
-  const el = document.getElementById('cal-event-list');
-  const title = document.getElementById('cal-detail-title');
-  if(!el||!title) return;
-  title.textContent = `2026년 ${CAL_MONTHS[calSelectedMonth]} 일정`;
-  const tagLabel={'t':'TikTok/콘텐츠','n':'뉴스레터','r':'마케팅/Reddit'};
-  el.innerHTML = evs.length ? evs.map((e,i)=>`
-    <div class="cal-ev-row">
-      <div class="cal-ev-day">${e.day}일</div>
-      <div style="flex:1">
-        <div class="cal-ev-title">${e.title}</div>
-        ${e.memo?`<div class="cal-ev-memo">${e.memo}</div>`:''}
-        <span class="cal-ev-tag cal-tag-${e.tag}">${tagLabel[e.tag]||''}</span>
-      </div>
-      <button class="cal-ev-del" onclick="calDeleteEvent(${i})">✕</button>
-    </div>`).join('')
-    : `<div class="cal-empty">일정이 없어요<br>+ 추가 버튼으로 넣어봐요</div>`;
-}
-
-function calRender(){
-  calRenderYearGrid();
-  calRenderMonthList();
-  calRenderDetail();
-}
-
-function calSelectMonth(mi){
-  calSelectedMonth=mi;
-  document.getElementById('cal-add-form').classList.remove('open');
-  calRender();
-}
-
-function calToggleForm(){
-  document.getElementById('cal-add-form').classList.toggle('open');
-  if(document.getElementById('cal-add-form').classList.contains('open'))
-    document.getElementById('cal-ev-title').focus();
-}
-
-function calSaveEvent(){
-  const day=parseInt(document.getElementById('cal-ev-day').value);
-  const title=document.getElementById('cal-ev-title').value.trim();
-  const tag=document.getElementById('cal-ev-tag').value;
-  const memo=document.getElementById('cal-ev-memo').value.trim();
-  if(!day||!title) return;
-  const key=String(CAL_MONTH_NUMS[calSelectedMonth]);
-  if(!calEvents[key]) calEvents[key]=[];
-  calEvents[key].push({day,title,tag,memo});
-  calSaveAll();
-  document.getElementById('cal-ev-day').value='';
-  document.getElementById('cal-ev-title').value='';
-  document.getElementById('cal-ev-memo').value='';
-  document.getElementById('cal-add-form').classList.remove('open');
-  calRender();
-}
-
-function calDeleteEvent(idx){
-  const key=String(CAL_MONTH_NUMS[calSelectedMonth]);
-  calEvents[key].splice(idx,1);
-  calSaveAll();
-  calRender();
-}
-
-setTimeout(calRender, 150);
-setTimeout(calRender, 150);
-
-// ── MVP D-Day & 허브 동적 렌더 ───────────────────────
-function renderHubDynamic(){
-  const launch = new Date('2026-04-22');
-  const now = new Date();
-  const diffMs = launch - now;
-  const diffDays = Math.ceil(diffMs / (1000*60*60*24));
-  const isLaunched = diffDays <= 0;
-  
-  // 허브 지표
-  const metricsEl = document.getElementById('hub-metrics');
-  if(metricsEl){
-    if(!isLaunched){
-      // 론칭 전: 준비 진행률 표시
-      const totalPrep = 11; // 준비 체크박스 총 수
-      const doneChecks = Object.values(load('checks',{})).filter(Boolean).length;
-      const pct = Math.min(100, Math.round(doneChecks/totalPrep*100));
-      metricsEl.innerHTML = `
-      <div class="g4">
-        <div class="metric t">
-          <div class="m-label">MVP 론칭까지</div>
-          <div class="m-val" style="color:var(--teal)">D-${Math.max(0,diffDays)}</div>
-          <div class="m-target">4월 22일 · 수요일</div>
-          <div class="m-bar"><div class="m-fill" style="width:${Math.round((8-Math.min(8,diffDays))/8*100)}%;background:var(--teal)"></div></div>
-        </div>
-        <div class="metric a">
-          <div class="m-label">준비 완료율</div>
-          <div class="m-val">${pct}%</div>
-          <div class="m-target">체크박스 기준</div>
-          <div class="m-bar"><div class="m-fill" style="width:${pct}%;background:var(--amber)"></div></div>
-        </div>
-        <div class="metric b">
-          <div class="m-label">테스트 유저</div>
-          <div class="m-val">1명</div>
-          <div class="m-target">뉴욕 친구 코워커</div>
-          <div class="m-bar"><div class="m-fill" style="width:100%;background:var(--blue)"></div></div>
-        </div>
-        <div class="metric c">
-          <div class="m-label">이번 주 목표</div>
-          <div class="m-val" style="font-size:16px;padding-top:4px">론칭!</div>
-          <div class="m-target">4/22 seoulbound.com</div>
-          <div class="m-bar"><div class="m-fill" style="width:0%;background:var(--coral)"></div></div>
-        </div>
-      </div>`;
-    } else {
-      // 론칭 후: 실제 지표
-      metricsEl.innerHTML = `
-      <div class="g4">
-        <div class="metric t"><div class="m-label">퀴즈 완료</div><div class="m-val"><input class="editable" style="font-size:24px;font-weight:700;width:80px" placeholder="0"></div><div class="m-target">목표 20명/주</div><div class="m-bar"><div class="m-fill" style="width:0%;background:var(--teal)"></div></div></div>
-        <div class="metric a"><div class="m-label">투어 결제</div><div class="m-val"><input class="editable" style="font-size:24px;font-weight:700;width:80px" placeholder="0"></div><div class="m-target">목표 3건/주</div><div class="m-bar"><div class="m-fill" style="width:0%;background:var(--amber)"></div></div></div>
-        <div class="metric b"><div class="m-label">PDF 판매</div><div class="m-val"><input class="editable" style="font-size:24px;font-weight:700;width:80px" placeholder="0"></div><div class="m-target">목표 5개/주</div><div class="m-bar"><div class="m-fill" style="width:0%;background:var(--blue)"></div></div></div>
-        <div class="metric c"><div class="m-label">주간 수익</div><div class="m-val"><input class="editable" style="font-size:20px;font-weight:700;width:80px" placeholder="$0"></div><div class="m-target">목표 $300/주</div><div class="m-bar"><div class="m-fill" style="width:0%;background:var(--coral)"></div></div></div>
-      </div>`;
-      document.querySelectorAll('.editable').forEach(el=>el.addEventListener('input', saveInputs));
-      loadInputs();
-    }
-  }
-
-  // 배너
-  const bannerEl = document.getElementById('mvp-banner');
-  if(bannerEl){
-    if(!isLaunched){
-      bannerEl.innerHTML = `
-      <div style="background:var(--teal);color:white;border-radius:10px;padding:12px 16px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between">
-        <div>
-          <div style="font-size:11px;opacity:.8;font-weight:600;letter-spacing:.05em;text-transform:uppercase">MVP 론칭까지</div>
-          <div style="font-size:13px;font-weight:700;margin-top:2px">4월 22일 · 뉴욕 친구 코워커가 테스트 유저 1번</div>
-        </div>
-        <div style="font-family:serif;font-size:32px;font-weight:700">D-${Math.max(0,diffDays)}</div>
-      </div>`;
-    } else {
-      bannerEl.innerHTML = `
-      <div style="background:var(--teal);color:white;border-radius:10px;padding:12px 16px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between">
-        <div>
-          <div style="font-size:11px;opacity:.8;font-weight:600;letter-spacing:.05em;text-transform:uppercase">MVP 론칭됨!</div>
-          <div style="font-size:13px;font-weight:700;margin-top:2px">seoulbound.com 라이브 · 이제 실제 지표를 추적해요</div>
-        </div>
-        <div style="font-size:24px">🚀</div>
-      </div>`;
-    }
-  }
-
-  // 태스크 페이지 D-Day
-  const ddayEl = document.getElementById('mvp-dday');
-  const progEl = document.getElementById('mvp-progress');
-  const progTxt = document.getElementById('mvp-progress-txt');
-  if(ddayEl) ddayEl.innerHTML = `<div style="font-size:11px;opacity:.8">D-</div>${Math.max(0,diffDays)}`;
-  if(progEl){
-    const totalDays = 8; // 4/14 ~ 4/22
-    const elapsed = totalDays - Math.max(0,diffDays);
-    const pct = Math.round(elapsed/totalDays*100);
-    progEl.style.width = pct+'%';
-    if(progTxt) progTxt.textContent = `${elapsed}일 경과 / ${totalDays}일 중`;
-  }
-}
-
-renderHubDynamic();
-setInterval(renderHubDynamic, 60000);
-
-
-
-// ── 월별 태스크 JS ────────────────────────────────
-const MT_MONTHS = ['4월','5월','6월','7월','8월','9월','10월','11월','12월'];
-const MT_COLORS = {
-  teal:{bg:'var(--teal-l)',badge:'var(--teal)',text:'white'},
-  amber:{bg:'var(--amber-l)',badge:'var(--amber)',text:'white'},
-  blue:{bg:'var(--blue-l)',badge:'var(--blue)',text:'white'},
-  coral:{bg:'var(--coral-l)',badge:'var(--coral)',text:'white'},
-  purple:{bg:'var(--purple-l)',badge:'var(--purple)',text:'white'},
-};
-
-const MT_DEFAULTS = {
-  '4월':{goals:{퀴즈완료:'50명',투어결제:'3건',수익:'$415',구독:'0명'},phases:[
-    {title:'MVP 론칭 준비',color:'teal',tasks:[
-      {text:'퀴즈/결과값 시나리오 업데이트',done:false},
-      {text:'여행상품 설명 업데이트',done:false},
-      {text:'4/22 MVP 론칭 (뉴욕 친구 테스트)',done:false},
-      {text:'Calendly 슬롯 오픈',done:false},
-    ]},
-    {title:'Phase 1 — PDF 가이드',color:'amber',tasks:[
-      {text:'Gumroad 계정 생성',done:false},
-      {text:'Seoul Survival Guide $19 제작',done:false},
-      {text:'K-beauty Bible $29 제작',done:false},
-    ]},
-    {title:'Phase 2 — 뉴스레터',color:'blue',tasks:[
-      {text:'Loops.so 계정 생성',done:false},
-      {text:'Seoul Insider 1호 초안',done:false},
-      {text:'목요일 첫 발송',done:false},
-    ]},
-    {title:'콘텐츠 & 마케팅',color:'coral',tasks:[
-      {text:'인스타 계정 개설',done:false},
-      {text:'TikTok 영상 3개 업로드',done:false},
-      {text:'Reddit 답변 20개',done:false},
-    ]},
-  ]},
-  '5월':{goals:{퀴즈완료:'200명',투어결제:'10건',수익:'$1,195',구독:'50명'},phases:[
-    {title:'투어 확장',color:'teal',tasks:[{text:'가이드 1명 모집',done:false},{text:'투어 루트 매뉴얼 작성',done:false}]},
-    {title:'PDF 확장',color:'amber',tasks:[{text:'Seoul on $50/day PDF 제작',done:false},{text:'TikTok으로 PDF 홍보',done:false}]},
-    {title:'뉴스레터 성장',color:'blue',tasks:[{text:'구독자 100명 달성',done:false},{text:'Seoul Insider Pro 유료화',done:false}]},
-  ]},
-  '6월':{goals:{퀴즈완료:'500명',투어결제:'20건',수익:'$2,000',구독:'150명'},phases:[
-    {title:'플랫폼 확장',color:'teal',tasks:[{text:'가이드 2명으로 확장',done:false},{text:'투어 상품 1개 추가',done:false}]},
-    {title:'수익 다각화',color:'amber',tasks:[{text:'올리브영 어필리에이트 신청',done:false},{text:'SafetyWing 여행보험 제휴',done:false}]},
-  ]},
-};
-['7월','8월','9월','10월','11월','12월'].forEach(m=>{
-  MT_DEFAULTS[m]={goals:{퀴즈완료:'',투어결제:'',수익:'',구독:''},phases:[{title:'이번 달 목표',color:'teal',tasks:[]}]};
 });
 
-let mtData = load('mt_data', MT_DEFAULTS);
-MT_MONTHS.forEach(m=>{ if(!mtData[m]) mtData[m]=MT_DEFAULTS[m]; });
-let mtSelected = 0;
-let mtDragSrc = null;
-
-function mtSave(){ save('mt_data', mtData); }
-function mtTotal(m){ return (mtData[m].phases||[]).reduce((s,p)=>s+(p.tasks||[]).length,0); }
-function mtDone(m){ return (mtData[m].phases||[]).reduce((s,p)=>s+(p.tasks||[]).filter(t=>t.done).length,0); }
-
-function mtRenderTabs(){
-  const el = document.getElementById('mt-tab-list');
-  if(!el) return;
-  el.innerHTML = MT_MONTHS.map((m,i)=>`
-    <div class="mt-tab ${i===mtSelected?'mt-active':''}" onclick="mtSelect(${i})">
-      ${m}<span class="mt-cnt">${mtDone(m)}/${mtTotal(m)}</span>
-    </div>`).join('');
+// sidebar
+document.getElementById('mob-btn').addEventListener('click', function() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('sb-ov').classList.toggle('open');
+});
+document.getElementById('sb-ov').addEventListener('click', closeSidebar);
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sb-ov').classList.remove('open');
 }
 
-function mtRenderContent(){
-  const el = document.getElementById('mt-content');
-  if(!el) return;
-  const m = MT_MONTHS[mtSelected];
-  const d = mtData[m];
-  const total = mtTotal(m);
-  const done = mtDone(m);
-  const pct = total>0 ? Math.round(done/total*100) : 0;
-
-  let html = `
-  <div style="background:var(--white);border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-bottom:14px;">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
-      <div style="font-size:12px;font-weight:700;color:var(--ink)">📊 ${m} 목표 수치</div>
-      <div style="font-size:11px;color:var(--gray)">완료율 <strong style="color:var(--teal)">${pct}%</strong> (${done}/${total})</div>
-    </div>
-    <div class="mt-goal-grid">
-      <div class="mt-goal-card"><div class="mt-goal-label">퀴즈 완료</div><input class="mt-goal-in" value="${d.goals.퀴즈완료||''}" placeholder="목표" onchange="mtUpdateGoal('${m}','퀴즈완료',this.value)"><div class="mt-goal-unit">명</div></div>
-      <div class="mt-goal-card"><div class="mt-goal-label">투어 결제</div><input class="mt-goal-in" value="${d.goals.투어결제||''}" placeholder="목표" onchange="mtUpdateGoal('${m}','투어결제',this.value)"><div class="mt-goal-unit">건</div></div>
-      <div class="mt-goal-card"><div class="mt-goal-label">월 수익</div><input class="mt-goal-in" value="${d.goals.수익||''}" placeholder="목표" onchange="mtUpdateGoal('${m}','수익',this.value)"><div class="mt-goal-unit">목표</div></div>
-      <div class="mt-goal-card"><div class="mt-goal-label">뉴스레터</div><input class="mt-goal-in" value="${d.goals.구독||''}" placeholder="목표" onchange="mtUpdateGoal('${m}','구독',this.value)"><div class="mt-goal-unit">명</div></div>
-    </div>
-  </div>`;
-
-  (d.phases||[]).forEach((phase,pi)=>{
-    const c = MT_COLORS[phase.color]||MT_COLORS.teal;
-    const pDone=(phase.tasks||[]).filter(t=>t.done).length;
-    html+=`
-    <div class="mt-phase">
-      <div class="mt-phase-head" style="background:${c.bg}">
-        <div style="display:flex;align-items:center">
-          <span class="mt-phase-badge" style="background:${c.badge};color:${c.text}">${pi+1}</span>
-          <span class="mt-phase-title">${phase.title}</span>
-        </div>
-        <div style="display:flex;gap:6px;align-items:center">
-          <span style="font-size:10px;color:var(--gray)">${pDone}/${(phase.tasks||[]).length}</span>
-          <button class="mt-add-btn" onclick="mtShowForm(${pi})">+ 추가</button>
-        </div>
-      </div>
-      ${(phase.tasks||[]).map((t,ti)=>`
-      <div class="mt-task-row" draggable="true"
-        ondragstart="mtDS(event,${pi},${ti})"
-        ondragover="mtDOV(event)"
-        ondrop="mtDDR(event,${pi},${ti})"
-        ondragleave="mtDLV(event)">
-        <span class="mt-drag-handle">⠿</span>
-        <div class="mt-cb ${t.done?'mt-done':''}" onclick="mtToggle(${pi},${ti})"></div>
-        <span class="mt-task-txt ${t.done?'mt-done':''}" ondblclick="mtEditStart(this,${pi},${ti})">${t.text||'(빈 태스크)'}</span>
-        <input class="mt-task-edit" value="${(t.text||'').replace(/"/g,'&quot;')}" onblur="mtEditSave(this,${pi},${ti})" onkeydown="if(event.key==='Enter')this.blur()">
-        <button class="mt-del-btn" onclick="mtDeleteTask(${pi},${ti})">✕</button>
-      </div>`).join('')}
-      <div class="mt-add-form" id="mt-form-${pi}">
-        <input class="mt-add-in" id="mt-new-${pi}" placeholder="새 태스크..." onkeydown="if(event.key==='Enter')mtSaveNew(${pi})">
-        <button class="mt-add-save" onclick="mtSaveNew(${pi})">저장</button>
-        <button class="mt-add-cancel" onclick="mtHideForm(${pi})">취소</button>
-      </div>
-    </div>`;
-  });
-
-  html+=`<button class="mt-add-section-btn" onclick="mtAddPhase()">+ 섹션 추가</button>`;
-  el.innerHTML = html;
+// ─── UTILS ───
+function toast(msg) {
+  var t = document.createElement('div');
+  t.textContent = msg;
+  t.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#0F5F4A;color:white;padding:8px 16px;border-radius:8px;font-size:12px;font-weight:700;z-index:9999;';
+  document.body.appendChild(t);
+  setTimeout(function(){t.remove();}, 2000);
+}
+function dateLabel() {
+  var d = new Date();
+  var days = ['일','월','화','수','목','금','토'];
+  return d.getFullYear()+'년 '+(d.getMonth()+1)+'월 '+d.getDate()+'일 · '+days[d.getDay()]+'요일';
 }
 
-function mtRender(){ mtRenderTabs(); mtRenderContent(); }
-function mtSelect(i){ mtSelected=i; mtRender(); }
-function mtUpdateGoal(m,k,v){ mtData[m].goals[k]=v; mtSave(); mtRenderTabs(); }
-function mtToggle(pi,ti){
-  const m=MT_MONTHS[mtSelected];
-  mtData[m].phases[pi].tasks[ti].done=!mtData[m].phases[pi].tasks[ti].done;
-  mtSave(); mtRender();
-}
-function mtEditStart(span,pi,ti){
-  const inp=span.nextElementSibling;
-  span.style.display='none'; inp.style.display='block'; inp.focus();
-}
-function mtEditSave(inp,pi,ti){
-  const m=MT_MONTHS[mtSelected];
-  const val=inp.value.trim();
-  if(val) mtData[m].phases[pi].tasks[ti].text=val;
-  mtSave(); mtRender();
-}
-function mtDeleteTask(pi,ti){
-  const m=MT_MONTHS[mtSelected];
-  mtData[m].phases[pi].tasks.splice(ti,1);
-  mtSave(); mtRender();
-}
-function mtShowForm(pi){
-  document.getElementById('mt-form-'+pi).classList.add('open');
-  document.getElementById('mt-new-'+pi).focus();
-}
-function mtHideForm(pi){ document.getElementById('mt-form-'+pi).classList.remove('open'); }
-function mtSaveNew(pi){
-  const m=MT_MONTHS[mtSelected];
-  const val=document.getElementById('mt-new-'+pi).value.trim();
-  const catEl=document.getElementById('mt-cat-'+pi);
-  const dateEl=document.getElementById('mt-date-'+pi);
-  const cat=catEl?catEl.value:'📊 운영';
-  const date=dateEl?dateEl.value.trim():'';
-  if(!val) return;
-  mtData[m].phases[pi].tasks.push({text:val,done:false,cat,date});
-  mtSave(); mtRender();
+// ─── HUB ───
+var hubTodos = ld('hubTodos', [
+  {t:'퀴즈→결제 전체 플로우 테스트', d:false},
+  {t:'Gumroad 계정 생성', d:false},
+  {t:'이태원 인터뷰 촬영', d:false},
+  {t:'Calendly 투어 슬롯 오픈', d:false},
+  {t:'인스타 계정 개설 @seoulbound.guide', d:false},
+]);
+
+function hubInit() {
+  var d = new Date(); var launch = new Date('2026-04-22');
+  var diff = Math.ceil((launch - d) / 86400000);
+  var launched = diff <= 0;
+  var dday = Math.max(0, diff);
+  var sb = document.getElementById('dday-sb');
+  if (sb) sb.textContent = dday;
+  var ps = document.getElementById('hub-ps');
+  if (ps) ps.textContent = dateLabel();
+  var banner = document.getElementById('hub-banner');
+  if (banner) banner.innerHTML = '<div style="background:#0F5F4A;color:white;border-radius:10px;padding:12px 16px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between"><div><div style="font-size:9px;opacity:.8;font-weight:700;letter-spacing:.05em;text-transform:uppercase">'+(launched?'MVP 론칭됨! 🚀':'MVP 론칭까지')+'</div><div style="font-size:13px;font-weight:700;margin-top:2px">4월 22일 · 뉴욕 친구 코워커 테스트 유저 1번</div></div><div style="font-size:30px;font-weight:700">'+(launched?'🚀':'D-'+dday)+'</div></div>';
+  var metrics = document.getElementById('hub-metrics');
+  if (metrics) metrics.innerHTML = '<div class="metric m-teal"><div class="ml">MVP까지</div><div class="mv">D-'+dday+'</div><div class="ms">4월 22일</div></div><div class="metric m-amber"><div class="ml">seoulbound.com</div><div class="mv" style="font-size:16px;padding-top:4px">라이브 ✅</div><div class="ms">Stripe 연결됨</div></div><div class="metric m-blue"><div class="ml">투어 상품</div><div class="mv" style="font-size:16px;padding-top:4px">3개</div><div class="ms">$90 / $115 / $135</div></div><div class="metric m-coral"><div class="ml">이번 주 목표</div><div class="mv" style="font-size:16px;padding-top:4px">론칭!</div><div class="ms">4/22</div></div>';
+  renderHubTodos();
 }
 
-function mtUpdateCat(pi,ti,val){
-  const m=MT_MONTHS[mtSelected];
-  mtData[m].phases[pi].tasks[ti].cat=val;
-  mtSave();
-}
-function mtUpdateDate(pi,ti,val){
-  const m=MT_MONTHS[mtSelected];
-  mtData[m].phases[pi].tasks[ti].date=val.trim();
-  mtSave();
-}
-function mtAddPhase(){
-  const m=MT_MONTHS[mtSelected];
-  const cols=['teal','amber','blue','coral','purple'];
-  mtData[m].phases.push({title:'새 섹션',color:cols[mtData[m].phases.length%cols.length],tasks:[]});
-  mtSave(); mtRender();
-}
-function mtAddToDaily(taskText, cat, date){
-  const now = new Date();
-  const hh = String(now.getHours()).padStart(2,'0');
-  const mm = String(now.getMinutes()).padStart(2,'0');
-  const time = hh+':'+mm;
-  const taskCat = cat||'📊 운영';
-  const prefix = date ? '['+date+'] ' : '';
-  userTasks.push({time, task: prefix+taskText, cat: taskCat, fixed:false});
-  save('userTasks', userTasks);
-  const msg = date ? '✅ '+date+' 데일리에 추가됐어요!' : '✅ 오늘 데일리에 추가됐어요!';
-  const toast = document.createElement('div');
-  toast.textContent = msg;
-  toast.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--teal);color:white;padding:8px 16px;border-radius:8px;font-size:12px;font-weight:700;z-index:9999;transition:opacity .3s;';
-  document.body.appendChild(toast);
-  setTimeout(()=>{ toast.style.opacity='0'; setTimeout(()=>toast.remove(),300); }, 1800);
-}
-
-function mtDS(e,pi,ti){ mtDragSrc={pi,ti}; e.currentTarget.classList.add('mt-dragging'); e.dataTransfer.effectAllowed='move'; }
-function mtDOV(e){ e.preventDefault(); e.currentTarget.classList.add('mt-dragover'); }
-function mtDLV(e){ e.currentTarget.classList.remove('mt-dragover'); }
-function mtDDR(e,pi,ti){
-  e.preventDefault(); e.currentTarget.classList.remove('mt-dragover');
-  if(!mtDragSrc||mtDragSrc.pi!==pi||mtDragSrc.ti===ti) return;
-  const m=MT_MONTHS[mtSelected];
-  const tasks=mtData[m].phases[pi].tasks;
-  const [mv]=tasks.splice(mtDragSrc.ti,1);
-  tasks.splice(ti,0,mv);
-  mtDragSrc=null; mtSave(); mtRender();
-}
-
-// go 함수에서 tasks 탭 열 때 렌더
-const _origGo = go;
-go = function(id,el){
-  _origGo(id,el);
-  if(id==='tasks') mtRender();
-}
-setTimeout(()=>{ if(document.getElementById('mt-tab-list')) mtRender(); }, 200);
-
-
-// ── 주간 목표 JS ─────────────────────────────────
-const DAYS_KO = ['월','화','수','목','금','토','일'];
-const TODAY_DOW = (new Date().getDay()+6)%7; // 0=월,1=화,...,6=일
-
-const WG_DEFAULTS = {
-  0: [{text:'기획 + Claude 브리핑',done:false}],
-  1: [{text:'이태원 인터뷰 촬영',done:false},{text:'CapCut 편집 + 업로드',done:false}],
-  2: [{text:'편집 + Buffer 예약',done:false}],
-  3: [{text:'Seoul Insider 뉴스레터 발송',done:false}],
-  4: [{text:'Reddit 답변 5개',done:false}],
-  5: [{text:'명동/남대문 촬영',done:false}],
-  6: [{text:'다음 주 Buffer 예약',done:false},{text:'주간 회고 작성',done:false}],
-};
-
-let weeklyGoals = load('weeklyGoals', WG_DEFAULTS);
-
-function wgSave(){ save('weeklyGoals', weeklyGoals); }
-
-function renderWeeklyGoals(){
-  const el = document.getElementById('weekly-goals-grid');
-  if(!el) return;
-  el.innerHTML = DAYS_KO.map((day,di) => {
-    const items = weeklyGoals[di] || [];
-    const isToday = di === TODAY_DOW;
-    const doneCount = items.filter(i=>i.done).length;
-    return `<div class="wg-day ${isToday?'today-col':''}">
-      <div class="wg-day-hdr">${day}${isToday?' ★':''} ${items.length>0?`<span style="font-size:8px;opacity:.7">${doneCount}/${items.length}</span>`:''}</div>
-      ${items.map((item,ii)=>`
-        <div class="wg-item">
-          <div class="wg-cb ${item.done?'done':''}" onclick="wgToggle(${di},${ii})"></div>
-          <span class="wg-txt ${item.done?'done':''}" contenteditable="true"
-            onblur="wgEdit(${di},${ii},this.innerText)"
-            onkeydown="if(event.key==='Enter'){event.preventDefault();this.blur()}"
-            style="${item.done?'text-decoration:line-through;color:#B0ADA7':''}"
-          >${item.text}</span>
-          <button class="wg-del" onclick="wgDel(${di},${ii})">✕</button>
-        </div>`).join('')}
-      <button class="wg-add" onclick="wgAdd(${di})">+ 추가</button>
-    </div>`;
-  }).join('');
-}
-
-function wgToggle(di,ii){
-  weeklyGoals[di][ii].done = !weeklyGoals[di][ii].done;
-  wgSave(); renderWeeklyGoals();
-}
-function wgEdit(di,ii,txt){
-  if(weeklyGoals[di] && weeklyGoals[di][ii]) weeklyGoals[di][ii].text = txt.trim();
-  wgSave();
-}
-function wgDel(di,ii){
-  weeklyGoals[di].splice(ii,1);
-  wgSave(); renderWeeklyGoals();
-}
-function wgAdd(di){
-  if(!weeklyGoals[di]) weeklyGoals[di]=[];
-  weeklyGoals[di].push({text:'새 할 일',done:false});
-  wgSave(); renderWeeklyGoals();
-  // focus last item
-  setTimeout(()=>{
-    const cols = document.querySelectorAll('.wg-day');
-    if(cols[di]){
-      const txts = cols[di].querySelectorAll('.wg-txt');
-      if(txts.length) { const last=txts[txts.length-1]; last.focus(); document.execCommand('selectAll'); }
-    }
-  },50);
-}
-
-// 오늘 주간목표 불러오기
-function addTodayFromWeekly(){
-  const items = weeklyGoals[TODAY_DOW] || [];
-  if(!items.length){ alert('오늘 주간 목표가 없어요! 주간 목표에 먼저 입력해줘요.'); return; }
-  items.filter(i=>!i.done).forEach(item=>{
-    userTasks.push({time:'09:00', task:item.text, cat:'✅ 월별목표', fixed:false});
-  });
-  save('userTasks', userTasks);
-  save('taskOrder',[]);
-  renderSchedule();
-  // toast
-  const toast=document.createElement('div');
-  toast.textContent='✅ 오늘 주간목표를 스케줄에 추가했어요!';
-  toast.style.cssText='position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--teal);color:white;padding:8px 16px;border-radius:8px;font-size:12px;font-weight:700;z-index:9999;';
-  document.body.appendChild(toast);
-  setTimeout(()=>toast.remove(),2000);
-}
-
-// ── 지난 날 히스토리 렌더 ─────────────────────────
-function renderPastHistory(){
-  const el = document.getElementById('past-history-list');
-  if(!el) return;
-  const history = load('history', {});
-  const dates = Object.keys(history).sort().reverse().slice(0,7); // 최근 7일
-  if(!dates.length){
-    el.innerHTML = '<div style="text-align:center;padding:20px;color:var(--gray);font-size:11px">아직 기록이 없어요. 매일 사용하면 여기에 쌓여요.</div>';
-    return;
+function renderHubTodos() {
+  var el = document.getElementById('hub-todos');
+  if (!el) return;
+  var html = '';
+  for (var i = 0; i < hubTodos.length; i++) {
+    var t = hubTodos[i];
+    html += '<div class="ci" data-idx="'+i+'" style="padding:5px 0">';
+    html += '<div class="cb'+(t.d?' on':'')+'"></div>';
+    html += '<div class="cx'+(t.d?' on':'')+'">'+t.t+'</div>';
+    html += '</div>';
   }
-  el.innerHTML = dates.map(d=>{
-    const rec = history[d];
-    const pct = rec.total>0 ? Math.round(rec.completed.length/rec.total*100) : 0;
-    const dateObj = new Date(d);
-    const dayNames = ['일','월','화','수','목','금','토'];
-    const label = (dateObj.getMonth()+1)+'월 '+dateObj.getDate()+'일 '+dayNames[dateObj.getDay()]+'요일';
-    const color = pct>=80?'var(--teal)':pct>=50?'var(--amber)':'var(--coral)';
-    return `<div class="hist-day">
-      <div class="hist-hdr" onclick="this.nextElementSibling.classList.toggle('open')">
-        <div>
-          <div class="hist-date">${label}</div>
-          <div style="height:3px;background:var(--border);border-radius:99px;width:120px;margin-top:4px;overflow:hidden">
-            <div style="height:100%;background:${color};width:${pct}%;border-radius:99px"></div>
-          </div>
-        </div>
-        <div class="hist-pct" style="color:${color};font-weight:700">${pct}% (${rec.completed.length}/${rec.total})</div>
-      </div>
-      <div class="hist-body">
-        ${rec.completed.map(t=>`<div class="hist-task"><span style="color:var(--teal);font-size:10px">✓</span>${t}</div>`).join('')}
-        ${rec.userTasks&&rec.userTasks.length?`<div style="font-size:10px;color:var(--gray);margin-top:6px">추가 태스크: ${rec.userTasks.map(t=>t.task).join(', ')}</div>`:''}
-      </div>
-    </div>`;
-  }).join('');
+  el.innerHTML = html;
+  el.querySelectorAll('.ci').forEach(function(ci) {
+    ci.addEventListener('click', function() {
+      var i = parseInt(this.getAttribute('data-idx'));
+      hubTodos[i].d = !hubTodos[i].d;
+      sv('hubTodos', hubTodos);
+      renderHubTodos();
+    });
+  });
 }
 
-setTimeout(()=>{
-  renderWeeklyGoals();
-  renderPastHistory();
-},120);
+document.getElementById('hub-todo-add').addEventListener('click', function() {
+  var inp = document.getElementById('hub-todo-inp');
+  var t = inp.value.trim();
+  if (!t) return;
+  hubTodos.push({t:t, d:false});
+  sv('hubTodos', hubTodos);
+  inp.value = '';
+  renderHubTodos();
+});
 
+// ─── SCHEDULE ───
+var fixedSch = [
+  {time:'09:00', task:'[AI] Stripe/Supabase 지표 → Claude 브리핑', cat:'📊 운영', fixed:true},
+  {time:'09:20', task:'[AI] 스크립트+캡션+Reddit 초안 생성', cat:'📊 운영', fixed:true},
+  {time:'10:00', task:'[촬영] 이태원/명동 인터뷰 3명 (30분)', cat:'🎬 콘텐츠', fixed:true},
+  {time:'10:30', task:'[AI] CapCut 자막 자동생성+편집', cat:'🎬 콘텐츠', fixed:true},
+  {time:'11:00', task:'[배포] Buffer → TikTok+Reels+Shorts 예약', cat:'🎬 콘텐츠', fixed:true},
+  {time:'14:00', task:'[AI] Reddit 답변 검토 후 발행', cat:'📣 마케팅', fixed:true},
+  {time:'16:00', task:'퀴즈 완료 수 & 전환율 확인', cat:'💼 영업', fixed:true},
+  {time:'20:00', task:'[AI] ManyChat 인스타 DM 확인', cat:'📣 마케팅', fixed:true},
+];
+var userSch = ld('userSch', []);
+var schDone = ld('schDone', {});
+var CC = {'📊 운영':'#E1F5EE','🎬 콘텐츠':'#FFE8E4','📣 마케팅':'#EDF4FF','🛠 플랫폼':'#F0EFFD','💼 영업':'#FFF3DC'};
+var CT = {'📊 운영':'#0F5F4A','🎬 콘텐츠':'#A33C1D','📣 마케팅':'#1A5FA3','🛠 플랫폼':'#3C3489','💼 영업':'#BA7517'};
 
-// ── 주간 목표 ─────────────────────────────────────
-const WG_DAYS = ['월','화','수','목','금','토','일'];
-const WG_TODAY = (new Date().getDay()+6)%7;
+function schRender() {
+  var el = document.getElementById('sch-body');
+  if (!el) return;
+  var all = fixedSch.concat(userSch);
+  var pending = [], done = [];
+  for (var i = 0; i < all.length; i++) {
+    (schDone[i] ? done : pending).push(i);
+  }
+  var order = pending.concat(done);
+  var html = '';
+  for (var r = 0; r < order.length; r++) {
+    var i = order[r]; var t = all[i]; var isDone = schDone[i];
+    html += '<div class="sr" style="opacity:'+(isDone?'.5':'1')+'" data-idx="'+i+'">';
+    html += '<div class="tc">'+t.time+'</div>';
+    html += '<div style="font-size:11px">'+t.task+(t.fixed?'<span style="font-size:8px;color:#6B6863;background:#F5F3EE;border-radius:99px;padding:1px 5px;margin-left:5px">고정</span>':'')+'</div>';
+    html += '<div><span class="cp" style="background:'+(CC[t.cat]||'#f5f3ee')+';color:'+(CT[t.cat]||'#888')+'">'+t.cat+'</span></div>';
+    html += '<div style="justify-content:center"><div class="cb'+(isDone?' on':'')+'" data-chk="'+i+'"></div></div>';
+    html += '<div style="justify-content:center"><button data-del="'+i+'" style="border:none;background:none;color:#C8C5BE;cursor:pointer;font-size:12px">✕</button></div>';
+    html += '</div>';
+  }
+  if (done.length) html += '<div style="padding:6px 10px;background:#E1F5EE;font-size:9px;font-weight:700;color:#0F5F4A;letter-spacing:.05em;text-transform:uppercase">완료 '+done.length+'/'+all.length+'</div>';
+  el.innerHTML = html;
+  el.querySelectorAll('[data-chk]').forEach(function(cb) {
+    cb.addEventListener('click', function(e) {
+      e.stopPropagation();
+      var i = parseInt(this.getAttribute('data-chk'));
+      schDone[i] = !schDone[i];
+      sv('schDone', schDone);
+      schRender();
+    });
+  });
+  el.querySelectorAll('[data-del]').forEach(function(btn) {
+    btn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      var i = parseInt(this.getAttribute('data-del'));
+      if (i < fixedSch.length) { fixedSch.splice(i,1); }
+      else { userSch.splice(i-fixedSch.length,1); sv('userSch',userSch); }
+      delete schDone[i];
+      sv('schDone',schDone);
+      schRender();
+    });
+  });
+}
 
-const WG_DEFAULTS = {
+document.getElementById('add-sch-btn').addEventListener('click', function() {
+  var time = document.getElementById('ni-time').value||'09:00';
+  var task = document.getElementById('ni-task').value.trim();
+  var cat = document.getElementById('ni-cat').value;
+  if (!task) return;
+  userSch.push({time:time,task:task,cat:cat,fixed:false});
+  sv('userSch',userSch);
+  document.getElementById('ni-task').value='';
+  schRender();
+});
+
+document.getElementById('load-weekly-btn').addEventListener('click', function() {
+  var today = (new Date().getDay()+6)%7;
+  var items = wgData[today]||[];
+  for (var i=0;i<items.length;i++) {
+    if(!items[i].d) userSch.push({time:'09:00',task:items[i].t,cat:'📊 운영',fixed:false});
+  }
+  sv('userSch',userSch); schRender();
+  toast('✅ 주간목표를 오늘 스케줄에 추가했어요!');
+});
+
+// ─── WEEKLY GOALS ───
+var WG_DAYS = ['월','화','수','목','금','토','일'];
+var WG_TODAY = (new Date().getDay()+6)%7;
+var wgData = ld('wgData', {
   0:[{t:'기획 + Claude 브리핑',d:false}],
-  1:[{t:'이태원 인터뷰 촬영',d:false},{t:'CapCut 편집 + 업로드',d:false}],
+  1:[{t:'이태원 인터뷰 촬영',d:false},{t:'CapCut 편집+업로드',d:false}],
   2:[{t:'편집 + Buffer 예약',d:false}],
   3:[{t:'뉴스레터 발송',d:false}],
   4:[{t:'Reddit 답변 5개',d:false}],
   5:[{t:'명동/남대문 촬영',d:false}],
   6:[{t:'다음 주 Buffer 예약',d:false},{t:'주간 회고 작성',d:false}],
-};
+});
 
-let wgData = load('wgData', WG_DEFAULTS);
-for(let i=0;i<7;i++){ if(!wgData[i]) wgData[i]=WG_DEFAULTS[i]||[]; }
-
-function wgSave(){ save('wgData', wgData); }
-
-function renderWeeklyGoals(){
-  const el = document.getElementById('wg-grid');
-  if(!el) return;
-  el.innerHTML = WG_DAYS.map((day,di) => {
-    const items = wgData[di] || [];
-    const isToday = di === WG_TODAY;
-    const done = items.filter(i=>i.d).length;
-    return `<div style="border:1px solid ${isToday?'var(--teal)':'var(--border)'};border-radius:8px;padding:7px 6px;min-height:80px;background:${isToday?'var(--teal-l)':'white'}">
-      <div style="font-size:9px;font-weight:700;text-align:center;color:${isToday?'var(--teal)':'var(--gray)'};margin-bottom:5px">${day}${isToday?' ★':''} ${items.length>0?`<span style='font-size:8px;opacity:.6'>${done}/${items.length}</span>`:''}</div>
-      ${items.map((item,ii)=>`
-        <div style="display:flex;align-items:flex-start;gap:3px;margin-bottom:3px">
-          <div onclick="wgTog(${di},${ii})" style="width:11px;height:11px;border:1.5px solid ${item.d?'var(--teal)':'#C8C5BE'};border-radius:2px;flex-shrink:0;margin-top:1px;cursor:pointer;background:${item.d?'var(--teal)':'white'};display:flex;align-items:center;justify-content:center">${item.d?'<span style="color:white;font-size:7px;font-weight:800">✓</span>':''}</div>
-          <span contenteditable="true"
-            onblur="wgEdit(${di},${ii},this.innerText)"
-            onkeydown="if(event.key==='Enter'){event.preventDefault();this.blur()}"
-            style="font-size:9px;flex:1;color:${item.d?'#B0ADA7':'var(--ink)'};text-decoration:${item.d?'line-through':'none'};line-height:1.4;outline:none;cursor:text"
-          >${item.t}</span>
-          <button onclick="wgDel(${di},${ii})" style="border:none;background:none;color:#DDD;cursor:pointer;font-size:8px;padding:0;flex-shrink:0" onmouseover="this.style.color='var(--coral)'" onmouseout="this.style.color='#DDD'">✕</button>
-        </div>`).join('')}
-      <button onclick="wgAdd(${di})" style="width:100%;border:none;background:none;color:var(--gray);font-size:8px;cursor:pointer;text-align:left;padding:2px 0;margin-top:2px" onmouseover="this.style.color='var(--teal)'" onmouseout="this.style.color='var(--gray)'">+ 추가</button>
-    </div>`;
-  }).join('');
-}
-
-function wgTog(di,ii){ wgData[di][ii].d=!wgData[di][ii].d; wgSave(); renderWeeklyGoals(); }
-function wgEdit(di,ii,txt){ if(wgData[di]&&wgData[di][ii]) wgData[di][ii].t=txt.trim()||wgData[di][ii].t; wgSave(); }
-function wgDel(di,ii){ wgData[di].splice(ii,1); wgSave(); renderWeeklyGoals(); }
-function wgAdd(di){
-  if(!wgData[di]) wgData[di]=[];
-  wgData[di].push({t:'새 할 일',d:false});
-  wgSave(); renderWeeklyGoals();
-  setTimeout(()=>{
-    const cols=document.querySelectorAll('#wg-grid>div');
-    if(cols[di]){
-      const spans=cols[di].querySelectorAll('[contenteditable]');
-      if(spans.length){ const last=spans[spans.length-1]; last.focus(); document.execCommand('selectAll',false,null); }
+function wgRender() {
+  var el = document.getElementById('wg-grid');
+  if (!el) return;
+  var html = '';
+  for (var di=0;di<7;di++) {
+    var isT = di===WG_TODAY; var items = wgData[di]||[];
+    var done = items.filter(function(x){return x.d;}).length;
+    html += '<div class="wg-col'+(isT?' wg-today':'')+'">';
+    html += '<div class="wg-dh">'+WG_DAYS[di]+(isT?' ★':'')+(items.length?' <span style="font-size:7px;opacity:.6">'+done+'/'+items.length+'</span>':'')+'</div>';
+    for (var ii=0;ii<items.length;ii++) {
+      var item=items[ii];
+      html += '<div style="display:flex;align-items:flex-start;gap:3px;margin-bottom:3px">';
+      html += '<div data-wg-chk="'+di+'-'+ii+'" style="width:11px;height:11px;min-width:11px;border:1.5px solid '+(item.d?'#0F5F4A':'#C8C5BE')+';border-radius:2px;margin-top:1px;cursor:pointer;background:'+(item.d?'#0F5F4A':'white')+';flex-shrink:0;display:flex;align-items:center;justify-content:center">'+(item.d?'<span style="color:white;font-size:7px;font-weight:800">✓</span>':'')+'</div>';
+      html += '<span contenteditable="true" data-wg-edit="'+di+'-'+ii+'" style="font-size:9px;flex:1;color:'+(item.d?'#B0ADA7':'#2C2A26')+';text-decoration:'+(item.d?'line-through':'none')+';line-height:1.4;outline:none">'+item.t+'</span>';
+      html += '<button data-wg-del="'+di+'-'+ii+'" style="border:none;background:none;color:#DDD;cursor:pointer;font-size:8px;padding:0;flex-shrink:0">✕</button>';
+      html += '</div>';
     }
-  },50);
-}
-
-function loadWeeklyToday(){
-  const items = wgData[WG_TODAY]||[];
-  const undone = items.filter(i=>!i.d);
-  if(!undone.length){ alert('오늘 미완료 주간목표가 없어요!'); return; }
-  undone.forEach(item=>{ userTasks.push({time:'09:00',task:item.t,cat:'📊 운영',fixed:false}); });
-  save('userTasks', userTasks);
-  save('taskOrder',[]);
-  renderSchedule();
-  const toast=document.createElement('div');
-  toast.textContent='✅ 주간목표를 오늘 스케줄에 추가했어요!';
-  toast.style.cssText='position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--teal);color:white;padding:8px 16px;border-radius:8px;font-size:12px;font-weight:700;z-index:9999;';
-  document.body.appendChild(toast);
-  setTimeout(()=>toast.remove(),2000);
-}
-
-// ── 지난 날 히스토리 렌더 ─────────────────────────
-function renderPastHistory(){
-  const el = document.getElementById('past-history-list');
-  if(!el) return;
-  const history = load('history', {});
-  const dates = Object.keys(history).sort().reverse().slice(0,7);
-  if(!dates.length){
-    el.innerHTML='<div style="text-align:center;padding:24px;color:var(--gray);font-size:11px">아직 기록이 없어요.<br>매일 사용하면 여기에 날짜별로 쌓여요 📅</div>';
-    return;
+    html += '<button data-wg-add="'+di+'" style="width:100%;border:none;background:none;color:#6B6863;font-size:8px;cursor:pointer;text-align:left;padding:2px 0;margin-top:2px">+ 추가</button>';
+    html += '</div>';
   }
-  el.innerHTML = dates.map(d=>{
-    const rec = history[d];
-    const pct = rec.total>0 ? Math.round(rec.completed.length/rec.total*100) : 0;
-    const dateObj = new Date(d);
-    const dayNames=['일','월','화','수','목','금','토'];
-    const label=(dateObj.getMonth()+1)+'월 '+dateObj.getDate()+'일 '+dayNames[dateObj.getDay()]+'요일';
-    const color=pct>=80?'var(--teal)':pct>=50?'var(--amber)':'var(--coral)';
-    const uid='hist-'+d.replace(/-/g,'');
-    return `<div style="border:1px solid var(--border);border-radius:9px;overflow:hidden;margin-bottom:8px">
-      <div onclick="document.getElementById('${uid}').classList.toggle('open')" style="display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:var(--gray-l);cursor:pointer">
-        <div>
-          <div style="font-size:12px;font-weight:700;color:var(--ink)">${label}</div>
-          <div style="height:3px;background:var(--border);border-radius:99px;width:120px;margin-top:4px;overflow:hidden">
-            <div style="height:100%;background:${color};width:${pct}%;border-radius:99px;transition:width .6s"></div>
-          </div>
-        </div>
-        <div style="font-size:12px;font-weight:700;color:${color}">${pct}% (${rec.completed.length}/${rec.total})</div>
-      </div>
-      <div id="${uid}" style="display:none;padding:8px 12px">
-        ${rec.completed.map(t=>`<div style="display:flex;align-items:center;gap:6px;padding:4px 0;border-bottom:1px solid var(--border);font-size:11px"><span style="color:var(--teal);font-size:10px">✓</span>${t}</div>`).join('')}
-        ${rec.userTasks&&rec.userTasks.length?`<div style="font-size:10px;color:var(--gray);margin-top:6px;padding-top:4px">추가 태스크: ${rec.userTasks.map(t=>t.task).join(', ')}</div>`:''}
-      </div>
-    </div>`;
-  }).join('');
+  el.innerHTML = html;
+  el.querySelectorAll('[data-wg-chk]').forEach(function(cb){
+    cb.addEventListener('click',function(){
+      var p=this.getAttribute('data-wg-chk').split('-');
+      var di=parseInt(p[0]),ii=parseInt(p[1]);
+      wgData[di][ii].d=!wgData[di][ii].d; sv('wgData',wgData); wgRender();
+    });
+  });
+  el.querySelectorAll('[data-wg-edit]').forEach(function(sp){
+    sp.addEventListener('blur',function(){
+      var p=this.getAttribute('data-wg-edit').split('-');
+      var di=parseInt(p[0]),ii=parseInt(p[1]);
+      wgData[di][ii].t=this.innerText.trim()||wgData[di][ii].t; sv('wgData',wgData);
+    });
+    sp.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();this.blur();}});
+  });
+  el.querySelectorAll('[data-wg-del]').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      var p=this.getAttribute('data-wg-del').split('-');
+      wgData[parseInt(p[0])].splice(parseInt(p[1]),1); sv('wgData',wgData); wgRender();
+    });
+  });
+  el.querySelectorAll('[data-wg-add]').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      var di=parseInt(this.getAttribute('data-wg-add'));
+      if(!wgData[di])wgData[di]=[];
+      wgData[di].push({t:'새 할 일',d:false}); sv('wgData',wgData); wgRender();
+    });
+  });
 }
 
-// daily 페이지 열 때 렌더
-const _origGoBase = go;
-go = function(id, el){
-  _origGoBase(id, el);
-  if(id==='daily'){
-    renderWeeklyGoals();
-    renderPastHistory();
+// ─── HISTORY ───
+var TODAY_STR = new Date().toISOString().slice(0,10);
+var LAST_DATE = ld('lastDate',null);
+if (LAST_DATE && LAST_DATE!==TODAY_STR) {
+  var hist=ld('history',{}); var all=fixedSch.concat(ld('userSch',[])); var done=ld('schDone',{});
+  var comp=[];for(var i=0;i<all.length;i++){if(done[i])comp.push(all[i].task);}
+  hist[LAST_DATE]={completed:comp,total:all.length}; sv('history',hist);
+  sv('schDone',{}); sv('userSch',[]);
+  schDone={}; userSch=[];
+}
+sv('lastDate',TODAY_STR);
+
+function histDailyRender() {
+  var el=document.getElementById('hist-daily'); if(!el)return;
+  var hist=ld('history',{}); var dates=Object.keys(hist).sort().reverse().slice(0,7);
+  if(!dates.length){el.innerHTML='<div style="text-align:center;padding:20px;color:#6B6863;font-size:11px">아직 기록이 없어요. 매일 사용하면 쌓여요.</div>';return;}
+  var dn=['일','월','화','수','목','금','토']; var html='';
+  for(var i=0;i<dates.length;i++){
+    var d=dates[i]; var rec=hist[d]; var pct=rec.total>0?Math.round(rec.completed.length/rec.total*100):0;
+    var dobj=new Date(d); var label=(dobj.getMonth()+1)+'월 '+dobj.getDate()+'일 '+dn[dobj.getDay()]+'요일';
+    var col=pct>=80?'#0F5F4A':pct>=50?'#BA7517':'#A33C1D';
+    html+='<div style="border:1px solid #E8E5DF;border-radius:9px;overflow:hidden;margin-bottom:8px">';
+    html+='<div data-hist-toggle style="display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:#F5F3EE;cursor:pointer">';
+    html+='<div><div style="font-size:12px;font-weight:700">'+label+'</div><div style="height:3px;background:#E8E5DF;border-radius:99px;width:120px;margin-top:4px;overflow:hidden"><div style="height:100%;background:'+col+';width:'+pct+'%;border-radius:99px"></div></div></div>';
+    html+='<div style="font-size:12px;font-weight:700;color:'+col+'">'+pct+'% ('+rec.completed.length+'/'+rec.total+')</div></div>';
+    html+='<div data-hist-body style="display:none;padding:8px 12px">';
+    for(var j=0;j<rec.completed.length;j++){html+='<div style="font-size:11px;padding:3px 0;border-bottom:1px solid #E8E5DF"><span style="color:#0F5F4A">✓</span> '+rec.completed[j]+'</div>';}
+    html+='</div></div>';
   }
+  el.innerHTML=html;
+  el.querySelectorAll('[data-hist-toggle]').forEach(function(hd){
+    hd.addEventListener('click',function(){
+      var bd=this.nextElementSibling;
+      bd.style.display=bd.style.display==='none'?'block':'none';
+    });
+  });
+}
+
+function histPageRender() {
+  var el=document.getElementById('hist-page'); if(!el)return;
+  var hist=ld('history',{}); var dates=Object.keys(hist).sort().reverse();
+  if(!dates.length){el.innerHTML='<div style="text-align:center;padding:60px;color:#6B6863">아직 기록이 없어요 📅</div>';return;}
+  var dn=['일','월','화','수','목','금','토']; var html='';
+  for(var i=0;i<dates.length;i++){
+    var d=dates[i]; var rec=hist[d]; var pct=rec.total>0?Math.round(rec.completed.length/rec.total*100):0;
+    var dobj=new Date(d); var label=(dobj.getMonth()+1)+'월 '+dobj.getDate()+'일 '+dn[dobj.getDay()]+'요일';
+    var col=pct>=80?'#0F5F4A':pct>=50?'#BA7517':'#A33C1D';
+    html+='<div style="background:#FEFCF8;border:1px solid #E8E5DF;border-radius:12px;padding:14px;margin-bottom:10px">';
+    html+='<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px"><div style="font-size:15px;font-weight:700">'+label+'</div><div style="text-align:right"><div style="font-size:22px;font-weight:700;color:'+col+'">'+pct+'%</div><div style="font-size:10px;color:#6B6863">'+rec.completed.length+'/'+rec.total+' 완료</div></div></div>';
+    html+='<div style="height:4px;background:#E8E5DF;border-radius:99px;overflow:hidden;margin-bottom:8px"><div style="height:100%;background:'+col+';width:'+pct+'%;border-radius:99px"></div></div>';
+    for(var j=0;j<rec.completed.length;j++){html+='<span style="display:inline-block;background:#E1F5EE;color:#0F5F4A;border-radius:99px;padding:2px 8px;margin:2px;font-size:10px;font-weight:600">✓ '+rec.completed[j]+'</span>';}
+    html+='</div>';
+  }
+  el.innerHTML=html;
+}
+
+// ─── MONTHLY TASKS ───
+var MT_MONTHS=['4월','5월','6월','7월','8월','9월','10월','11월','12월'];
+var mtDef={
+  '4월':{goals:{퀴즈완료:'50명',투어결제:'3건',수익:'$415',구독:'0명'},phases:[
+    {title:'MVP 론칭 준비',c:'#0F5F4A',bg:'#E1F5EE',tasks:[{t:'퀴즈/결과값 시나리오 업데이트',d:false},{t:'여행상품 설명 업데이트',d:false},{t:'4/22 MVP 론칭',d:false},{t:'Calendly 슬롯 오픈',d:false}]},
+    {title:'Phase 1 — PDF 가이드',c:'#BA7517',bg:'#FFF3DC',tasks:[{t:'Gumroad 계정 생성',d:false},{t:'Seoul Survival Guide $19',d:false},{t:'K-beauty Bible $29',d:false}]},
+    {title:'Phase 2 — 뉴스레터',c:'#1A5FA3',bg:'#EDF4FF',tasks:[{t:'Loops.so 계정 생성',d:false},{t:'Seoul Insider 1호 초안',d:false},{t:'목요일 첫 발송',d:false}]},
+    {title:'콘텐츠 & 마케팅',c:'#A33C1D',bg:'#FFF0EB',tasks:[{t:'인스타 계정 개설',d:false},{t:'TikTok 영상 3개',d:false},{t:'Reddit 답변 20개',d:false}]},
+  ]},
+  '5월':{goals:{퀴즈완료:'200명',투어결제:'10건',수익:'$1,195',구독:'50명'},phases:[
+    {title:'투어 확장',c:'#0F5F4A',bg:'#E1F5EE',tasks:[{t:'가이드 1명 모집',d:false},{t:'투어 루트 매뉴얼',d:false}]},
+    {title:'PDF 확장',c:'#BA7517',bg:'#FFF3DC',tasks:[{t:'Seoul on $50/day PDF',d:false},{t:'TikTok PDF 홍보',d:false}]},
+    {title:'뉴스레터 성장',c:'#1A5FA3',bg:'#EDF4FF',tasks:[{t:'구독자 100명 달성',d:false},{t:'Seoul Insider Pro 유료화',d:false}]},
+  ]},
 };
+['6월','7월','8월','9월','10월','11월','12월'].forEach(function(m){
+  mtDef[m]={goals:{퀴즈완료:'',투어결제:'',수익:'',구독:''},phases:[{title:'이번 달 목표',c:'#0F5F4A',bg:'#E1F5EE',tasks:[]}]};
+});
+var mtData=ld('mtData',mtDef);
+MT_MONTHS.forEach(function(m){if(!mtData[m])mtData[m]=mtDef[m];});
+var mtSel=0;
 
-setTimeout(()=>{
-  const dp = document.getElementById('wg-grid');
-  if(dp) { renderWeeklyGoals(); renderPastHistory(); }
-}, 200);
+function mtTotal(m){return (mtData[m].phases||[]).reduce(function(s,p){return s+(p.tasks||[]).length;},0);}
+function mtDone(m){return (mtData[m].phases||[]).reduce(function(s,p){return s+(p.tasks||[]).filter(function(t){return t.d;}).length;},0);}
 
+function mtRender(){
+  var tabs=document.getElementById('mt-tabs'); var detail=document.getElementById('mt-detail');
+  if(!tabs||!detail)return;
+  var html='';
+  for(var i=0;i<MT_MONTHS.length;i++){
+    var m=MT_MONTHS[i];
+    html+='<div class="mt-tab'+(i===mtSel?' on':'')+'" data-mi="'+i+'">'+m+'<span class="mt-cnt">'+mtDone(m)+'/'+mtTotal(m)+'</span></div>';
+  }
+  tabs.innerHTML=html;
+  tabs.querySelectorAll('.mt-tab').forEach(function(tab){
+    tab.addEventListener('click',function(){mtSel=parseInt(this.getAttribute('data-mi'));mtRender();});
+  });
+
+  var m=MT_MONTHS[mtSel]; var d=mtData[m];
+  var dhtml='<div style="background:#FEFCF8;border:1px solid #E8E5DF;border-radius:10px;padding:12px 14px;margin-bottom:12px">';
+  dhtml+='<div style="font-size:12px;font-weight:700;margin-bottom:8px">📊 '+m+' 목표 수치</div>';
+  dhtml+='<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px">';
+  ['퀴즈완료','투어결제','수익','구독'].forEach(function(k){
+    dhtml+='<div style="background:#F5F3EE;border-radius:7px;padding:7px 9px"><div style="font-size:8px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:#6B6863;margin-bottom:2px">'+k+'</div><input class="ed" data-goal="'+k+'" value="'+(d.goals[k]||'')+'" placeholder="목표" style="font-size:16px;font-weight:700;color:#0F5F4A;width:100%"></div>';
+  });
+  dhtml+='</div></div>';
+
+  (d.phases||[]).forEach(function(ph,pi){
+    var pdone=(ph.tasks||[]).filter(function(t){return t.d;}).length;
+    dhtml+='<div style="border:1px solid #E8E5DF;border-radius:10px;overflow:hidden;margin-bottom:10px">';
+    dhtml+='<div style="display:flex;align-items:center;justify-content:space-between;padding:9px 12px;border-bottom:1px solid #E8E5DF;background:'+ph.bg+'">';
+    dhtml+='<div style="display:flex;align-items:center"><span style="font-size:9px;font-weight:700;padding:2px 8px;border-radius:99px;background:'+ph.c+';color:white">'+(pi+1)+'</span><span style="font-size:12px;font-weight:700;margin-left:8px">'+ph.title+'</span></div>';
+    dhtml+='<div style="display:flex;gap:6px;align-items:center"><span style="font-size:9px;color:#6B6863">'+pdone+'/'+(ph.tasks||[]).length+'</span><button data-mt-add="'+pi+'" style="background:#E1F5EE;color:#0F5F4A;border:none;border-radius:5px;padding:2px 8px;font-size:9px;font-weight:700;cursor:pointer">+ 추가</button></div></div>';
+    (ph.tasks||[]).forEach(function(t,ti){
+      dhtml+='<div style="display:flex;align-items:center;gap:7px;padding:7px 12px;border-bottom:1px solid #E8E5DF;cursor:pointer" data-mt-task="'+pi+'-'+ti+'">';
+      dhtml+='<span style="color:#C8C5BE;cursor:grab;font-size:12px;flex-shrink:0">⠿</span>';
+      dhtml+='<div class="cb'+(t.d?' on':'')+'" data-mt-chk="'+pi+'-'+ti+'" style="flex-shrink:0"></div>';
+      dhtml+='<span style="flex:1;font-size:12px;color:'+(t.d?'#B0ADA7':'#2C2A26')+';text-decoration:'+(t.d?'line-through':'none')+'">'+t.t+'</span>';
+      dhtml+='<button data-mt-todaily="'+pi+'-'+ti+'" style="font-size:8px;background:#E1F5EE;color:#0F5F4A;border:none;border-radius:4px;padding:1px 6px;font-weight:700;cursor:pointer;opacity:0;transition:opacity .15s" class="to-daily-btn">→ 데일리</button>';
+      dhtml+='<button data-mt-del="'+pi+'-'+ti+'" style="color:#C8C5BE;cursor:pointer;border:none;background:none;font-size:10px;flex-shrink:0">✕</button>';
+      dhtml+='</div>';
+    });
+    dhtml+='</div>';
+  });
+  dhtml+='<button data-mt-addph style="width:100%;background:#FEFCF8;border:1px dashed #E8E5DF;border-radius:9px;padding:9px;font-size:12px;color:#6B6863;cursor:pointer">+ 섹션 추가</button>';
+  detail.innerHTML=dhtml;
+
+  // goal inputs
+  detail.querySelectorAll('[data-goal]').forEach(function(inp){
+    inp.addEventListener('change',function(){
+      mtData[m].goals[this.getAttribute('data-goal')]=this.value; sv('mtData',mtData);
+    });
+  });
+  // chk
+  detail.querySelectorAll('[data-mt-chk]').forEach(function(cb){
+    cb.addEventListener('click',function(e){
+      e.stopPropagation();
+      var p=this.getAttribute('data-mt-chk').split('-');
+      mtData[m].phases[parseInt(p[0])].tasks[parseInt(p[1])].d=!mtData[m].phases[parseInt(p[0])].tasks[parseInt(p[1])].d;
+      sv('mtData',mtData); mtRender();
+    });
+  });
+  // del
+  detail.querySelectorAll('[data-mt-del]').forEach(function(btn){
+    btn.addEventListener('click',function(e){
+      e.stopPropagation();
+      var p=this.getAttribute('data-mt-del').split('-');
+      mtData[m].phases[parseInt(p[0])].tasks.splice(parseInt(p[1]),1);
+      sv('mtData',mtData); mtRender();
+    });
+  });
+  // add task
+  detail.querySelectorAll('[data-mt-add]').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      var pi=parseInt(this.getAttribute('data-mt-add'));
+      var t=prompt('새 태스크 이름:'); if(!t)return;
+      mtData[m].phases[pi].tasks.push({t:t,d:false}); sv('mtData',mtData); mtRender();
+    });
+  });
+  // add phase
+  var addph=detail.querySelector('[data-mt-addph]');
+  if(addph) addph.addEventListener('click',function(){
+    var cols=[['#0F5F4A','#E1F5EE'],['#BA7517','#FFF3DC'],['#1A5FA3','#EDF4FF'],['#A33C1D','#FFF0EB']];
+    var ci=mtData[m].phases.length%4;
+    var t=prompt('섹션 이름:'); if(!t)return;
+    mtData[m].phases.push({title:t,c:cols[ci][0],bg:cols[ci][1],tasks:[]}); sv('mtData',mtData); mtRender();
+  });
+  // to daily
+  detail.querySelectorAll('[data-mt-todaily]').forEach(function(btn){
+    btn.addEventListener('click',function(e){
+      e.stopPropagation();
+      var p=this.getAttribute('data-mt-todaily').split('-');
+      var task=mtData[m].phases[parseInt(p[0])].tasks[parseInt(p[1])].t;
+      userSch.push({time:'09:00',task:task,cat:'📊 운영',fixed:false}); sv('userSch',userSch);
+      toast('✅ 데일리 스케줄에 추가됐어요!');
+    });
+  });
+  // hover to-daily
+  detail.querySelectorAll('[data-mt-task]').forEach(function(row){
+    var btn=row.querySelector('.to-daily-btn');
+    row.addEventListener('mouseenter',function(){if(btn)btn.style.opacity='1';});
+    row.addEventListener('mouseleave',function(){if(btn)btn.style.opacity='0';});
+  });
+}
+
+// ─── CALENDAR ───
+var CAL_MONTHS=['4월','5월','6월','7월','8월','9월','10월','11월','12월'];
+var CAL_NUMS=[4,5,6,7,8,9,10,11,12];
+var calSel=0;
+var calEvs=ld('calEvs',{'4':[{day:22,title:'MVP 론칭 🚀',tag:'t',memo:''},{day:14,title:'이태원 촬영',tag:'t',memo:''}]});
+var TLAB={'t':'🎬 콘텐츠','n':'📧 뉴스레터','r':'📣 마케팅'};
+var TCOL={'t':'#A33C1D','n':'#1A5FA3','r':'#3C3489'};
+var TBGCOL={'t':'#FFE8E4','n':'#EDF4FF','r':'#F0EFFD'};
+
+function calRender(){
+  var tabs=document.getElementById('cal-tabs'); var evlist=document.getElementById('cal-evlist');
+  var title=document.getElementById('cal-title');
+  if(!tabs||!evlist)return;
+  var html='';
+  for(var i=0;i<CAL_MONTHS.length;i++){
+    var k=String(CAL_NUMS[i]); var cnt=(calEvs[k]||[]).length;
+    html+='<div data-cal-tab="'+i+'" style="padding:4px 10px;border-radius:99px;font-size:11px;cursor:pointer;font-weight:'+(i===calSel?'700':'400')+';background:'+(i===calSel?'#0F5F4A':'#E8E5DF')+';color:'+(i===calSel?'white':'#6B6863')+'">'+CAL_MONTHS[i]+' '+cnt+'</div>';
+  }
+  tabs.innerHTML=html;
+  tabs.querySelectorAll('[data-cal-tab]').forEach(function(tab){
+    tab.addEventListener('click',function(){calSel=parseInt(this.getAttribute('data-cal-tab'));calRender();});
+  });
+  if(title) title.textContent='2026년 '+CAL_MONTHS[calSel]+' 일정';
+  var k=String(CAL_NUMS[calSel]); var evs=(calEvs[k]||[]).slice().sort(function(a,b){return a.day-b.day;});
+  if(!evs.length){evlist.innerHTML='<div style="text-align:center;padding:20px;color:#6B6863;font-size:11px">일정이 없어요. + 추가 버튼으로 넣어봐요</div>';return;}
+  var ehtml='';
+  for(var i=0;i<evs.length;i++){
+    var e=evs[i];
+    ehtml+='<div style="display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid #E8E5DF">';
+    ehtml+='<div style="font-size:13px;font-weight:700;color:#0F5F4A;min-width:36px">'+e.day+'일</div>';
+    ehtml+='<div style="flex:1"><div style="font-size:12px;font-weight:600">'+e.title+'</div>';
+    if(e.memo) ehtml+='<div style="font-size:10px;color:#6B6863">'+e.memo+'</div>';
+    ehtml+='<span style="font-size:9px;font-weight:700;padding:1px 6px;border-radius:99px;background:'+(TBGCOL[e.tag]||'#F5F3EE')+';color:'+(TCOL[e.tag]||'#6B6863')+'">'+TLAB[e.tag]+'</span></div>';
+    ehtml+='<button data-cal-del="'+i+'" style="border:none;background:none;color:#C8C5BE;cursor:pointer;font-size:12px">✕</button>';
+    ehtml+='</div>';
+  }
+  evlist.innerHTML=ehtml;
+  evlist.querySelectorAll('[data-cal-del]').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      var idx=parseInt(this.getAttribute('data-cal-del'));
+      var k=String(CAL_NUMS[calSel]); var evs=calEvs[k]||[];
+      evs.sort(function(a,b){return a.day-b.day;});
+      evs.splice(idx,1); calEvs[k]=evs; sv('calEvs',calEvs); calRender();
+    });
+  });
+}
+
+document.getElementById('cal-add-btn').addEventListener('click',function(){
+  var f=document.getElementById('cal-form'); f.style.display=f.style.display==='none'?'block':'none';
+});
+document.getElementById('cal-cancel-btn').addEventListener('click',function(){
+  document.getElementById('cal-form').style.display='none';
+});
+document.getElementById('cal-save-btn').addEventListener('click',function(){
+  var day=parseInt(document.getElementById('cal-day').value);
+  var title=document.getElementById('cal-etitle').value.trim();
+  var tag=document.getElementById('cal-tag').value;
+  var memo=document.getElementById('cal-memo').value.trim();
+  if(!day||!title)return;
+  var k=String(CAL_NUMS[calSel]); if(!calEvs[k])calEvs[k]=[];
+  calEvs[k].push({day:day,title:title,tag:tag,memo:memo}); sv('calEvs',calEvs);
+  document.getElementById('cal-day').value=''; document.getElementById('cal-etitle').value='';
+  document.getElementById('cal-memo').value=''; document.getElementById('cal-form').style.display='none';
+  calRender();
+});
+
+// ─── RETRO ───
+document.querySelectorAll('.ret-ta').forEach(function(ta){
+  var k=ta.getAttribute('data-key'); ta.value=ld(k,'');
+  ta.addEventListener('input',function(){sv(k,this.value);});
+});
+
+// ─── DAILY DATE ───
+var ps2=document.getElementById('daily-ps'); if(ps2) ps2.textContent=dateLabel();
+
+// ─── INIT ───
+hubInit();
+schRender();
+wgRender();
+histDailyRender();
+mtRender();
+calRender();
 </script>
-
-<!-- 모바일 오버레이 -->
-<div class="sidebar-overlay" id="sb-overlay" onclick="closeSidebar()"></div>
-<!-- 모바일 메뉴 버튼 -->
-<button class="mobile-menu-btn" onclick="toggleSidebar()">☰</button>
-<!-- 모바일 하단 탭바 -->
-<nav class="mobile-nav">
-  <button class="mobile-nav-item active" onclick="mobileGo('hub',this)"><span class="mn-icon">🏠</span>허브</button>
-  <button class="mobile-nav-item" onclick="mobileGo('daily',this)"><span class="mn-icon">☀️</span>데일리</button>
-  <button class="mobile-nav-item" onclick="mobileGo('tasks',this)"><span class="mn-icon">✅</span>태스크</button>
-  <button class="mobile-nav-item" onclick="mobileGo('revenue',this)"><span class="mn-icon">💰</span>수익</button>
-  <button class="mobile-nav-item" onclick="mobileGo('retro',this)"><span class="mn-icon">📝</span>회고</button>
-</nav>
-
 </body>
 </html>
