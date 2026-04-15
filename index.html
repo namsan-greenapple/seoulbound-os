@@ -2,970 +2,993 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Seoulbound OS</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Seoulbound OS — 1인 창업 운영 시스템</title>
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'DM Sans',sans-serif;background:#F5F3EE;color:#2C2A26;font-size:13px}
-.os{display:grid;grid-template-columns:210px 1fr;height:100vh;overflow:hidden}
-/* SIDEBAR */
-.sb{background:#FEFCF8;border-right:1px solid #E8E5DF;display:flex;flex-direction:column;height:100vh;overflow:hidden}
-.sb-top{padding:16px;border-bottom:1px solid #E8E5DF}
-.sb-logo{font-size:18px;font-weight:700;color:#0F5F4A}
-.sb-sub{font-size:9px;color:#6B6863;letter-spacing:.07em;text-transform:uppercase;margin-top:2px}
-.sb-nav{overflow-y:auto;flex:1;padding:6px 0}
-.sb-sec{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#C2BFB8;padding:12px 14px 4px}
-.ni{display:flex;align-items:center;gap:8px;padding:7px 14px;color:#6B6863;cursor:pointer;font-size:12px;border-left:3px solid transparent;user-select:none;transition:background .1s}
-.ni:hover{background:#F5F3EE;color:#2C2A26}
-.ni.on{background:#E1F5EE;color:#0F5F4A;font-weight:600;border-left-color:#0F5F4A}
-.sb-bot{padding:10px 12px;border-top:1px solid #E8E5DF}
-.rpill{background:#E1F5EE;border-radius:8px;padding:8px 10px}
-/* MAIN */
-.main{overflow-y:auto;height:100vh}
-.pg{display:none;padding:28px 32px;min-height:100vh}
-.pg.on{display:block}
-.pt{font-size:24px;font-weight:700;color:#2C2A26;margin-bottom:2px}
-.ps{font-size:11px;color:#6B6863;margin-bottom:18px}
-/* CARDS */
-.card{background:#FEFCF8;border:1px solid #E8E5DF;border-radius:12px;padding:14px 16px;margin-bottom:14px}
-.ct{font-size:9px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:#6B6863;margin-bottom:10px}
-/* GRID */
-.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
-.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
-.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:14px}
-/* METRICS */
-.metric{background:#FEFCF8;border:1px solid #E8E5DF;border-radius:10px;padding:12px 14px;position:relative;overflow:hidden}
-.metric::before{content:'';position:absolute;top:0;left:0;width:100%;height:3px}
-.m-teal::before{background:#0F5F4A}.m-amber::before{background:#BA7517}.m-blue::before{background:#1A5FA3}.m-coral::before{background:#A33C1D}
-.ml{font-size:9px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#6B6863;margin-bottom:4px}
-.mv{font-size:24px;font-weight:700;color:#2C2A26}
-.ms{font-size:10px;color:#6B6863;margin-top:2px}
-/* CHECKLIST */
-.ci{display:flex;align-items:center;gap:8px;padding:5px 0;cursor:pointer}
-.ci:hover{background:rgba(0,0,0,.03);border-radius:5px;padding-left:4px}
-.cb{width:16px;height:16px;min-width:16px;border:1.5px solid #C8C5BE;border-radius:4px;display:flex;align-items:center;justify-content:center;background:white;flex-shrink:0;transition:all .15s}
-.cb.on{background:#0F5F4A;border-color:#0F5F4A}
-.cb.on::after{content:'✓';color:white;font-size:9px;font-weight:800}
-.cx{font-size:12px;flex:1}
-.cx.on{text-decoration:line-through;color:#B0ADA7}
-/* SCHEDULE */
-.sch-hdr{display:grid;grid-template-columns:70px 1fr 90px 44px 28px;background:#F5F3EE;border-radius:8px 8px 0 0;font-size:9px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#6B6863}
-.sch-hdr>div,.sr>div{padding:7px 10px;display:flex;align-items:center}
-.sr{display:grid;grid-template-columns:70px 1fr 90px 44px 28px;border-bottom:1px solid #E8E5DF;background:#FEFCF8;cursor:pointer}
-.sr:hover{background:#F5F3EE}
-.sr:last-child{border-bottom:none}
-.tc{font-size:10px;font-weight:600;color:#6B6863}
-.cp{font-size:9px;font-weight:700;padding:2px 6px;border-radius:99px}
-/* WEEKLY GOALS */
-.wg-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin-top:8px}
-.wg-col{border:1px solid #E8E5DF;border-radius:8px;padding:7px 6px;min-height:80px}
-.wg-today{border-color:#0F5F4A;background:#E1F5EE}
-.wg-dh{font-size:9px;font-weight:700;text-align:center;color:#6B6863;margin-bottom:5px}
-.wg-today .wg-dh{color:#0F5F4A}
-/* MONTHLY */
-.mt-wrap{display:grid;grid-template-columns:140px 1fr;background:#FEFCF8;border:1px solid #E8E5DF;border-radius:12px;overflow:hidden;height:calc(100vh - 160px)}
-.mt-tabs{border-right:1px solid #E8E5DF;overflow-y:auto}
-.mt-tab{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;cursor:pointer;font-size:12px;color:#6B6863;border-left:3px solid transparent;user-select:none}
-.mt-tab:hover{background:#F5F3EE}
-.mt-tab.on{background:#E1F5EE;color:#0F5F4A;font-weight:700;border-left-color:#0F5F4A}
-.mt-cnt{font-size:9px;background:#E8E5DF;border-radius:99px;padding:1px 6px;font-weight:700}
-.mt-tab.on .mt-cnt{background:#0F5F4A;color:white}
-.mt-detail{overflow-y:auto;padding:14px 18px}
-/* TABLES */
-.rtbl{width:100%;border-collapse:collapse;font-size:12px}
-.rtbl th{padding:8px 10px;background:#F5F3EE;color:#6B6863;font-weight:700;font-size:9px;text-transform:uppercase;letter-spacing:.05em;text-align:left}
-.rtbl td{padding:9px 10px;border-bottom:1px solid #E8E5DF}
-.rtbl tr:last-child td{border:none}
-.ed{background:transparent;border:none;width:100%;font-size:12px;font-family:inherit;color:#2C2A26}
-.ed:focus{outline:none;background:#E1F5EE;border-radius:3px;padding:1px 4px}
-/* INPUTS */
-.inp{border:1px solid #E8E5DF;border-radius:7px;padding:7px 10px;font-size:12px;font-family:inherit;background:#FEFCF8}
-.inp:focus{outline:none;border-color:#0F5F4A}
-.btn-teal{background:#0F5F4A;color:white;border:none;border-radius:7px;padding:7px 12px;font-size:12px;font-weight:700;cursor:pointer}
-.btn-sm{background:#E1F5EE;color:#0F5F4A;border:none;border-radius:5px;padding:3px 8px;font-size:10px;font-weight:700;cursor:pointer}
-/* TOOLS GRID */
-.tg{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:10px}
-.tc-a{border:1px solid #E8E5DF;border-radius:9px;padding:12px;text-align:center;text-decoration:none;display:block;color:#2C2A26}
-.tc-a:hover{border-color:#0F5F4A;background:#E1F5EE}
-/* MOBILE */
-@media(max-width:768px){
-  .os{grid-template-columns:1fr;height:auto;overflow:auto}
-  .sb{display:none;position:fixed;top:0;left:0;width:80vw;height:100vh;z-index:999}
-  .sb.open{display:flex}
-  .sb-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:998}
-  .sb-ov.open{display:block}
-  .main{height:auto;padding-bottom:72px}
-  .pg{padding:14px}
-  .g4,.g3{grid-template-columns:1fr 1fr}
-  .g2{grid-template-columns:1fr}
-  .mob-nav{display:flex;position:fixed;bottom:0;left:0;right:0;background:#FEFCF8;border-top:1px solid #E8E5DF;z-index:100}
-  .mob-ni{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:7px 2px;cursor:pointer;color:#6B6863;font-size:9px;font-weight:600;border:none;background:none}
-  .mob-ni.on{color:#0F5F4A}
-  .mob-ni span{font-size:18px}
-  .mob-btn{position:fixed;top:10px;right:10px;z-index:1000;border:none;background:#E1F5EE;border-radius:8px;padding:8px 10px;font-size:16px;cursor:pointer}
-  .mt-wrap{height:auto}
-  .mt-tabs{display:flex;overflow-x:auto;border-right:none;border-bottom:1px solid #E8E5DF}
-  .mt-tab{white-space:nowrap}
-  .wg-grid{grid-template-columns:repeat(4,1fr)}
-  .tg{grid-template-columns:repeat(3,1fr)}
-  .sch-hdr,.sr{grid-template-columns:60px 1fr 70px 36px 24px}
-}
-@media(min-width:769px){.mob-nav,.mob-btn,.sb-ov{display:none!important}}
+:root{--bg0:#fff;--bg1:#f7f4ef;--bg2:#ede9e1;--t0:#1a1a1a;--t1:#555;--t2:#999;--bd:#e0dbd0;--ac:#2d6a4f;--acl:#e8f2ea;--acm:#b8d9c4;--r:8px;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;background:var(--bg2);color:var(--t0);}
+.os{display:flex;height:100vh;overflow:hidden;}
+.sb{width:196px;background:var(--bg0);border-right:1px solid var(--bd);flex-shrink:0;overflow-y:auto;display:flex;flex-direction:column;}
+.sb-brand{padding:14px;border-bottom:1px solid var(--bd);}
+.bn{font-size:14px;font-weight:700;color:var(--ac);}
+.bs{font-size:9.5px;color:var(--t2);margin-top:2px;}
+.sr{padding:10px 13px 3px;font-size:9px;color:var(--t2);letter-spacing:.5px;text-transform:uppercase;font-weight:700;}
+.si{display:flex;align-items:center;gap:6px;padding:6px 13px;font-size:12px;cursor:pointer;color:var(--t1);}
+.si:hover{background:var(--bg1);}
+.si.active{background:var(--acl);color:var(--ac);font-weight:700;}
+.si.hot{background:#fff8e8;color:#9a5c1a;font-weight:700;}
+.sbg{margin-left:auto;background:var(--ac);color:#fff;font-size:9px;padding:1px 5px;border-radius:7px;flex-shrink:0;}
+.sbg-hot{margin-left:auto;background:#e8a020;color:#fff;font-size:9px;padding:1px 5px;border-radius:7px;flex-shrink:0;}
+.foot{margin:10px;background:var(--acl);border:1px solid var(--acm);border-radius:var(--r);padding:10px;}
+.main{flex:1;overflow-y:auto;background:var(--bg2);}
+.pg{padding:22px 26px;display:none;}
+.pg.on{display:block;}
+.pt{font-size:19px;font-weight:700;color:var(--t0);}
+.ps{font-size:11px;color:var(--t2);margin-top:3px;margin-bottom:14px;}
+.kpi-g{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:13px;}
+.kpi{background:var(--bg0);border:1px solid var(--bd);border-radius:var(--r);padding:11px;}
+.kpi-l{font-size:10px;color:var(--t2);}
+.kpi-v{font-size:20px;font-weight:800;margin-top:3px;}
+.kpi-s{font-size:10px;color:var(--t2);margin-top:1px;}
+.dg{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+.dept{background:var(--bg0);border:1px solid var(--bd);border-radius:var(--r);padding:10px;cursor:pointer;}
+.dept:hover{border-color:var(--ac);}
+.dr{font-size:9px;color:var(--t2);text-transform:uppercase;letter-spacing:.3px;font-weight:700;}
+.dn{font-size:12px;font-weight:700;margin-top:2px;}
+.dst{font-size:10.5px;color:var(--t1);margin-top:3px;}
+.dp{display:inline-block;font-size:9px;padding:2px 6px;border-radius:5px;margin-top:5px;font-weight:700;}
+.dpg{background:var(--acl);color:var(--ac);}
+.dpw{background:#faf0e8;color:#9a5c1a;}
+.dpr{background:#fcebeb;color:#a32d2d;}
+.card{background:var(--bg0);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden;margin-top:10px;}
+.cp{padding:12px;}
+.tbl{width:100%;border-collapse:collapse;}
+.tbl th{padding:7px 10px;font-size:10px;color:var(--t2);text-align:left;background:var(--bg1);border-bottom:1px solid var(--bd);font-weight:700;}
+.tbl td{padding:7px 10px;font-size:11.5px;border-bottom:1px solid var(--bd);vertical-align:middle;}
+.tbl tr:last-child td{border-bottom:none;}
+.tbl tr:hover td{background:var(--bg1);}
+.abar{padding:8px 10px;display:flex;gap:5px;align-items:center;border-top:1px solid var(--bd);background:var(--bg1);}
+.inp{border:1px solid var(--bd);border-radius:5px;padding:4px 7px;font-size:11.5px;background:var(--bg0);color:var(--t0);outline:none;}
+.inp:focus{border-color:var(--ac);}
+.abtn{border:none;background:var(--ac);color:#fff;cursor:pointer;font-size:11.5px;padding:5px 11px;border-radius:5px;white-space:nowrap;font-weight:700;}
+.abtn:hover{background:#245940;}
+.dbtn{border:none;background:none;cursor:pointer;color:var(--t2);font-size:12px;padding:2px 5px;}
+.dbtn:hover{color:#a32d2d;}
+.bs2{border:1px solid var(--ac);background:var(--ac);color:#fff;cursor:pointer;font-size:10px;padding:3px 7px;border-radius:4px;font-weight:700;}
+.bc{border:1px solid var(--bd);background:none;cursor:pointer;font-size:10px;padding:3px 7px;border-radius:4px;color:var(--t1);}
+.pill{display:inline-block;font-size:10px;padding:2px 7px;border-radius:7px;white-space:nowrap;font-weight:700;}
+.pg2{background:var(--acl);color:var(--ac);}
+.pb{background:#e8f0fa;color:#2d5fa0;}
+.pp{background:#f7eafa;color:#6a2d9a;}
+.po{background:#faf0e8;color:#9a5c1a;}
+.pgr{background:var(--bg1);color:var(--t1);}
+.pr{background:#fcebeb;color:#a32d2d;}
+.sr-row{display:flex;gap:8px;margin-top:10px;}
+.sb-box{flex:1;background:var(--bg0);border:1px solid var(--bd);border-radius:var(--r);padding:10px;}
+.sb-l{font-size:10px;color:var(--t2);}
+.sb-v{font-size:16px;font-weight:800;margin-top:2px;}
+.wk{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin-bottom:11px;}
+.wd{background:var(--bg0);border:1px solid var(--bd);border-radius:var(--r);padding:7px;min-height:60px;}
+.wd.tod{border-color:var(--ac);background:var(--acl);}
+.wdl{font-size:9px;color:var(--t2);margin-bottom:3px;font-weight:700;}
+.wdt{font-size:9.5px;color:var(--t1);margin-bottom:2px;line-height:1.3;}
+.sch-h{display:grid;grid-template-columns:58px 1fr 78px 72px;padding:6px 10px;background:var(--bg1);font-size:10px;color:var(--t2);border-bottom:1px solid var(--bd);gap:6px;font-weight:700;}
+.sch-r{display:grid;grid-template-columns:58px 1fr 78px 72px;padding:7px 10px;border-bottom:1px solid var(--bd);gap:6px;align-items:center;}
+.sch-r:last-child{border-bottom:none;}
+.cat-op{background:var(--acl);color:var(--ac);}
+.cat-mk{background:#e8f0fa;color:#2d5fa0;}
+.cat-pl{background:#faf0e8;color:#9a5c1a;}
+.cat-ct{background:#f7eafa;color:#6a2d9a;}
+.cat-biz{background:#f0f7f2;color:#1a4f35;}
+.ei{border:1px solid var(--ac);border-radius:4px;padding:2px 6px;font-size:11.5px;width:100%;background:var(--bg0);color:var(--t0);outline:none;}
+.okr-i{background:var(--bg0);border:1px solid var(--bd);border-radius:var(--r);padding:12px;margin-bottom:8px;}
+.okr-t{font-size:13px;font-weight:700;}
+.okr-p{font-size:10px;color:var(--t2);margin-top:1px;}
+.kr{display:flex;align-items:center;gap:8px;margin:7px 0 2px;}
+.kr-l{font-size:11px;color:var(--t1);flex:1;}
+.kr-b{flex:1;height:5px;background:var(--bg2);border-radius:3px;overflow:hidden;}
+.kr-f{height:100%;background:var(--ac);border-radius:3px;}
+.kr-n{font-size:10.5px;color:var(--ac);font-weight:800;min-width:30px;text-align:right;}
+.pg-g{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:10px;}
+.pc{background:var(--bg0);border:1px solid var(--bd);border-radius:var(--r);padding:12px;}
+.pc.live{border-color:var(--ac);}
+.jst{display:flex;gap:10px;padding:9px 0;border-bottom:1px solid var(--bd);}
+.jst:last-child{border-bottom:none;}
+.jn{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;flex-shrink:0;margin-top:1px;}
+.jt{font-size:12.5px;font-weight:700;}
+.jd{font-size:11px;color:var(--t1);margin-top:2px;line-height:1.5;}
+.ja{font-size:10.5px;color:var(--ac);font-weight:700;margin-top:3px;}
+.tabs{display:flex;border-bottom:1px solid var(--bd);background:var(--bg0);margin:-22px -26px 16px;padding:0 26px;}
+.tab{padding:10px 14px;font-size:12px;cursor:pointer;color:var(--t1);border-bottom:2px solid transparent;margin-bottom:-1px;}
+.tab:hover{color:var(--t0);}
+.tab.on{color:var(--ac);border-bottom-color:var(--ac);font-weight:700;}
+.kw-group{background:var(--bg0);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden;margin-bottom:8px;}
+.kw-hd{padding:9px 12px;background:var(--bg1);border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between;}
+.kw-ht{font-size:12px;font-weight:700;}
+.kw-cat{padding:8px 12px;border-bottom:1px solid var(--bd);}
+.kw-cat:last-child{border-bottom:none;}
+.kw-cl{font-size:9.5px;color:var(--t2);text-transform:uppercase;letter-spacing:.3px;margin-bottom:5px;font-weight:700;}
+.kw-tags{display:flex;flex-wrap:wrap;gap:4px;}
+.kw-tag{font-size:10.5px;padding:3px 8px;border-radius:5px;border:1px solid var(--bd);color:var(--t1);background:var(--bg0);cursor:default;}
+.kw-tag:hover{border-color:var(--ac);color:var(--ac);}
+.sea-row{display:grid;grid-template-columns:88px 1fr 1fr;border-bottom:1px solid var(--bd);}
+.sea-row:last-child{border-bottom:none;}
+.sea-period{padding:10px 11px;font-size:11.5px;font-weight:700;border-right:1px solid var(--bd);}
+.sea-need{padding:10px 11px;font-size:11px;color:var(--t1);border-right:1px solid var(--bd);line-height:1.6;}
+.sea-kw{padding:10px 11px;display:flex;flex-wrap:wrap;gap:3px;align-content:flex-start;}
+.mvp-card{background:var(--bg0);border:1px solid var(--bd);border-radius:var(--r);padding:12px;margin-bottom:8px;}
+.mvp-card.star{border-color:var(--ac);}
+.mvp-name{font-size:13px;font-weight:700;}
+.mvp-concept{font-size:11px;color:var(--t1);margin-top:2px;line-height:1.5;}
+.mvp-inc{margin-top:7px;}
+.mvp-inc-l{font-size:9.5px;color:var(--t2);text-transform:uppercase;letter-spacing:.3px;margin-bottom:4px;font-weight:700;}
+.mvp-inc-i{font-size:11px;color:var(--t1);margin-bottom:2px;padding-left:10px;position:relative;line-height:1.5;}
+.mvp-inc-i::before{content:"\B7";position:absolute;left:2px;color:var(--ac);}
+.pos-card{background:var(--bg0);border:1px solid var(--bd);border-radius:var(--r);padding:12px;margin-bottom:8px;}
+.pos-name{font-size:12.5px;font-weight:700;}
+.pos-type{font-size:10px;color:var(--t2);margin-top:1px;}
+.pos-vs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px;}
+.pos-col{background:var(--bg1);border-radius:5px;padding:8px;}
+.pos-col-l{font-size:9.5px;color:var(--t2);margin-bottom:4px;text-transform:uppercase;letter-spacing:.3px;font-weight:700;}
+.pos-col-c{font-size:11px;color:var(--t1);line-height:1.6;}
+.pos-insight{background:var(--acl);border:1px solid var(--acm);border-radius:5px;padding:7px;margin-top:7px;font-size:11px;color:var(--ac);line-height:1.6;}
+.adv-item{display:flex;gap:10px;padding:9px 0;border-bottom:1px solid var(--bd);}
+.adv-item:last-child{border-bottom:none;}
+.adv-num{width:21px;height:21px;border-radius:50%;background:var(--acl);color:var(--ac);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;flex-shrink:0;margin-top:1px;}
+.adv-t{font-size:12px;font-weight:700;}
+.adv-d{font-size:11px;color:var(--t1);margin-top:2px;line-height:1.6;}
+.phase{background:var(--bg0);border:1px solid var(--bd);border-radius:var(--r);padding:12px;margin-bottom:8px;}
+.ph{display:flex;justify-content:space-between;align-items:flex-start;}
+.ph-t{font-size:12.5px;font-weight:700;}
+.ph-p{font-size:10px;color:var(--t2);}
+.ph-v{font-size:15px;font-weight:800;color:var(--ac);margin-top:3px;}
+.ph-items{margin-top:7px;font-size:11.5px;color:var(--t1);line-height:1.8;}
+.ph-items li{margin-left:14px;}
+.sim{background:var(--acl);border:1px solid var(--acm);border-radius:var(--r);padding:12px;margin-top:12px;}
+.sim-t{font-size:11px;color:var(--ac);font-weight:800;margin-bottom:7px;}
+.sim-r{display:flex;justify-content:space-between;font-size:11.5px;color:var(--t1);margin-bottom:3px;}
+.sim-tot{display:flex;justify-content:space-between;font-size:13px;font-weight:800;color:var(--ac);border-top:1px solid var(--acm);padding-top:6px;margin-top:4px;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;}
+.box{background:var(--bg0);border:1px solid var(--bd);border-radius:var(--r);padding:11px;}
+.box-l{font-size:10px;color:var(--t2);}
+.box-v{font-size:14px;font-weight:800;color:var(--ac);margin-top:2px;}
+.box-s{font-size:11px;color:var(--t1);margin-top:3px;line-height:1.5;}
+.sec{font-size:12px;font-weight:700;color:var(--t0);margin:14px 0 7px;}
+.sec:first-child{margin-top:0;}
+.hint{background:var(--acl);border:1px solid var(--acm);border-radius:var(--r);padding:10px 12px;font-size:11.5px;color:var(--t1);line-height:1.7;margin-top:10px;}
+.step{display:flex;gap:11px;padding:10px 0;border-bottom:1px solid var(--bd);}
+.step:last-child{border-bottom:none;}
+.sn{width:22px;height:22px;border-radius:50%;background:var(--acl);color:var(--ac);display:flex;align-items:center;justify-content:center;font-size:10.5px;font-weight:800;flex-shrink:0;margin-top:1px;}
+.st{font-size:12.5px;font-weight:700;}
+.sd{font-size:11.5px;color:var(--t1);margin-top:3px;line-height:1.6;}
+.code{background:var(--bg1);border:1px solid var(--bd);border-radius:5px;padding:7px 10px;font-size:11px;font-family:'SF Mono',Monaco,Consolas,monospace;margin-top:5px;line-height:1.7;}
+.tl-block{background:var(--bg0);border:1px solid var(--bd);border-radius:var(--r);padding:14px;margin-bottom:10px;}
+.tl-block.today{border-color:#e8a020;background:#fff8e8;}
+.tl-block.done{border-color:var(--acm);background:var(--acl);}
+.tl-period{font-size:10px;font-weight:800;color:var(--t2);text-transform:uppercase;letter-spacing:.4px;margin-bottom:6px;}
+.tl-block.today .tl-period{color:#9a5c1a;}
+.tl-block.done .tl-period{color:var(--ac);}
+.tl-title{font-size:13px;font-weight:800;margin-bottom:8px;}
+.tl-item{display:flex;align-items:flex-start;gap:8px;margin-bottom:6px;font-size:11.5px;color:var(--t1);}
+.tl-item input[type=checkbox]{accent-color:var(--ac);margin-top:1px;flex-shrink:0;}
+.tl-done{color:var(--t2);text-decoration:line-through;}
+.pillar-tbl{width:100%;border-collapse:collapse;font-size:11.5px;}
+.pillar-tbl th{padding:8px 10px;font-size:10px;color:var(--t2);text-align:left;background:var(--bg1);border-bottom:1px solid var(--bd);font-weight:700;}
+.pillar-tbl td{padding:8px 10px;border-bottom:1px solid var(--bd);vertical-align:top;line-height:1.5;}
+.pillar-tbl tr:last-child td{border-bottom:none;}
+.pillar-tbl tr:hover td{background:var(--bg1);}
+.hashtag{font-size:10px;font-weight:800;color:var(--ac);background:var(--acl);padding:2px 6px;border-radius:5px;display:inline-block;margin-bottom:3px;}
+.mvp2-card{background:var(--bg0);border:1px solid var(--bd);border-radius:var(--r);padding:14px;margin-bottom:10px;}
+.mvp2-card.featured{border-color:var(--ac);border-width:2px;}
+.mvp2-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;}
+.mvp2-name{font-size:14px;font-weight:800;}
+.mvp2-price{font-size:18px;font-weight:800;color:var(--ac);}
+.mvp2-desc{font-size:11.5px;color:var(--t1);line-height:1.7;margin-bottom:8px;}
+.mvp2-ops{display:grid;grid-template-columns:1fr 1fr;gap:7px;}
+.mvp2-op{background:var(--bg1);border-radius:5px;padding:8px;}
+.mvp2-op-l{font-size:9.5px;color:var(--t2);font-weight:700;text-transform:uppercase;letter-spacing:.3px;margin-bottom:4px;}
+.mvp2-op-c{font-size:11px;color:var(--t1);line-height:1.6;}
+/* NOTE CRUD */
+.note-add{background:var(--bg0);border:1px solid var(--bd);border-radius:var(--r);padding:14px;margin-bottom:12px;}
+.note-add-title{font-size:12px;font-weight:700;margin-bottom:10px;color:var(--t0);}
+.note-form{display:flex;flex-direction:column;gap:7px;}
+.note-form textarea{border:1px solid var(--bd);border-radius:5px;padding:7px 9px;font-size:11.5px;background:var(--bg0);color:var(--t0);outline:none;resize:vertical;min-height:70px;font-family:inherit;}
+.note-form textarea:focus{border-color:var(--ac);}
+.note-form-row{display:flex;gap:7px;}
+.note-card{background:var(--bg0);border:1px solid var(--bd);border-radius:var(--r);padding:13px;margin-bottom:8px;}
+.note-card:hover{border-color:var(--acm);}
+.note-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:7px;}
+.note-title{font-size:13px;font-weight:700;color:var(--t0);}
+.note-meta{font-size:10px;color:var(--t2);margin-top:2px;}
+.note-body{font-size:11.5px;color:var(--t1);line-height:1.7;white-space:pre-wrap;}
+.note-actions{display:flex;gap:5px;}
+.note-edit-btn{border:1px solid var(--bd);background:none;cursor:pointer;font-size:11px;padding:3px 8px;border-radius:4px;color:var(--t1);}
+.note-edit-btn:hover{border-color:var(--ac);color:var(--ac);}
+.note-del-btn{border:none;background:none;cursor:pointer;font-size:11px;padding:3px 6px;border-radius:4px;color:var(--t2);}
+.note-del-btn:hover{color:#a32d2d;}
+/* SPLAN */
+.splan-vision{background:linear-gradient(135deg,#1a4f35,#2d6a4f);color:#fff;border-radius:var(--r);padding:20px;margin-bottom:14px;}
+.splan-vision-label{font-size:10px;text-transform:uppercase;letter-spacing:.5px;opacity:.7;margin-bottom:6px;}
+.splan-vision-text{font-size:16px;font-weight:700;line-height:1.5;}
+.splan-vision-sub{font-size:11.5px;opacity:.85;margin-top:8px;line-height:1.6;}
+.roadmap-tbl{width:100%;border-collapse:collapse;}
+.roadmap-tbl th{padding:9px 12px;font-size:10px;color:var(--t2);text-align:left;background:var(--bg1);border-bottom:1px solid var(--bd);font-weight:700;}
+.roadmap-tbl td{padding:10px 12px;font-size:11.5px;border-bottom:1px solid var(--bd);vertical-align:top;line-height:1.6;}
+.roadmap-tbl tr:last-child td{border-bottom:none;}
+.roadmap-tbl td:first-child{font-weight:700;}
+.proposal-block{background:var(--bg0);border:1px solid var(--bd);border-radius:var(--r);padding:14px;margin-bottom:10px;}
+.proposal-title{font-size:13px;font-weight:700;color:var(--ac);margin-bottom:8px;}
+.proposal-sub{font-size:11px;color:var(--t2);margin-bottom:8px;}
+.proposal-item{font-size:11.5px;color:var(--t1);margin-bottom:6px;padding-left:12px;position:relative;line-height:1.6;}
+.proposal-item::before{content:"\2022";position:absolute;left:2px;color:var(--ac);}
+.ceo-note{background:#1a4f35;color:#fff;border-radius:var(--r);padding:16px;margin-top:14px;}
+.ceo-note-label{font-size:9px;text-transform:uppercase;letter-spacing:.5px;opacity:.7;margin-bottom:6px;}
+.ceo-note-text{font-size:12px;line-height:1.8;opacity:.9;}
 </style>
 </head>
 <body>
-
-<div class="sb-ov" id="sb-ov"></div>
-<button class="mob-btn" id="mob-btn">☰</button>
-
 <div class="os">
-<div class="sb" id="sidebar">
-  <div class="sb-top">
-    <div class="sb-logo">Seoulbound</div>
-    <div class="sb-sub">사업 운영 OS</div>
+<nav class="sb">
+  <div class="sb-brand"><div class="bn">Seoulbound</div><div class="bs">1인 창업 OS v3.0 Final</div></div>
+  <div class="sr">CEO</div>
+  <div class="si active" id="nav-hub" onclick="show('hub')">&#127968; 허브 (전체 현황)</div>
+  <div class="si" id="nav-daily" onclick="show('daily')">&#127780; 데일리 스케줄</div>
+  <div class="si" id="nav-okr" onclick="show('okr')">&#127919; OKR &amp; 목표</div>
+  <div class="si hot" id="nav-launch" onclick="show('launch')">&#128640; MVP 런칭 플랜<span class="sbg-hot">D-7</span></div>
+  <div class="si" id="nav-splan" onclick="show('splan')">&#128196; 사업 계획서</div>
+  <div class="sr">CFO 재무</div>
+  <div class="si" id="nav-rev" onclick="show('rev')">&#128176; 수익 트래커</div>
+  <div class="si" id="nav-exp" onclick="show('exp')">&#128184; 지출 현황</div>
+  <div class="si" id="nav-cf" onclick="show('cf')">&#128202; 현금흐름</div>
+  <div class="si" id="nav-tax" onclick="show('tax')">&#129518; 세금 &amp; 재무</div>
+  <div class="si" id="nav-inv" onclick="show('inv')">&#128188; 투자유치</div>
+  <div class="sr">CMO 마케팅</div>
+  <div class="si" id="nav-cont" onclick="show('cont')">&#127916; 콘텐츠 캘린더</div>
+  <div class="si" id="nav-viral" onclick="show('viral')">&#128226; 채널 &amp; 인플루언서</div>
+  <div class="si" id="nav-sns" onclick="show('sns')">&#128241; SNS 현황</div>
+  <div class="si" id="nav-kw" onclick="show('kw')">&#128202; 키워드 &amp; 트렌드</div>
+  <div class="sr">CSO 전략</div>
+  <div class="si" id="nav-comp" onclick="show('comp')">&#128269; 경쟁사 분석</div>
+  <div class="si" id="nav-expand" onclick="show('expand')">&#128200; 확장 플랜</div>
+  <div class="si" id="nav-part" onclick="show('part')">&#129309; 파트너십 &amp; 영업</div>
+  <div class="si" id="nav-research" onclick="show('research')">&#128203; 시장 리서치</div>
+  <div class="sr">CS 고객</div>
+  <div class="si" id="nav-jour" onclick="show('jour')">&#128506; 고객 여정</div>
+  <div class="si" id="nav-crm" onclick="show('crm')">&#128101; 고객 파이프라인</div>
+  <div class="si" id="nav-cslog" onclick="show('cslog')">&#128172; CS 로그</div>
+  <div class="sr">상품</div>
+  <div class="si" id="nav-prod" onclick="show('prod')">&#128230; 상품 현황</div>
+  <div class="si" id="nav-plannotes" onclick="show('plannotes')">&#128221; 기획 노트</div>
+  <div class="sr">운영</div>
+  <div class="si" id="nav-ai" onclick="show('ai')">&#129302; AI 스택</div>
+  <div class="si" id="nav-set" onclick="show('set')">&#128273; 계정 관리</div>
+  <div style="flex:1"></div>
+  <div class="foot">
+    <div style="font-size:9px;color:var(--ac);text-transform:uppercase;letter-spacing:.4px;font-weight:700">4월 목표</div>
+    <div style="font-size:18px;font-weight:800;color:var(--ac);margin-top:1px">$415</div>
+    <div style="font-size:10px;color:#5a9070;margin-top:1px">MVP D-7 · 론칭 4/22</div>
   </div>
-  <div class="sb-nav">
-    <div class="sb-sec">메인</div>
-    <div class="ni on" data-page="hub">🏠 허브</div>
-    <div class="ni" data-page="daily">☀️ 데일리 스케줄</div>
-    <div class="ni" data-page="tasks">✅ 월별 목표</div>
-    <div class="sb-sec">수익</div>
-    <div class="ni" data-page="revenue">💰 수익 트래커</div>
-    <div class="ni" data-page="pipeline">🔄 고객 파이프라인</div>
-    <div class="sb-sec">콘텐츠</div>
-    <div class="ni" data-page="content">🎬 콘텐츠 캘린더</div>
-    <div class="sb-sec">AI 운영</div>
-    <div class="ni" data-page="aiops">🤖 AI 마케팅 운영</div>
-    <div class="sb-sec">회고</div>
-    <div class="ni" data-page="retro">📝 주간 회고</div>
-    <div class="ni" data-page="history">📅 날짜별 기록</div>
-    <div class="sb-sec">관리</div>
-    <div class="ni" data-page="expense">💸 지출 현황</div>
-    <div class="ni" data-page="accounts">🔑 계정 & 즐겨찾기</div>
-  </div>
-  <div class="sb-bot">
-    <div class="rpill">
-      <div style="font-size:8px;color:#6B6863;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-bottom:2px">4월 목표</div>
-      <div style="font-size:15px;font-weight:700;color:#0F5F4A">$415</div>
-      <div style="font-size:10px;color:#6B6863;margin-top:1px">MVP D-<span id="dday-sb">?</span></div>
-    </div>
-  </div>
-</div>
-
+</nav>
 <div class="main">
 
-<!-- HUB -->
-<div class="pg on" id="p-hub">
-  <div class="pt">🏠 Seoulbound 허브</div>
-  <div class="ps" id="hub-ps">loading...</div>
-  <div id="hub-banner"></div>
-  <div class="g4" id="hub-metrics"></div>
-  <div class="g3">
-    <div class="card">
-      <div class="ct">Phase 현황</div>
-      <div style="display:flex;flex-direction:column;gap:7px">
-        <div style="display:flex;align-items:center;justify-content:space-between;padding:7px 9px;background:#E1F5EE;border-radius:8px">
-          <div><div style="font-size:9px;font-weight:700;color:#0F5F4A">MVP 론칭 준비</div><div style="font-size:12px;font-weight:700">투어 판매</div></div>
-          <span style="font-size:9px;background:#0F5F4A;color:white;padding:2px 8px;border-radius:99px;font-weight:700">진행 중</span>
-        </div>
-        <div style="display:flex;align-items:center;justify-content:space-between;padding:7px 9px;background:#FFF3DC;border-radius:8px">
-          <div><div style="font-size:9px;font-weight:700;color:#BA7517">Phase 1</div><div style="font-size:12px;font-weight:700">PDF 가이드</div></div>
-          <span style="font-size:9px;background:#BA7517;color:white;padding:2px 8px;border-radius:99px;font-weight:700">이번 주</span>
-        </div>
-        <div style="display:flex;align-items:center;justify-content:space-between;padding:7px 9px;background:#EDF4FF;border-radius:8px">
-          <div><div style="font-size:9px;font-weight:700;color:#1A5FA3">Phase 2</div><div style="font-size:12px;font-weight:700">뉴스레터</div></div>
-          <span style="font-size:9px;background:#E8E5DF;color:#6B6863;padding:2px 8px;border-radius:99px;font-weight:700">다음 주</span>
-        </div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="ct">이번 주 핵심 할 일</div>
-      <div id="hub-todos"></div>
-      <div style="margin-top:8px;display:flex;gap:6px">
-        <input id="hub-todo-inp" class="inp" placeholder="할 일 추가..." style="flex:1;font-size:11px">
-        <button class="btn-sm" id="hub-todo-add">추가</button>
-      </div>
-    </div>
-    <div class="card">
-      <div class="ct">수익 현황</div>
-      <div style="display:flex;flex-direction:column;gap:4px">
-        <div style="display:flex;justify-content:space-between;font-size:12px;padding:4px 0;border-bottom:1px solid #E8E5DF"><span>🗺️ 투어</span><input class="ed" id="rev-tour" placeholder="$0" style="text-align:right;width:80px"></div>
-        <div style="display:flex;justify-content:space-between;font-size:12px;padding:4px 0;border-bottom:1px solid #E8E5DF"><span>📄 PDF</span><input class="ed" id="rev-pdf" placeholder="$0" style="text-align:right;width:80px"></div>
-        <div style="display:flex;justify-content:space-between;font-size:12px;padding:4px 0"><span>📧 뉴스레터</span><input class="ed" id="rev-nl" placeholder="$0" style="text-align:right;width:80px"></div>
-      </div>
-    </div>
-  </div>
+<div class="pg on" id="page-hub">
+  <div class="pt">&#127968; CEO 허브</div>
+  <div class="ps">전체 사업 현황 한눈에 · 2026년 4월 15일</div>
+  <div class="kpi-g" id="kpi-g"></div>
+  <div class="sec">부서별 현황 (클릭 이동)</div>
+  <div class="dg" id="dept-g"></div>
 </div>
 
-<!-- DAILY -->
-<div class="pg" id="p-daily">
-  <div class="pt">☀️ 데일리 스케줄</div>
-  <div class="ps" id="daily-ps">loading...</div>
-  <div class="card">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
-      <div class="ct" style="margin-bottom:0">📅 이번 주 목표 <span style="font-size:9px;color:#6B6863;font-weight:400">클릭수정 · ✕삭제 · +추가</span></div>
-    </div>
-    <div class="wg-grid" id="wg-grid"></div>
+<div class="pg" id="page-daily">
+  <div class="pt">&#127780; 데일리 스케줄</div>
+  <div class="ps">2026년 4월 15일 · 수요일 · MVP D-7</div>
+  <div class="wk">
+    <div class="wd"><div class="wdl">월</div><div class="wdt">기획+브리핑</div></div>
+    <div class="wd"><div class="wdl">화</div></div>
+    <div class="wd tod"><div class="wdl">수 ★</div><div class="wdt">편집+Buffer</div></div>
+    <div class="wd"><div class="wdl">목</div><div class="wdt">뉴스레터</div><div class="wdt">영상촬영</div></div>
+    <div class="wd"><div class="wdl">금</div><div class="wdt">Reddit 5개</div></div>
+    <div class="wd"><div class="wdl">토</div><div class="wdt">명동촬영</div></div>
+    <div class="wd"><div class="wdl">일</div><div class="wdt">Buffer예약</div><div class="wdt">회고</div></div>
   </div>
   <div class="card">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
-      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
-        <div class="ct" style="margin-bottom:0">오늘 스케줄</div>
-        <div style="display:flex;gap:4px;flex-wrap:wrap">
-          <span style="font-size:9px;font-weight:700;padding:2px 6px;border-radius:99px;background:#E1F5EE;color:#0F5F4A">📊 운영</span>
-          <span style="font-size:9px;font-weight:700;padding:2px 6px;border-radius:99px;background:#FFE8E4;color:#A33C1D">🎬 콘텐츠</span>
-          <span style="font-size:9px;font-weight:700;padding:2px 6px;border-radius:99px;background:#EDF4FF;color:#1A5FA3">📣 마케팅</span>
-          <span style="font-size:9px;font-weight:700;padding:2px 6px;border-radius:99px;background:#F0EFFD;color:#3C3489">🛠 플랫폼</span>
-          <span style="font-size:9px;font-weight:700;padding:2px 6px;border-radius:99px;background:#FFF3DC;color:#BA7517">💼 영업</span>
-        </div>
-      </div>
-      <button class="btn-sm" id="load-weekly-btn">↓ 주간목표 불러오기</button>
-    </div>
-    <div style="border:1px solid #E8E5DF;border-radius:10px;overflow:hidden">
-      <div class="sch-hdr"><div>시간</div><div>태스크</div><div>카테고리</div><div>완료</div><div></div></div>
-      <div id="sch-body"></div>
-    </div>
-    <div style="display:flex;gap:6px;margin-top:10px">
-      <input id="ni-time" class="inp" type="text" placeholder="09:00" value="09:00" style="width:70px">
-      <input id="ni-task" class="inp" placeholder="오늘 추가할 태스크..." style="flex:1">
-      <select id="ni-cat" class="inp">
-        <option>📊 운영</option><option>🎬 콘텐츠</option><option>📣 마케팅</option><option>🛠 플랫폼</option><option>💼 영업</option>
+    <div class="sch-h"><span>시간</span><span>태스크</span><span>카테고리</span><span>액션</span></div>
+    <div id="sch-body"></div>
+    <div class="abar">
+      <input class="inp" id="at" placeholder="00:00" style="width:60px">
+      <input class="inp" id="atask" placeholder="태스크 입력..." style="flex:1">
+      <select class="inp" id="acat" style="width:80px">
+        <option value="cat-op">운영</option><option value="cat-pl">플랫폼</option>
+        <option value="cat-mk">마케팅</option><option value="cat-ct">콘텐츠</option><option value="cat-biz">영업</option>
       </select>
-      <button class="btn-teal" id="add-sch-btn">+ 추가</button>
+      <button class="abtn" onclick="addTask()">+ 추가</button>
     </div>
   </div>
-  <div class="card">
-    <div class="ct">📆 지난 날 기록</div>
-    <div id="hist-daily"></div>
+</div>
+
+<div class="pg" id="page-okr">
+  <div class="pt">&#127919; OKR &amp; 목표</div>
+  <div class="ps">Q2 2026 (4월~6월) · MVP → 수익화</div>
+  <div class="okr-i"><div class="okr-t">O1. MVP 론칭 &amp; 첫 결제 고객 확보</div><div class="okr-p">4월 22일 기준</div>
+    <div class="kr"><span class="kr-l">KR1. 상품 라이브 &amp; 결제 플로우 완성</span><div class="kr-b"><div class="kr-f" style="width:80%"></div></div><span class="kr-n">80%</span></div>
+    <div class="kr"><span class="kr-l">KR2. Stripe 테스트 완료 &amp; 첫 결제 1명</span><div class="kr-b"><div class="kr-f" style="width:50%"></div></div><span class="kr-n">50%</span></div>
+    <div class="kr"><span class="kr-l">KR3. 이메일 리스트 100명</span><div class="kr-b"><div class="kr-f" style="width:0%"></div></div><span class="kr-n">0%</span></div>
+  </div>
+  <div class="okr-i"><div class="okr-t">O2. 마케팅 채널 셋업 &amp; 콘텐츠 3개 발행</div><div class="okr-p">4월 말 기준</div>
+    <div class="kr"><span class="kr-l">KR1. 인스타/틱톡 계정 셋업</span><div class="kr-b"><div class="kr-f" style="width:0%"></div></div><span class="kr-n">0%</span></div>
+    <div class="kr"><span class="kr-l">KR2. Reddit 정보성 글 5개</span><div class="kr-b"><div class="kr-f" style="width:0%"></div></div><span class="kr-n">0%</span></div>
+    <div class="kr"><span class="kr-l">KR3. Seoul Insider 뉴스레터 1호</span><div class="kr-b"><div class="kr-f" style="width:0%"></div></div><span class="kr-n">0%</span></div>
+  </div>
+  <div class="okr-i"><div class="okr-t">O3. 월 $3,500 수익 달성</div><div class="okr-p">5월 22일 (론칭 후 1개월)</div>
+    <div class="kr"><span class="kr-l">KR1. Glow Local 월 8회 운영</span><div class="kr-b"><div class="kr-f" style="width:0%"></div></div><span class="kr-n">0%</span></div>
+    <div class="kr"><span class="kr-l">KR2. Seoul Trend Pass 월 12건</span><div class="kr-b"><div class="kr-f" style="width:0%"></div></div><span class="kr-n">0%</span></div>
+    <div class="kr"><span class="kr-l">KR3. 고객 리뷰 5개 수집</span><div class="kr-b"><div class="kr-f" style="width:0%"></div></div><span class="kr-n">0%</span></div>
   </div>
 </div>
 
-<!-- MONTHLY TASKS -->
-<div class="pg" id="p-tasks">
-  <div class="pt">✅ 월별 목표</div>
-  <div class="ps">4월~12월 · 더블클릭 수정 · ✕ 삭제 · → 데일리 추가</div>
-  <div class="mt-wrap">
-    <div class="mt-tabs" id="mt-tabs"></div>
-    <div class="mt-detail" id="mt-detail"></div>
-  </div>
-</div>
-
-<!-- REVENUE -->
-<div class="pg" id="p-revenue">
-  <div class="pt">💰 수익 트래커</div>
-  <div class="ps">4월 — 3개 수익원 동시 운영</div>
-  <div class="card">
-    <div class="ct">4월 수익 목표 vs 실제</div>
-    <table class="rtbl" style="margin-top:8px">
-      <tr><th>수익원</th><th>단가</th><th>4월 목표</th><th>4월 실제</th><th>5월 목표</th></tr>
-      <tr><td>🗺️ Eat Local</td><td>$90</td><td>$180</td><td><input class="ed" placeholder="$0"></td><td>$270</td></tr>
-      <tr><td>🗺️ Glow Local</td><td>$135</td><td>$135</td><td><input class="ed" placeholder="$0"></td><td>$270</td></tr>
-      <tr><td>🗺️ Stan Seoul</td><td>$115</td><td>$0</td><td><input class="ed" placeholder="$0"></td><td>$115</td></tr>
-      <tr><td>📄 Seoul Survival Guide</td><td>$19</td><td>$57</td><td><input class="ed" placeholder="$0"></td><td>$114</td></tr>
-      <tr><td>📄 K-beauty Bible</td><td>$29</td><td>$29</td><td><input class="ed" placeholder="$0"></td><td>$87</td></tr>
-      <tr><td>📧 Seoul Insider Pro</td><td>$15/월</td><td>$0</td><td><input class="ed" placeholder="$0"></td><td>$150</td></tr>
+<div class="pg" id="page-launch">
+  <div class="pt">&#128640; MVP 런칭 플랜</div>
+  <div class="ps">D-7 타임라인 · 4/15(수) → 4/22(수) · CEO 최우선 과제</div>
+  <div class="sec">콘텐츠 필라 4종 (SNS 마케팅 핵심)</div>
+  <div class="card" style="overflow-x:auto">
+    <table class="pillar-tbl">
+      <thead><tr><th>핵심 키워드</th><th>해시태그</th><th>후킹 포인트</th><th>연계 상품</th></tr></thead>
+      <tbody>
+        <tr><td><b>퍼스널컬러 &amp; 올리브영</b></td><td><span class="hashtag">#K-GlowUp</span></td><td>"한국 여행 필수코스 1위, 진단 없이 쇼핑하면 무조건 후회합니다."</td><td><span class="pill pg2">Glow Local $150</span></td></tr>
+        <tr><td><b>피부과 &amp; 메디컬 트립</b></td><td><span class="hashtag">#SeoulSkinGame</span></td><td>"티켓 값 뽑고도 남는 서울 시술 투어, 영어 가능 병원만 콕 집어드림."</td><td><span class="pill pb">Skin Concierge</span></td></tr>
+        <tr><td><b>광장시장 Netflix Lady &amp; 로컬 BBQ</b></td><td><span class="hashtag">#EatLocalSeoul</span></td><td>"더 이상 관광객 식당에서 줄 서지 마세요. 진짜 로컬의 맛을 알려드립니다."</td><td><span class="pill po">Midnight Seoul $105</span></td></tr>
+        <tr><td><b>BTS 성지 &amp; 성수 팝업</b></td><td><span class="hashtag">#K-CultureNow</span></td><td>"틱톡에서 본 그 장소, 웨이팅 없이 가장 효율적으로 가는 루트."</td><td><span class="pill pp">Stan Seoul $95</span></td></tr>
+      </tbody>
     </table>
   </div>
-  <div class="g3">
-    <div class="card"><div class="ct">Phase 0</div><div style="font-size:26px;font-weight:700;color:#0F5F4A">$500<span style="font-size:13px;color:#6B6863">/월</span></div><div style="font-size:10px;color:#6B6863">4월 말 목표</div></div>
-    <div class="card"><div class="ct">Phase 1</div><div style="font-size:26px;font-weight:700;color:#BA7517">$200<span style="font-size:13px;color:#6B6863">/월</span></div><div style="font-size:10px;color:#6B6863">5월 초 목표</div></div>
-    <div class="card"><div class="ct">Phase 2</div><div style="font-size:26px;font-weight:700;color:#1A5FA3">$750<span style="font-size:13px;color:#6B6863">/월</span></div><div style="font-size:10px;color:#6B6863">6월 목표</div></div>
-  </div>
-</div>
-
-<!-- PIPELINE -->
-<div class="pg" id="p-pipeline">
-  <div class="pt">🔄 고객 파이프라인</div>
-  <div class="ps">퀴즈 완료 → 이메일 → 결제 → 투어 완료</div>
-  <div style="display:flex;gap:10px;overflow-x:auto;padding-bottom:8px">
-    <div style="min-width:150px"><div style="font-size:9px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#6B6863;padding:5px 0;margin-bottom:6px">퀴즈 완료</div><div style="background:#FEFCF8;border:1px solid #E8E5DF;border-radius:8px;padding:9px;font-size:11px">신규 유입<br><span style="color:#6B6863;font-size:10px">이메일 자동 발송</span></div></div>
-    <div style="min-width:150px"><div style="font-size:9px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#6B6863;padding:5px 0;margin-bottom:6px">이메일 수신</div><div style="background:#FEFCF8;border:1px solid #E8E5DF;border-radius:8px;padding:9px;font-size:11px">여정 발송됨<br><span style="color:#6B6863;font-size:10px">48h 리마인더 대기</span></div></div>
-    <div style="min-width:150px"><div style="font-size:9px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#0F5F4A;padding:5px 0;margin-bottom:6px">투어 결제 💰</div><div style="background:#E1F5EE;border:1px solid #0F5F4A;border-radius:8px;padding:9px;font-size:11px">결제 완료<br><span style="color:#0F5F4A;font-size:10px">Calendly 예약 확인</span></div></div>
-    <div style="min-width:150px"><div style="font-size:9px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#6B6863;padding:5px 0;margin-bottom:6px">투어 완료</div><div style="background:#FEFCF8;border:1px solid #E8E5DF;border-radius:8px;padding:9px;font-size:11px">투어 진행됨<br><span style="color:#6B6863;font-size:10px">후기 수집 이메일</span></div></div>
-    <div style="min-width:150px"><div style="font-size:9px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#6B6863;padding:5px 0;margin-bottom:6px">후기 게시</div><div style="background:#FEFCF8;border:1px solid #E8E5DF;border-radius:8px;padding:9px;font-size:11px">홈페이지 게시<br><span style="color:#6B6863;font-size:10px">소셜 증거 확보</span></div></div>
-  </div>
-</div>
-
-<!-- CONTENT -->
-<div class="pg" id="p-content">
-  <div class="pt">🎬 콘텐츠 캘린더</div>
-  <div class="ps">일정 추가/삭제 가능</div>
-  <div class="card">
-    <div class="ct">월 선택</div>
-    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px" id="cal-tabs"></div>
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
-      <div style="font-size:13px;font-weight:700" id="cal-title">4월 일정</div>
-      <button class="btn-sm" id="cal-add-btn">+ 추가</button>
-    </div>
-    <div id="cal-form" style="display:none;background:#F5F3EE;border-radius:8px;padding:10px;margin-bottom:10px">
-      <div style="display:flex;gap:6px;margin-bottom:6px">
-        <input class="inp" id="cal-day" type="number" min="1" max="31" placeholder="날짜" style="width:70px">
-        <input class="inp" id="cal-etitle" placeholder="일정 제목" style="flex:1">
-      </div>
-      <div style="display:flex;gap:6px">
-        <select class="inp" id="cal-tag" style="flex:none"><option value="t">🎬 콘텐츠</option><option value="n">📧 뉴스레터</option><option value="r">📣 마케팅</option></select>
-        <input class="inp" id="cal-memo" placeholder="메모" style="flex:1">
-        <button class="btn-teal" id="cal-save-btn" style="font-size:11px">저장</button>
-        <button class="btn-sm" id="cal-cancel-btn">취소</button>
-      </div>
-    </div>
-    <div id="cal-evlist"></div>
-  </div>
-</div>
-
-<!-- AI OPS -->
-<div class="pg" id="p-aiops">
-  <div class="pt">🤖 AI 마케팅 운영</div>
-  <div class="ps">에스더 직접: 촬영 · 의사결정 · Claude 브리핑 — 나머지는 AI</div>
-  <div style="background:#0F5F4A;border-radius:10px;padding:14px;margin-bottom:14px;color:white">
-    <div style="font-size:9px;opacity:.8;font-weight:700;letter-spacing:.05em;text-transform:uppercase;margin-bottom:8px">하루 2시간 루틴</div>
-    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px">
-      <div style="background:rgba(255,255,255,.15);border-radius:7px;padding:9px;text-align:center"><div style="font-size:9px;font-weight:700">09:00</div><div style="font-size:10px;font-weight:700;margin-top:2px">Claude 브리핑</div><div style="font-size:8px;opacity:.8;margin-top:2px">20분</div></div>
-      <div style="background:rgba(255,255,255,.15);border-radius:7px;padding:9px;text-align:center"><div style="font-size:9px;font-weight:700">10:00</div><div style="font-size:10px;font-weight:700;margin-top:2px">촬영</div><div style="font-size:8px;opacity:.8;margin-top:2px">30분</div></div>
-      <div style="background:rgba(255,255,255,.15);border-radius:7px;padding:9px;text-align:center"><div style="font-size:9px;font-weight:700">10:30</div><div style="font-size:10px;font-weight:700;margin-top:2px">AI 편집+발행</div><div style="font-size:8px;opacity:.8;margin-top:2px">30분</div></div>
-      <div style="background:rgba(255,255,255,.15);border-radius:7px;padding:9px;text-align:center"><div style="font-size:9px;font-weight:700">14:00</div><div style="font-size:10px;font-weight:700;margin-top:2px">Reddit 확인</div><div style="font-size:8px;opacity:.8;margin-top:2px">20분</div></div>
-      <div style="background:rgba(255,255,255,.15);border-radius:7px;padding:9px;text-align:center"><div style="font-size:9px;font-weight:700">이후</div><div style="font-size:10px;font-weight:700;margin-top:2px">AI 전부</div><div style="font-size:8px;opacity:.8;margin-top:2px">자동</div></div>
-    </div>
-  </div>
-  <div class="card">
-    <div class="ct">AI 에이전트 역할표</div>
-    <table class="rtbl" style="margin-top:8px">
-      <tr><th>역할</th><th>도구</th><th>하는 일</th><th>비용</th><th>세팅</th></tr>
-      <tr><td>전략·카피</td><td>Claude</td><td>브리핑·스크립트·캡션·Reddit 초안</td><td>$20/월</td><td style="color:#0F5F4A;font-weight:700">✅</td></tr>
-      <tr><td>영상 편집</td><td>CapCut AI</td><td>자막 자동생성·편집</td><td>무료</td><td style="color:#0F5F4A;font-weight:700">✅</td></tr>
-      <tr><td>SNS 배포</td><td>Buffer</td><td>TikTok+Reels+Shorts 동시 예약</td><td>무료</td><td style="color:#BA7517;font-weight:700">⚠️</td></tr>
-      <tr><td>이메일</td><td>Loops.so</td><td>퀴즈→이메일 시퀀스</td><td>무료</td><td style="color:#BA7517;font-weight:700">⚠️</td></tr>
-      <tr><td>DM 자동화</td><td>ManyChat</td><td>인스타 댓글→링크 자동 DM</td><td>무료</td><td style="color:#A33C1D;font-weight:700">❌</td></tr>
-    </table>
-  </div>
-  <div class="card">
-    <div class="ct">매일 아침 Claude 브리핑 템플릿</div>
-    <div style="background:#F5F3EE;border-radius:8px;padding:12px;font-size:11px;line-height:1.8;font-family:monospace;border-left:3px solid #0F5F4A;margin-top:8px">오늘 현황:<br>- Stripe 결제: [건수]건 / 퀴즈 완료: [명]명<br>- TikTok 어제 조회수: [수] / 뉴스레터: [명]명<br><br>오늘 [요일], 촬영 장소: [장소]<br>할 일 3개 + TikTok 스크립트 + 캡션 + Reddit 초안 줘.</div>
-  </div>
-</div>
-
-<!-- RETRO -->
-<div class="pg" id="p-retro">
-  <div class="pt">📝 주간 회고</div>
-  <div class="ps">매주 작성 · 자동 저장</div>
+  <div class="sec">집중 테스트 MVP 2종</div>
   <div class="g2">
-    <div class="card"><div class="ct" style="color:#2D7A3A">✅ 잘 된 것</div><textarea class="ret-ta" data-key="ret-good" placeholder="이번 주 잘 된 것들..."></textarea></div>
-    <div class="card"><div class="ct" style="color:#A33C1D">❌ 안 된 것</div><textarea class="ret-ta" data-key="ret-bad" placeholder="이번 주 안 된 것들..."></textarea></div>
-    <div class="card"><div class="ct" style="color:#BA7517">🔄 다음 주 바꿀 것</div><textarea class="ret-ta" data-key="ret-next" placeholder="개선할 것들..."></textarea></div>
-    <div class="card"><div class="ct" style="color:#3C3489">💬 Claude에게 물어볼 것</div><textarea class="ret-ta" data-key="ret-claude" placeholder="물어볼 것들..."></textarea></div>
+    <div class="mvp2-card featured">
+      <div class="mvp2-header"><div><div style="font-size:9px;background:var(--ac);color:#fff;padding:2px 7px;border-radius:5px;display:inline-block;margin-bottom:6px;font-weight:700">MVP 상품 1</div><div class="mvp2-name">Glow Local: Personal Color &amp; Shopping Pass</div></div><div class="mvp2-price">$150</div></div>
+      <div class="mvp2-desc">퍼스널컬러 업체 제휴 → 우선 예약 타임슬롯 → 고객 결제 시 예약 대행 → 피부톤별 올리브영 추천 PDF + 가이드 동행 쇼핑</div>
+      <div class="mvp2-ops">
+        <div class="mvp2-op"><div class="mvp2-op-l">운영</div><div class="mvp2-op-c">퍼스널컬러 업체 2곳 제휴<br>외국인 우선 슬롯 협상</div></div>
+        <div class="mvp2-op"><div class="mvp2-op-l">수익</div><div class="mvp2-op-c">마진 + 쇼핑 가이드비<br>순마진 ~$60/건</div></div>
+      </div>
+    </div>
+    <div class="mvp2-card featured" style="border-color:#2d5fa0">
+      <div class="mvp2-header"><div><div style="font-size:9px;background:#2d5fa0;color:#fff;padding:2px 7px;border-radius:5px;display:inline-block;margin-bottom:6px;font-weight:700">MVP 상품 2</div><div class="mvp2-name">SEOUL TREND PRE-PASS: Wave the Wait</div></div><div class="mvp2-price" style="color:#2d5fa0">$99</div></div>
+      <div class="mvp2-desc">핫플 (런던베이글뮤지엄, 팝업스토어) 원격 웨이팅 대행 + 우선 입장권 확보 → 현장 동행 가이드 2hrs</div>
+      <div class="mvp2-ops">
+        <div class="mvp2-op"><div class="mvp2-op-l">운영</div><div class="mvp2-op-c">원격 웨이팅 대행<br>2hrs 현장 동행</div></div>
+        <div class="mvp2-op"><div class="mvp2-op-l">수익</div><div class="mvp2-op-c">가이드비 + 수수료<br>1인 운영 가능</div></div>
+      </div>
+    </div>
   </div>
+  <div class="sec">D-7 런칭 타임라인</div>
+  <div class="tl-block done">
+    <div class="tl-period">&#10003; 완료</div><div class="tl-title">사전 준비 완료</div>
+    <div class="tl-item tl-done"><input type="checkbox" checked> 상품 확정 (Glow Local $150 · Seoul Trend Pass $99)</div>
+    <div class="tl-item tl-done"><input type="checkbox" checked> Stripe 결제 연동 + 테스트 완료</div>
+    <div class="tl-item tl-done"><input type="checkbox" checked> 홈페이지 퀴즈 + 결과지 구조 완성</div>
+  </div>
+  <div class="tl-block">
+    <div class="tl-period">D-7 ~ D-5 · 4/15 ~ 4/17</div><div class="tl-title">&#9881;&#65039; 제휴 &amp; 세팅</div>
+    <div class="tl-item"><input type="checkbox"> 영어 가능 퍼스널컬러 진단 업체 2곳 제휴 (우선 슬롯 협상)</div>
+    <div class="tl-item"><input type="checkbox"> 영어 가능 피부과 1곳 제휴 (외국인 컨시어지 협의)</div>
+    <div class="tl-item"><input type="checkbox"> 홈페이지 결과 페이지 수정 — 퀴즈 답변 기반 MVP 상품 최상단 + 즉시 결제 버튼</div>
+    <div class="tl-item"><input type="checkbox"> 퀴즈 완료 → 이메일 수집 스텝 추가</div>
+    <div class="tl-item"><input type="checkbox"> WhatsApp Business + Beehiiv 셋업</div>
+  </div>
+  <div class="tl-block">
+    <div class="tl-period">D-4 ~ D-2 · 4/18 ~ 4/20</div><div class="tl-title">&#127916; 마케팅 콘텐츠 제작</div>
+    <div class="tl-item"><input type="checkbox"> 틱톡/릴스 영상 3개 제작 (#K-GlowUp / #SeoulSkinGame / #EatLocalSeoul)</div>
+    <div class="tl-item"><input type="checkbox"> 인스타그램 / 틱톡 계정 셋업 완료</div>
+    <div class="tl-item"><input type="checkbox"> 올리브영 톤별 추천 가이드 PDF 초안 완성</div>
+    <div class="tl-item"><input type="checkbox"> Reddit 정보성 글 초안 작성</div>
+  </div>
+  <div class="tl-block">
+    <div class="tl-period">D-1 · 4/21</div><div class="tl-title">&#128269; 최종 점검</div>
+    <div class="tl-item"><input type="checkbox"> 지인 통한 퀴즈 → 결제 → 예약 메일 전 과정 테스트</div>
+    <div class="tl-item"><input type="checkbox"> 모바일 화면 최종 확인 · 모든 링크 재확인</div>
+  </div>
+  <div class="tl-block today">
+    <div class="tl-period">&#127919; D-DAY · 4/22 — 론칭!</div><div class="tl-title">&#128640; Seoulbound 공식 론칭</div>
+    <div class="tl-item"><input type="checkbox"> 인스타/틱톡 콘텐츠 게시 + 소액 광고 집행 ($20~30)</div>
+    <div class="tl-item"><input type="checkbox"> Seoul Insider 뉴스레터 MVP 런칭 할인 쿠폰 발송</div>
+    <div class="tl-item"><input type="checkbox"> Reddit 정보성 글 게시 (r/Seoul, r/SkincareAddiction)</div>
+    <div class="tl-item"><input type="checkbox"> 첫 예약 고객 대응 준비 완료 확인</div>
+  </div>
+</div>
+
+<div class="pg" id="page-splan">
+  <div class="pt">&#128196; 사업 계획서</div>
+  <div class="ps">Seoulbound Business Plan · CEO/CFO/CSO 공유용 · 2026</div>
+  <div class="splan-vision">
+    <div class="splan-vision-label">Vision Statement</div>
+    <div class="splan-vision-text">"Data-driven Gateway to Seoul's Hidden Gems."</div>
+    <div class="splan-vision-sub">서울의 숨겨진 가치를 데이터와 큐레이션으로 연결하여, 외국인 여행객에게는 '인생 여행'을, 파트너사에게는 '글로벌 고객'을 제공합니다.</div>
+  </div>
+  <div class="sec">비즈니스 확장 로드맵 (Bilingual)</div>
+  <div class="card" style="overflow-x:auto">
+    <table class="roadmap-tbl">
+      <thead><tr><th>단계 (Phase)</th><th>기간 (Timeline)</th><th>수익 모델 (Revenue Model)</th><th>핵심 전략 (Core Strategy)</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><span class="pill pg2">Phase 1: MVP</span></td>
+          <td>5월 – 8월</td>
+          <td>직접 서비스 수수료 (Service Fee)<br>큐레이션 및 예약 대행료</td>
+          <td>창업자 직접 운영을 통한 고객 데이터 및 운영 매뉴얼(Playbook) 확보</td>
+        </tr>
+        <tr>
+          <td><span class="pill pb">Phase 2: Growth</span></td>
+          <td>9월 – 12월</td>
+          <td>매칭 수수료 (Matching Fee 15~20%)<br>Mate 매칭 수수료 추가</td>
+          <td>[Mate 매칭 서비스 런칭] 검증된 가이드를 'Mate'로 등록 및 자동 매칭. 창업자는 CEO/CSO로 전환.</td>
+        </tr>
+        <tr>
+          <td><span class="pill pp">Phase 3: Scale</span></td>
+          <td>2027년~</td>
+          <td>B2B 파트너십 &amp; 구독 (Subscription)<br>병원/업체 광고 및 솔루션 입점비<br>퀴즈 데이터 트렌드 리포트 판매</td>
+          <td>AI 기반 자동 큐레이션 및 글로벌 K-트래블 플랫폼으로 생태계 확장. 서울 → 제주/부산 → 도쿄/방콕</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="sec">수익 모델 다각화 (Revenue Diversification)</div>
+  <div class="g3">
+    <div class="box"><div class="box-l">MVP 현재 · 큐레이션 마진</div><div class="box-v">20~30%</div><div class="box-s">상품 판매 마진<br>Stripe 직판으로 수수료 최소화</div></div>
+    <div class="box"><div class="box-l">Phase 2 · Mate 매칭</div><div class="box-v">15~20%</div><div class="box-s">플랫폼 매칭 수수료<br>2026년 8월 말 도입 (가을 성수기 대비)</div></div>
+    <div class="box"><div class="box-l">Phase 3 · 데이터/광고</div><div class="box-v">장기</div><div class="box-s">퀴즈 데이터 선호도 트렌드 리포트<br>타겟 광고 &amp; B2B 입점비</div></div>
+  </div>
+  <div class="sec">규모 확장 시나리오 (Scaling Scenario)</div>
+  <div class="g2">
+    <div class="phase"><div class="ph"><div><div class="ph-t">1단계 · 1인 창업 (MVP)</div><div class="ph-p">5월~7월 런칭 및 운영 안정화</div></div><div class="ph-v">$3,500/월</div></div><ul class="ph-items"><li>창업자 직접 현장 운영</li><li>고객 데이터 및 Playbook 확보</li><li>파트너십 기반 구축</li></ul></div>
+    <div class="phase"><div class="ph"><div><div class="ph-t">2단계 · Mate 도입 (Growth)</div><div class="ph-p">2026년 8월 말 (가을 성수기 대비)</div></div><div class="ph-v">$7,000/월</div></div><ul class="ph-items"><li>창업자 → CEO/CSO/CMO로 전환</li><li>Mate들이 현장 운영 전담</li><li>Viator/Klook 채널 확장</li></ul></div>
+    <div class="phase"><div class="ph"><div><div class="ph-t">3단계 · 지역 확장 (Global)</div><div class="ph-p">2027년~</div></div><div class="ph-v">$30,000+/월</div></div><ul class="ph-items"><li>서울 중심 → 제주, 부산</li><li>해외: 도쿄, 방콕으로 모델 복제</li><li>AI 기반 자동 큐레이션 시스템</li></ul></div>
+    <div class="phase"><div class="ph"><div><div class="ph-t">4단계 · 플랫폼화</div><div class="ph-p">2027년 하반기~</div></div><div class="ph-v">$100,000+/월</div></div><ul class="ph-items"><li>글로벌 K-트래블 플랫폼</li><li>병원/업체 B2B 솔루션 입점</li><li>퀴즈 데이터 리포트 수익화</li></ul></div>
+  </div>
+  <div class="sec">파트너십 영업 제안서 (피부과/퍼스널컬러 지점용)</div>
+  <div class="proposal-block">
+    <div class="proposal-title">Executive Summary — 제안 개요</div>
+    <div class="proposal-sub">Seoulbound는 고관여 글로벌 관광객(미국, 영국, 호주 등)을 타겟으로 한 프리미엄 큐레이션 플랫폼입니다. 단순 광고가 아닌, 취향 분석 퀴즈(Quiz)를 통해 귀사 서비스에 최적화된 고객만을 매칭하여 송출합니다.</div>
+    <div class="proposal-item"><b>검증된 타겟 (Qualified Leads):</b> 퀴즈를 통해 서비스 구매 의사가 90% 이상인 고객만 유입됩니다.</div>
+    <div class="proposal-item"><b>노쇼 방지 (No-Show Prevention):</b> 플랫폼 내 사전 결제(Stripe) 시스템으로 예약 노쇼 리스크를 원천 차단합니다.</div>
+    <div class="proposal-item"><b>글로벌 브랜딩 (Global Exposure):</b> 영미권 및 아시아 SNS(틱톡/인스타)를 통해 귀사를 프리미엄 K-뷰티 스팟으로 홍보합니다.</div>
+  </div>
+  <div class="proposal-block">
+    <div class="proposal-title">Proposed Model — 제안 모델</div>
+    <div class="proposal-item"><b>우선 예약 슬롯 (Priority Booking):</b> Seoulbound 고객 전용 우선 예약 시간대 배정.</div>
+    <div class="proposal-item"><b>전용 패키지 구성 (Exclusive Packages):</b> 시술 + 사후 케어 가이드가 포함된 Seoulbound 전용 상품 개발.</div>
+    <div class="proposal-item"><b>수익 배분:</b> 고객 결제액의 15~20% 플랫폼 수수료. 노쇼 보장으로 실질 수익 증가.</div>
+  </div>
+  <div class="ceo-note">
+    <div class="ceo-note-label">CEO's Note</div>
+    <div class="ceo-note-text">"지금 바로 이 내용을 바탕으로 영업 미팅용 슬라이드를 제작하세요. 피부과 원장님이나 퍼스널 컬러 업체에게는 '우리는 단순 가이드가 아니라, 당신의 병원에 준비된 글로벌 고객을 데려오는 마케팅 채널이다'라는 점을 강조하는 것이 계약 성사의 핵심입니다."</div>
+  </div>
+</div>
+
+<div class="pg" id="page-rev">
+  <div class="pt">&#128176; 수익 트래커</div><div class="ps">모든 수입 기록 · CFO</div>
+  <div class="sr-row" id="rev-sum"></div>
   <div class="card">
-    <div class="ct">이번 주 수치</div>
-    <div class="g4" style="margin-top:8px;margin-bottom:0">
-      <div style="background:#F5F3EE;border-radius:8px;padding:8px 10px"><div style="font-size:9px;color:#6B6863;margin-bottom:3px">퀴즈 완료</div><input class="ed" placeholder="0명" style="font-size:20px;font-weight:700"></div>
-      <div style="background:#F5F3EE;border-radius:8px;padding:8px 10px"><div style="font-size:9px;color:#6B6863;margin-bottom:3px">투어 결제</div><input class="ed" placeholder="0건" style="font-size:20px;font-weight:700"></div>
-      <div style="background:#F5F3EE;border-radius:8px;padding:8px 10px"><div style="font-size:9px;color:#6B6863;margin-bottom:3px">PDF 판매</div><input class="ed" placeholder="0개" style="font-size:20px;font-weight:700"></div>
-      <div style="background:#F5F3EE;border-radius:8px;padding:8px 10px"><div style="font-size:9px;color:#6B6863;margin-bottom:3px">주간 수익</div><input class="ed" placeholder="$0" style="font-size:20px;font-weight:700"></div>
+    <table class="tbl"><thead><tr><th>날짜</th><th>설명</th><th>상품</th><th>고객</th><th>금액</th><th></th></tr></thead>
+    <tbody id="rev-body"></tbody></table>
+    <div class="abar">
+      <input class="inp" id="rd" type="date" style="width:110px"><input class="inp" id="rdesc" placeholder="수입 설명" style="flex:1">
+      <select class="inp" id="rprod" style="width:115px"><option>Glow Local</option><option>Seoul Trend Pass</option><option>Midnight Seoul</option><option>Skin Concierge</option><option>Make It Yours</option><option>기타</option></select>
+      <input class="inp" id="rcust" placeholder="고객명" style="width:75px"><input class="inp" id="ramt" type="number" placeholder="$" style="width:65px">
+      <button class="abtn" onclick="addRev()">+ 추가</button>
     </div>
   </div>
 </div>
 
-<!-- HISTORY -->
-<div class="pg" id="p-history">
-  <div class="pt">📅 날짜별 기록</div>
-  <div class="ps">매일 자동 저장</div>
-  <div id="hist-page"></div>
+<div class="pg" id="page-exp">
+  <div class="pt">&#128184; 지출 현황</div><div class="ps">모든 지출 기록 · CFO</div>
+  <div class="sr-row" id="exp-sum"></div>
+  <div class="card">
+    <table class="tbl"><thead><tr><th>날짜</th><th>카테고리</th><th>설명</th><th>금액</th><th></th></tr></thead>
+    <tbody id="exp-body"></tbody></table>
+    <div class="abar">
+      <input class="inp" id="ed" type="date" style="width:110px">
+      <select class="inp" id="ecat" style="width:80px"><option>운영</option><option>마케팅</option><option>개발</option><option>인건비</option><option>세금</option><option>기타</option></select>
+      <input class="inp" id="edesc" placeholder="지출 설명" style="flex:1"><input class="inp" id="eamt" type="number" placeholder="$" style="width:65px">
+      <button class="abtn" onclick="addExp()">+ 추가</button>
+    </div>
+  </div>
 </div>
 
-<!-- EXPENSE -->
-<div class="pg" id="p-expense">
-  <div class="pt">💸 지출 현황</div>
-  <div class="ps">월별 고정 지출</div>
+<div class="pg" id="page-cf"><div class="pt">&#128202; 현금흐름</div><div class="ps">수익 - 지출 자동 계산</div><div id="cf-c"></div></div>
+<div class="pg" id="page-tax"><div class="pt">&#129518; 세금 &amp; 재무</div><div class="ps">세금 추정 &amp; 주요 일정</div><div id="tax-c"></div></div>
+
+<div class="pg" id="page-inv">
+  <div class="pt">&#128188; 투자유치</div><div class="ps">투자자 파이프라인 · 매출 증명 후 검토</div>
   <div class="card">
-    <table class="rtbl">
-      <tr><th>서비스</th><th>용도</th><th>금액</th><th>메모</th></tr>
-      <tr><td>Claude Pro</td><td>AI 전략/카피</td><td>$20/월</td><td><input class="ed" placeholder="메모"></td></tr>
-      <tr><td>Cursor</td><td>AI 코딩</td><td>$20/월</td><td><input class="ed" placeholder="메모"></td></tr>
-      <tr><td>Vercel</td><td>호스팅</td><td>$20/월</td><td><input class="ed" placeholder="메모"></td></tr>
-      <tr><td>Supabase</td><td>DB</td><td>무료</td><td><input class="ed" placeholder="메모"></td></tr>
-      <tr><td>Stripe</td><td>결제 수수료</td><td>2.9%+30¢</td><td><input class="ed" placeholder="메모"></td></tr>
-      <tr><td>Namecheap</td><td>도메인</td><td>$15/년</td><td><input class="ed" placeholder="메모"></td></tr>
+    <table class="tbl"><thead><tr><th>투자자/기관</th><th>유형</th><th>목표금액</th><th>상태</th><th>다음 액션</th><th></th></tr></thead>
+    <tbody id="inv-body"></tbody></table>
+    <div class="abar">
+      <input class="inp" id="in2" placeholder="투자자명" style="width:95px">
+      <select class="inp" id="it2" style="width:85px"><option>엔젤</option><option>VC</option><option>액셀러레이터</option><option>정부지원</option><option>크라우드</option></select>
+      <input class="inp" id="ia2" placeholder="목표금액" style="width:75px">
+      <select class="inp" id="is2" style="width:80px"><option>리서치중</option><option>접촉예정</option><option>미팅중</option><option>검토중</option><option>거절</option><option>확정</option></select>
+      <input class="inp" id="ix2" placeholder="다음 액션" style="flex:1">
+      <button class="abtn" onclick="addInv()">+ 추가</button>
+    </div>
+  </div>
+  <div class="hint">&#128161; 추천 순서: ① 월 $3,500 달성 → ② 창진원/팁스 신청 → ③ 엔젤 시드 → ④ 시리즈 A</div>
+</div>
+
+<div class="pg" id="page-cont">
+  <div class="pt">&#127916; 콘텐츠 캘린더</div><div class="ps">주간 콘텐츠 계획 · CMO · 4개 필라 기반</div>
+  <div class="g2" style="margin-bottom:12px">
+    <div class="box"><div class="box-l"><span class="hashtag">#K-GlowUp</span></div><div class="box-v" style="font-size:12px">퍼스널컬러 &amp; 올리브영</div><div class="box-s">타깃: 영미권 여성 · 아시아 MZ<br>연계: Glow Local $150</div></div>
+    <div class="box"><div class="box-l"><span class="hashtag">#SeoulSkinGame</span></div><div class="box-v" style="font-size:12px">피부과 &amp; 메디컬 트립</div><div class="box-s">타깃: 글래스스킨 원하는 전 국가<br>연계: Skin Concierge</div></div>
+    <div class="box"><div class="box-l"><span class="hashtag">#EatLocalSeoul</span></div><div class="box-v" style="font-size:12px">광장시장 &amp; 로컬 BBQ</div><div class="box-s">타깃: 서구권 혼행족 · 소규모 그룹<br>연계: Midnight Seoul $105</div></div>
+    <div class="box"><div class="box-l"><span class="hashtag">#K-CultureNow</span></div><div class="box-v" style="font-size:12px">BTS 성지 &amp; 성수 팝업</div><div class="box-s">타깃: 아시아 MZ · K-팬덤<br>연계: Stan Seoul $95</div></div>
+  </div>
+  <div class="card">
+    <table class="tbl"><thead><tr><th>날짜</th><th>플랫폼</th><th>주제</th><th>필라</th><th>상태</th></tr></thead>
+    <tbody>
+      <tr><td>4/22 론칭일</td><td><span class="pill pb">Instagram</span></td><td>Seoulbound 론칭 + Glow Local 소개</td><td><span class="hashtag">#K-GlowUp</span></td><td><span class="pill po">작성중</span></td></tr>
+      <tr><td>4/22</td><td><span class="pill pp">TikTok</span></td><td>"퍼스널컬러 진단받고 올리브영 털어온 후기"</td><td><span class="hashtag">#K-GlowUp</span></td><td><span class="pill po">기획중</span></td></tr>
+      <tr><td>4/23</td><td><span class="pill pgr">Reddit</span></td><td>"Best local food spots tourists miss in Seoul"</td><td><span class="hashtag">#EatLocalSeoul</span></td><td><span class="pill po">초안중</span></td></tr>
+      <tr><td>4/24</td><td><span class="pill pp">TikTok</span></td><td>"미국보다 5배 싼 글래스스킨 서울 피부과 예약법"</td><td><span class="hashtag">#SeoulSkinGame</span></td><td><span class="pill pgr">예정</span></td></tr>
+      <tr><td>4/25</td><td><span class="pill pg2">Beehiiv</span></td><td>Seoul Insider #1 — 이번주 서울 꿀팁</td><td>전체</td><td><span class="pill pgr">예정</span></td></tr>
+    </tbody>
     </table>
   </div>
 </div>
 
-<!-- ACCOUNTS -->
-<div class="pg" id="p-accounts">
-  <div class="pt">🔑 계정 & 즐겨찾기</div>
-  <div class="ps">AI 도구 빠른 링크 + 계정 정보</div>
+<div class="pg" id="page-viral">
+  <div class="pt">&#128226; 채널 &amp; 인플루언서</div><div class="ps">협업 타깃 채널 관리 · CMO</div>
   <div class="card">
-    <div class="ct">⚡ AI 도구</div>
-    <div class="tg">
-      <a class="tc-a" href="https://claude.ai" target="_blank"><div style="font-size:20px;margin-bottom:4px">🤖</div><div style="font-size:11px;font-weight:700;color:#0F5F4A">Claude</div><div style="font-size:9px;color:#6B6863">전략·카피·코드</div></a>
-      <a class="tc-a" href="https://cursor.com" target="_blank"><div style="font-size:20px;margin-bottom:4px">💻</div><div style="font-size:11px;font-weight:700;color:#1A5FA3">Cursor</div><div style="font-size:9px;color:#6B6863">AI 코딩</div></a>
-      <a class="tc-a" href="https://chatgpt.com" target="_blank"><div style="font-size:20px;margin-bottom:4px">💬</div><div style="font-size:11px;font-weight:700;color:#2D7A3A">ChatGPT</div><div style="font-size:9px;color:#6B6863">카피·이메일</div></a>
-      <a class="tc-a" href="https://perplexity.ai" target="_blank"><div style="font-size:20px;margin-bottom:4px">🔍</div><div style="font-size:11px;font-weight:700;color:#3C3489">Perplexity</div><div style="font-size:9px;color:#6B6863">AI 리서치</div></a>
-      <a class="tc-a" href="https://canva.com" target="_blank"><div style="font-size:20px;margin-bottom:4px">🖼️</div><div style="font-size:11px;font-weight:700;color:#A33C1D">Canva</div><div style="font-size:9px;color:#6B6863">디자인</div></a>
-      <a class="tc-a" href="https://capcut.com" target="_blank"><div style="font-size:20px;margin-bottom:4px">🎬</div><div style="font-size:11px;font-weight:700;color:#BA7517">CapCut</div><div style="font-size:9px;color:#6B6863">영상 편집</div></a>
-      <a class="tc-a" href="https://v0.dev" target="_blank"><div style="font-size:20px;margin-bottom:4px">🎨</div><div style="font-size:11px;font-weight:700">v0.dev</div><div style="font-size:9px;color:#6B6863">UI 컴포넌트</div></a>
-      <a class="tc-a" href="https://midjourney.com" target="_blank"><div style="font-size:20px;margin-bottom:4px">🖌️</div><div style="font-size:11px;font-weight:700">Midjourney</div><div style="font-size:9px;color:#6B6863">AI 이미지</div></a>
+    <table class="tbl"><thead><tr><th>채널/계정</th><th>플랫폼</th><th>팔로워</th><th>카테고리</th><th>협업 유형</th><th>상태</th><th></th></tr></thead>
+    <tbody id="viral-body">
+      <tr><td><b>r/Seoul</b></td><td>Reddit</td><td>280K</td><td>서울 여행</td><td>정보성 댓글 유기적 유입</td><td><span class="pill pg2">진행중</span></td><td><button class="dbtn" onclick="this.closest('tr').remove()">&#10005;</button></td></tr>
+      <tr><td><b>r/SkincareAddiction</b></td><td>Reddit</td><td>2M+</td><td>K-beauty</td><td>#SeoulSkinGame 콘텐츠 연계</td><td><span class="pill po">예정</span></td><td><button class="dbtn" onclick="this.closest('tr').remove()">&#10005;</button></td></tr>
+      <tr><td><b>r/solotravel</b></td><td>Reddit</td><td>800K</td><td>솔로여행</td><td>Seoul Trend Pass 연계</td><td><span class="pill po">예정</span></td><td><button class="dbtn" onclick="this.closest('tr').remove()">&#10005;</button></td></tr>
+    </tbody></table>
+    <div class="abar">
+      <input class="inp" id="vn" placeholder="채널명" style="width:95px">
+      <select class="inp" id="vp" style="width:85px"><option>Instagram</option><option>TikTok</option><option>YouTube</option><option>Reddit</option><option>Blog</option><option>기타</option></select>
+      <input class="inp" id="vf" placeholder="팔로워" style="width:65px"><input class="inp" id="vc" placeholder="카테고리" style="width:80px">
+      <input class="inp" id="vco" placeholder="협업 유형" style="flex:1">
+      <select class="inp" id="vs" style="width:70px"><option>예정</option><option>진행중</option><option>보류</option></select>
+      <button class="abtn" onclick="addViral()">+ 추가</button>
     </div>
-  </div>
-  <div class="card">
-    <div class="ct">🚀 Seoulbound 핵심 도구</div>
-    <div class="tg">
-      <a class="tc-a" href="https://seoulbound.com" target="_blank"><div style="font-size:20px;margin-bottom:4px">🌐</div><div style="font-size:11px;font-weight:700;color:#0F5F4A">seoulbound.com</div><div style="font-size:9px;color:#6B6863">라이브 사이트</div></a>
-      <a class="tc-a" href="https://vercel.com" target="_blank"><div style="font-size:20px;margin-bottom:4px">▲</div><div style="font-size:11px;font-weight:700">Vercel</div><div style="font-size:9px;color:#6B6863">배포·로그</div></a>
-      <a class="tc-a" href="https://stripe.com/dashboard" target="_blank"><div style="font-size:20px;margin-bottom:4px">💳</div><div style="font-size:11px;font-weight:700;color:#3C3489">Stripe</div><div style="font-size:9px;color:#6B6863">결제 대시보드</div></a>
-      <a class="tc-a" href="https://supabase.com" target="_blank"><div style="font-size:20px;margin-bottom:4px">🗄️</div><div style="font-size:11px;font-weight:700;color:#2D7A3A">Supabase</div><div style="font-size:9px;color:#6B6863">DB·퀴즈 데이터</div></a>
-      <a class="tc-a" href="https://github.com/namsan-greenapple" target="_blank"><div style="font-size:20px;margin-bottom:4px">🐙</div><div style="font-size:11px;font-weight:700">GitHub</div><div style="font-size:9px;color:#6B6863">코드 저장소</div></a>
-      <a class="tc-a" href="https://calendly.com" target="_blank"><div style="font-size:20px;margin-bottom:4px">📅</div><div style="font-size:11px;font-weight:700;color:#1A5FA3">Calendly</div><div style="font-size:9px;color:#6B6863">투어 예약</div></a>
-      <a class="tc-a" href="https://gumroad.com" target="_blank"><div style="font-size:20px;margin-bottom:4px">📄</div><div style="font-size:11px;font-weight:700;color:#A33C1D">Gumroad</div><div style="font-size:9px;color:#6B6863">PDF 판매</div></a>
-      <a class="tc-a" href="https://loops.so" target="_blank"><div style="font-size:20px;margin-bottom:4px">📧</div><div style="font-size:11px;font-weight:700;color:#BA7517">Loops.so</div><div style="font-size:9px;color:#6B6863">뉴스레터</div></a>
-    </div>
-  </div>
-  <div class="card">
-    <div class="ct">계정 정보</div>
-    <table class="rtbl" style="margin-top:8px">
-      <tr><th>서비스</th><th>이메일/아이디</th><th>비밀번호 힌트</th><th>메모</th></tr>
-      <tr><td>GitHub</td><td>namsan-greenapple</td><td><input class="ed" placeholder="힌트"></td><td><input class="ed" placeholder="메모"></td></tr>
-      <tr><td>Vercel</td><td><input class="ed" placeholder="이메일"></td><td><input class="ed" placeholder="힌트"></td><td><input class="ed" placeholder="메모"></td></tr>
-      <tr><td>Stripe</td><td><input class="ed" placeholder="이메일"></td><td><input class="ed" placeholder="힌트"></td><td><input class="ed" placeholder="메모"></td></tr>
-      <tr><td>Instagram</td><td><input class="ed" placeholder="@아이디"></td><td><input class="ed" placeholder="힌트"></td><td>@seoulbound.guide</td></tr>
-      <tr><td>TikTok</td><td><input class="ed" placeholder="@아이디"></td><td><input class="ed" placeholder="힌트"></td><td><input class="ed" placeholder="메모"></td></tr>
-    </table>
   </div>
 </div>
 
-</div><!-- /main -->
-</div><!-- /os -->
+<div class="pg" id="page-sns">
+  <div class="pt">&#128241; SNS 현황</div><div class="ps">채널별 지표 · CMO</div>
+  <div class="g3" style="margin-top:10px">
+    <div class="box"><div class="box-l">Instagram</div><div class="box-v">0</div><div class="box-s">팔로워</div><div style="margin-top:5px"><span class="pill po">셋업 필요</span></div></div>
+    <div class="box"><div class="box-l">TikTok</div><div class="box-v">0</div><div class="box-s">팔로워</div><div style="margin-top:5px"><span class="pill po">셋업 필요</span></div></div>
+    <div class="box"><div class="box-l">Beehiiv 뉴스레터</div><div class="box-v">0</div><div class="box-s">구독자</div><div style="margin-top:5px"><span class="pill po">셋업 필요</span></div></div>
+  </div>
+</div>
 
-<nav class="mob-nav">
-  <button class="mob-ni on" data-page="hub"><span>🏠</span>허브</button>
-  <button class="mob-ni" data-page="daily"><span>☀️</span>데일리</button>
-  <button class="mob-ni" data-page="tasks"><span>✅</span>목표</button>
-  <button class="mob-ni" data-page="revenue"><span>💰</span>수익</button>
-  <button class="mob-ni" data-page="retro"><span>📝</span>회고</button>
-</nav>
+<div class="pg" id="page-kw">
+  <div class="pt">&#128202; 키워드 &amp; 트렌드</div><div class="ps">Google Trends 가이드 + 키워드 트래커 · CMO</div>
+  <div class="sec">Google Trends 5단계 가이드</div>
+  <div class="card cp">
+    <div class="step"><div class="sn">1</div><div><div class="st">trends.google.com 접속</div></div></div>
+    <div class="step"><div class="sn">2</div><div><div class="st">키워드 입력</div><div class="code">"Seoul food tour"  "K-beauty Seoul"  "Seoul travel"</div></div></div>
+    <div class="step"><div class="sn">3</div><div><div class="st">지역 필터: 미국 / 영국 / 싱가포르 / 호주</div></div></div>
+    <div class="step"><div class="sn">4</div><div><div class="st">기간: 지난 12개월(시즌) / 지난 90일(트렌드)</div></div></div>
+    <div class="step"><div class="sn">5</div><div><div class="st">"관련 검색어" 섹션 → 롱테일 키워드 수집 → 콘텐츠 주제화</div></div></div>
+  </div>
+  <div class="sec">키워드 트래커</div>
+  <div class="card">
+    <table class="tbl"><thead><tr><th>키워드</th><th>타깃 국가</th><th>트렌드</th><th>연결 상품</th><th>콘텐츠 활용</th><th>상태</th><th></th></tr></thead>
+    <tbody id="kw-body">
+      <tr><td><b>Personal color analysis Seoul</b></td><td>미국, 싱가포르</td><td>&#8679; 급상승</td><td><span class="pill pg2">Glow Local</span></td><td>틱톡/인스타</td><td><span class="pill pg2">모니터링</span></td><td><button class="dbtn" onclick="this.closest('tr').remove()">&#10005;</button></td></tr>
+      <tr><td><b>Seoul skin care clinic foreigners</b></td><td>동남아, 미국</td><td>&#8679; 급상승</td><td><span class="pill pb">Skin Concierge</span></td><td>Reddit r/SkincareAddiction</td><td><span class="pill po">확인필요</span></td><td><button class="dbtn" onclick="this.closest('tr').remove()">&#10005;</button></td></tr>
+      <tr><td><b>Seoul food tour</b></td><td>미국, 호주</td><td>&#8679; 상승중</td><td><span class="pill po">Midnight Seoul</span></td><td>Reddit / 틱톡</td><td><span class="pill pg2">모니터링</span></td><td><button class="dbtn" onclick="this.closest('tr').remove()">&#10005;</button></td></tr>
+      <tr><td><b>Seongsu-dong cafe hopping 2026</b></td><td>동남아, 일본</td><td>&#8679; 급상승</td><td><span class="pill pp">Stan Seoul</span></td><td>인스타 릴스</td><td><span class="pill po">확인필요</span></td><td><button class="dbtn" onclick="this.closest('tr').remove()">&#10005;</button></td></tr>
+    </tbody></table>
+    <div class="abar">
+      <input class="inp" id="kn" placeholder="키워드" style="flex:1"><input class="inp" id="kc" placeholder="타깃 국가" style="width:90px">
+      <select class="inp" id="kt" style="width:80px"><option>&#8679; 상승중</option><option>&#8680; 안정</option><option>&#8681; 하락</option><option>급상승</option></select>
+      <select class="inp" id="kp" style="width:90px"><option>Glow Local</option><option>Seoul Trend</option><option>Midnight Seoul</option><option>Stan Seoul</option><option>전체</option></select>
+      <input class="inp" id="ku" placeholder="콘텐츠 활용" style="flex:1">
+      <button class="abtn" onclick="addKW()">+ 추가</button>
+    </div>
+  </div>
+</div>
 
+<div class="pg" id="page-comp">
+  <div class="pt">&#128269; 경쟁사 분석</div><div class="ps">경쟁 지형 + 포지셔닝 전략 · CSO</div>
+  <div class="pos-card"><div class="pos-name">Withlocals — 직접 경쟁자이자 참고 모델</div><div class="pos-type">가이드 마켓플레이스 플랫폼</div><div class="pos-vs"><div class="pos-col"><div class="pos-col-l">Withlocals</div><div class="pos-col-c">플랫폼 — 다수 가이드 마켓플레이스<br>가이드가 교체 가능한 자원</div></div><div class="pos-col"><div class="pos-col-l">Seoulbound</div><div class="pos-col-c">브랜드 큐레이션<br>Mate = 관계가 자산</div></div></div><div class="pos-insight">&#9889; 가이드가 누구냐보다 "Seoulbound가 검증한 경험"이 차별점. 플랫폼이 아닌 브랜드로 포지션.</div></div>
+  <div class="pos-card"><div class="pos-name">Viator — 검색 데이터 보물창고</div><div class="pos-type">글로벌 OTA · 수수료 20–30%</div><div class="pos-vs"><div class="pos-col"><div class="pos-col-l">위협</div><div class="pos-col-c">서울 상품 1,000개+<br>수수료 20–30%</div></div><div class="pos-col"><div class="pos-col-l">기회</div><div class="pos-col-c">키워드/수요 확인 채널<br>리뷰 5개 후 입점 (Phase 2)</div></div></div><div class="pos-insight">&#9889; 지금은 직판으로 마진 확보. MVP 이후 Viator 입점으로 트래픽 확보.</div></div>
+  <div class="pos-card"><div class="pos-name">Reddit r/Seoul — 가장 중요한 유기적 채널</div><div class="pos-type">280K+ 멤버 · 광고 불가 · 신뢰도 최고</div><div class="pos-vs"><div class="pos-col"><div class="pos-col-l">전략</div><div class="pos-col-c">정보 제공자로 신뢰 먼저<br>답변 → 프로필 링크</div></div><div class="pos-col"><div class="pos-col-l">주의</div><div class="pos-col-c">직접 홍보 시 밴<br>반드시 정보성 글로</div></div></div><div class="pos-insight">&#9889; "Seoul food spots 어디가 좋아요?" 진심 답변 → 자연스럽게 Seoulbound 연결.</div></div>
+  <div style="background:var(--acl);border:1px solid var(--acm);border-radius:var(--r);padding:12px;font-size:12px;color:var(--t1);line-height:1.8;margin-top:2px"><b style="color:var(--ac)">포지션:</b> 경쟁사가 "투어 상품"을 파는 플랫폼이라면, Seoulbound는 <b>"로컬 친구가 생기는 경험"</b>을 파는 브랜드. 관계가 자산.</div>
+</div>
+
+<div class="pg" id="page-expand">
+  <div class="pt">&#128200; 확장 플랜</div><div class="ps">4단계 로드맵 + 벤치마킹 · CSO</div>
+  <div class="g2" style="margin-top:10px">
+    <div class="phase"><div class="ph"><div><div class="ph-t">Phase 1 · MVP 검증</div><div class="ph-p">5월 ~ 8월</div></div><div class="ph-v">$3,500/월</div></div><ul class="ph-items"><li>1인 직접 운영 · Glow Local + Seoul Trend Pass</li><li>Reddit · 인스타 유기적 채널</li><li>운영 Playbook + 고객 데이터 확보</li></ul></div>
+    <div class="phase"><div class="ph"><div><div class="ph-t">Phase 2 · Mate 매칭</div><div class="ph-p">9월 ~ 12월 (가을 성수기 대비)</div></div><div class="ph-v">$7,000/월</div></div><ul class="ph-items"><li>검증된 가이드 Mate 네트워크 구축</li><li>창업자 → CEO/CSO/CMO 전환</li><li>매칭 수수료 15~20% 징수</li></ul></div>
+    <div class="phase"><div class="ph"><div><div class="ph-t">Phase 3 · Scale</div><div class="ph-p">2027년~</div></div><div class="ph-v">$30,000+/월</div></div><ul class="ph-items"><li>B2B 파트너십 구독 모델</li><li>서울 → 제주/부산 → 도쿄/방콕</li><li>AI 기반 자동 큐레이션</li></ul></div>
+    <div class="phase"><div class="ph"><div><div class="ph-t">Phase 4 · 플랫폼화</div><div class="ph-p">2027년 하반기~</div></div><div class="ph-v">$100,000+/월</div></div><ul class="ph-items"><li>글로벌 K-트래블 플랫폼</li><li>퀴즈 데이터 트렌드 리포트 수익화</li><li>B2B 솔루션 입점비</li></ul></div>
+  </div>
+  <div class="sec">벤치마킹</div>
+  <div class="card">
+    <table class="tbl"><thead><tr><th>서비스명</th><th>확장 방식</th><th>Seoulbound 적용점</th></tr></thead>
+    <tbody id="bench-body">
+      <tr><td><b>The Infatuation</b></td><td>음식 미디어 → 멤버십 → 이벤트/투어</td><td>Midnight Seoul 콘텐츠 → 미디어화</td></tr>
+      <tr><td><b>Nomad List</b></td><td>데이터 → 유료구독 → 커뮤니티</td><td>Seoul Insider → 유료 구독 전환</td></tr>
+      <tr><td><b>Culture Trip</b></td><td>여행 미디어 → VC → 투어 패키지</td><td>콘텐츠 먼저 신뢰 → 상품 판매</td></tr>
+      <tr><td><b>Girls Love Travel</b></td><td>커뮤니티 300만 → 스폰서십+가이드</td><td>Glow Local → 여성 솔로 타깃</td></tr>
+      <tr><td><b>The Points Guy</b></td><td>SEO 미디어 → 카드사 제휴 → $100M</td><td>Seoul 여행 SEO → 파트너십 수익화</td></tr>
+    </tbody></table>
+    <div class="abar">
+      <input class="inp" id="bn" placeholder="서비스명" style="width:100px"><input class="inp" id="bm" placeholder="확장 방식" style="flex:1"><input class="inp" id="ba" placeholder="Seoulbound 적용점" style="flex:1">
+      <button class="abtn" onclick="addBench()">+ 추가</button>
+    </div>
+  </div>
+</div>
+
+<div class="pg" id="page-part">
+  <div class="pt">&#129309; 파트너십 &amp; 영업</div><div class="ps">파트너 파이프라인 · CSO</div>
+  <div class="card">
+    <table class="tbl"><thead><tr><th>파트너명</th><th>유형</th><th>상태</th><th>제안 모델</th><th>다음 액션</th><th></th></tr></thead>
+    <tbody id="part-body">
+      <tr><td><b>퍼스널컬러 진단 업체 A</b></td><td>Glow Local 파트너</td><td><span class="pill po">섭외중</span></td><td>우선 슬롯 + 수수료 배분</td><td>영어 서비스 여부 확인</td><td><button class="dbtn" onclick="this.closest('tr').remove()">&#10005;</button></td></tr>
+      <tr><td><b>퍼스널컬러 진단 업체 B</b></td><td>Glow Local 파트너</td><td><span class="pill po">섭외중</span></td><td>우선 슬롯 협상</td><td>연락처 확보</td><td><button class="dbtn" onclick="this.closest('tr').remove()">&#10005;</button></td></tr>
+      <tr><td><b>영어 가능 피부과</b></td><td>Skin Concierge 파트너</td><td><span class="pill po">섭외중</span></td><td>컨시어지 수수료 15~20%</td><td>외국인 대응 가능 여부 확인</td><td><button class="dbtn" onclick="this.closest('tr').remove()">&#10005;</button></td></tr>
+      <tr><td><b>망원시장 단골가게</b></td><td>Midnight Seoul 파트너</td><td><span class="pill po">관계구축중</span></td><td>고객 소개 &amp; 관계</td><td>방문 &amp; 관계 형성</td><td><button class="dbtn" onclick="this.closest('tr').remove()">&#10005;</button></td></tr>
+    </tbody></table>
+    <div class="abar">
+      <input class="inp" id="pn" placeholder="파트너명" style="width:100px">
+      <select class="inp" id="pt2" style="width:95px"><option>서비스 파트너</option><option>미디어/인플루언서</option><option>B2B</option><option>투어 파트너</option><option>기술 파트너</option><option>기타</option></select>
+      <select class="inp" id="ps2" style="width:85px"><option>리서치중</option><option>섭외중</option><option>관계구축중</option><option>협의중</option><option>계약완료</option><option>보류</option></select>
+      <input class="inp" id="pv" placeholder="제안 모델" style="width:100px"><input class="inp" id="px" placeholder="다음 액션" style="flex:1">
+      <button class="abtn" onclick="addPart()">+ 추가</button>
+    </div>
+  </div>
+</div>
+
+<div class="pg" id="page-research">
+  <div class="pt">&#128203; 시장 리서치</div><div class="ps">2026 D.U.A.L.I.S.M · 5월~12월 글로벌 관광객 타깃 · CSO</div>
+  <div class="tabs" style="margin-top:0">
+    <div class="tab on" id="rt-kw" onclick="rTab('kw')">롱테일 키워드</div>
+    <div class="tab" id="rt-sea" onclick="rTab('sea')">계절별 로드맵</div>
+    <div class="tab" id="rt-mvp" onclick="rTab('mvp')">신규 상품 제안</div>
+    <div class="tab" id="rt-adv" onclick="rTab('adv')">전문가 조언</div>
+  </div>
+  <div id="rt-body-kw">
+    <div class="hint" style="margin-bottom:10px"><b style="color:var(--ac)">2026 D.U.A.L.I.S.M:</b> 하이테크 편의성(Digital) + 로컬의 진정성(Authentic). Stripe 예약 → 현장 로컬 가이드 깊이.</div>
+    <div class="kw-group"><div class="kw-hd"><div><div class="kw-ht">&#127482;&#127480;&#127468;&#127463;&#127462;&#127482; 서구권 (US/UK/AU) — Authentic &amp; Historical</div></div><span class="pill pb">Midnight Seoul · Skin Concierge 타깃</span></div>
+      <div class="kw-cat"><div class="kw-cl">미식</div><div class="kw-tags"><span class="kw-tag">Authentic Gwangjang market Netflix lady</span><span class="kw-tag">K-BBQ etiquette guide small groups</span><span class="kw-tag">Makgeolli tasting with local brewer</span></div></div>
+      <div class="kw-cat"><div class="kw-cl">경험</div><div class="kw-tags"><span class="kw-tag">Glass skin Seoul skin clinic English</span><span class="kw-tag">Korean skin clinic foreigners booking</span><span class="kw-tag">DMZ insider tour North Korean defector Q&amp;A</span></div></div>
+    </div>
+    <div class="kw-group"><div class="kw-hd"><div><div class="kw-ht">&#127758; 아시아권 (SEA/JP/CN) — Trend &amp; Aesthetic</div></div><span class="pill pp">Glow Local · Stan Seoul 타깃</span></div>
+      <div class="kw-cat"><div class="kw-cl">경험</div><div class="kw-tags"><span class="kw-tag">Personal color analysis Seoul English</span><span class="kw-tag">Olive Young top picks 2026 tourists</span><span class="kw-tag">Seongsu-dong cafe hopping map 2026</span><span class="kw-tag">Wait-free London Bagel Museum Seoul</span></div></div>
+    </div>
+  </div>
+  <div id="rt-body-sea" style="display:none">
+    <div class="card" style="margin-top:0"><div class="sea-row" style="background:var(--bg1)"><div class="sea-period" style="font-size:10px;color:var(--t2);font-weight:700">기간</div><div class="sea-need" style="font-size:10px;color:var(--t2)">핵심 니즈</div><div class="sea-kw" style="font-size:10px;color:var(--t2);padding:10px 11px">주요 키워드 &amp; 상품</div></div>
+      <div class="sea-row"><div class="sea-period"><span class="pill pg2">5~6월</span></div><div class="sea-need"><b>야외 활동 &amp; 축제</b><br>첫 결제 데이터 확보 적기</div><div class="sea-kw"><span class="kw-tag">Han River night picnic</span><span class="kw-tag">Outdoor festivals Seoul</span><span class="pill pg2">Midnight Seoul</span></div></div>
+      <div class="sea-row"><div class="sea-period"><span class="pill pb">7~8월</span></div><div class="sea-need"><b>장마 &amp; 무더위 피하기</b><br>실내 K-컬처 강조</div><div class="sea-kw"><span class="kw-tag">Indoor K-culture experiences</span><span class="kw-tag">Luxury mall hopping</span><span class="pill pg2">Glow Local</span></div></div>
+      <div class="sea-row"><div class="sea-period"><span class="pill po">9~11월</span></div><div class="sea-need"><b>가을 단풍 &amp; 야경</b><br>비주얼 콘텐츠 최성수기</div><div class="sea-kw"><span class="kw-tag">Seoul autumn foliage day trips</span><span class="kw-tag">Night palace tour</span><span class="pill pp">Snap &amp; Glow</span></div></div>
+      <div class="sea-row"><div class="sea-period"><span class="pill pr">12월</span></div><div class="sea-need"><b>겨울 무드 &amp; 연말</b><br>Skin Concierge 수요 증가</div><div class="sea-kw"><span class="kw-tag">Seoul Christmas market 2026</span><span class="pill pb">Skin Concierge</span></div></div>
+    </div>
+  </div>
+  <div id="rt-body-mvp" style="display:none">
+    <div class="mvp-card star"><div style="font-size:9px;background:var(--ac);color:#fff;padding:2px 7px;border-radius:5px;display:inline-block;margin-bottom:7px;font-weight:700">&#11088; 완전 신규 — 강력 추천</div>
+      <div style="display:flex;justify-content:space-between;margin-bottom:7px"><div><div class="mvp-name">Midnight Seoul: BBQ &amp; Speakeasy Tour</div><div class="mvp-concept">K-BBQ 에티켓 + 을지로 스피키지 야간 투어. 파트너 불필요. Eats 야간 버전.</div></div><span class="pill pg2">신규 영역</span></div>
+      <div class="mvp-inc"><div class="mvp-inc-l">포함</div><div class="mvp-inc-i">로컬 단골 고기집 식사 (그릴링 서비스 포함)</div><div class="mvp-inc-i">한남 or 을지로 스피키지 바 투어 · 4hrs · $105~115 추천</div></div>
+    </div>
+    <div class="mvp-card"><div style="display:flex;justify-content:space-between;margin-bottom:7px"><div><div class="mvp-name">Autumn/Winter Aesthetic Snap &amp; Glow</div><div class="mvp-concept">계절별 최고 스팟 스냅 촬영 + K-뷰티 컨설팅 (9~12월 한정)</div></div><span class="pill pb">9~12월 한정</span></div>
+      <div class="mvp-inc"><div class="mvp-inc-l">포함</div><div class="mvp-inc-i">고궁/단풍 스팟 스냅 촬영 (10장 보정)</div><div class="mvp-inc-i">외국인 전용 피부과 컨설팅 &amp; 예약 대행</div></div>
+    </div>
+  </div>
+  <div id="rt-body-adv" style="display:none">
+    <div class="card cp">
+      <div class="adv-item"><div class="adv-num">1</div><div><div class="adv-t">5월 야외 테마로 첫 결제 데이터 확보</div><div class="adv-d">Han River picnic, 야외 축제 시즌. Midnight Seoul Feast 5월 마케팅 집중.</div></div></div>
+      <div class="adv-item"><div class="adv-num">2</div><div><div class="adv-t">홈페이지 결과 페이지 수익화 개편 (To-Be)</div><div class="adv-d">퀴즈 답변 기반 프리미엄 MVP 상품 최상단 강력 추천 + 즉시 결제 버튼. 예: K-beauty 선택 → Glow Local 상단 노출.</div></div></div>
+      <div class="adv-item"><div class="adv-num">3</div><div><div class="adv-t">에이전시/예약 대행 모델로 시작 (Asset-light)</div><div class="adv-d">1인 창업가로서 물류/운영 부담 적은 "예약 대행" 모델 우선. 퍼스널컬러 업체 제휴 + 피부과 컨시어지가 핵심.</div></div></div>
+      <div class="adv-item"><div class="adv-num">4</div><div><div class="adv-t">가을(9~11월)에 운영 인력 확충 → Deep Local Tour</div><div class="adv-d">5월 데이터 기반으로 가을 단풍 시즌에 Mate 리쿠르팅. Snap &amp; Glow 시즌 상품 추가.</div></div></div>
+    </div>
+  </div>
+</div>
+
+<div class="pg" id="page-jour">
+  <div class="pt">&#128506; 고객 여정</div><div class="ps">발견 → 전환 → 리뷰 7단계 · CS+CMO</div>
+  <div class="card cp">
+    <div class="jst"><div class="jn" style="background:var(--acl);color:var(--ac)">1</div><div><div class="jt">발견 (Discovery)</div><div class="jd">Reddit · 인스타·틱톡 · Google · 4개 콘텐츠 필라 유기적 유입</div></div></div>
+    <div class="jst"><div class="jn" style="background:var(--acl);color:var(--ac)">2</div><div><div class="jt">퀴즈 시작 (Engagement)</div><div class="jd">홈페이지 → Quiz 5단계 · 완주율 목표 70%+</div></div></div>
+    <div class="jst"><div class="jn" style="background:#e8f0fa;color:#2d5fa0">3</div><div><div class="jt">이메일 수집 (Lead) ← 핵심</div><div class="jd">퀴즈 완료 후 "결과 이메일로" 스텝 · Seoul Insider 연결</div><div class="ja">→ D-5 전 구현 필요</div></div></div>
+    <div class="jst"><div class="jn" style="background:#faf0e8;color:#9a5c1a">4</div><div><div class="jt">결과지 수익화 (Consideration)</div><div class="jd">퀴즈 답변 기반 프리미엄 MVP 상품 최상단 + 즉시 결제 버튼</div><div class="ja">→ K-beauty 선택 → Glow Local 최상단</div></div></div>
+    <div class="jst"><div class="jn" style="background:#faf0e8;color:#9a5c1a">5</div><div><div class="jt">결제 (Conversion) &#10003;</div><div class="jd">Stripe Payment Link → 확인 이메일 자동 발송 · 테스트 완료</div></div></div>
+    <div class="jst"><div class="jn" style="background:#f7eafa;color:#6a2d9a">6</div><div><div class="jt">경험 (Experience)</div><div class="jd">WhatsApp 사전 연락 · 올리브영 PDF / 레시피 카드 · 현장 사진 → 콘텐츠</div></div></div>
+    <div class="jst"><div class="jn" style="background:#f7eafa;color:#6a2d9a">7</div><div><div class="jt">리뷰 &amp; 공유 (Advocacy)</div><div class="jd">48시간 후 WhatsApp → Google Review · 리뷰 5개 → Viator 입점</div></div></div>
+  </div>
+</div>
+
+<div class="pg" id="page-crm">
+  <div class="pt">&#128101; 고객 파이프라인</div><div class="ps">고객 CRM · CS</div>
+  <div class="card">
+    <table class="tbl"><thead><tr><th>이름</th><th>유입</th><th>관심상품</th><th>상태</th><th>메모</th><th></th></tr></thead>
+    <tbody id="crm-body"></tbody></table>
+    <div class="abar">
+      <input class="inp" id="cn" placeholder="이름/닉네임" style="width:88px">
+      <select class="inp" id="csrc" style="width:76px"><option>Reddit</option><option>Instagram</option><option>TikTok</option><option>직접방문</option><option>지인소개</option><option>기타</option></select>
+      <select class="inp" id="cprod" style="width:105px"><option>Glow Local</option><option>Seoul Trend Pass</option><option>Midnight Seoul</option><option>Skin Concierge</option><option>Stan Seoul</option><option>Make It Yours</option></select>
+      <select class="inp" id="cstat" style="width:76px"><option>리드</option><option>관심</option><option>상담중</option><option>결제완료</option><option>재구매</option></select>
+      <input class="inp" id="cnote" placeholder="메모" style="flex:1">
+      <button class="abtn" onclick="addCRM()">+ 추가</button>
+    </div>
+  </div>
+</div>
+
+<div class="pg" id="page-cslog">
+  <div class="pt">&#128172; CS 로그</div><div class="ps">고객 문의 &amp; 이슈 · CS</div>
+  <div class="card">
+    <table class="tbl"><thead><tr><th>날짜</th><th>고객</th><th>채널</th><th>문의 내용</th><th>상태</th><th></th></tr></thead>
+    <tbody id="cs-body"></tbody></table>
+    <div class="abar">
+      <input class="inp" id="csd" type="date" style="width:110px"><input class="inp" id="cscust" placeholder="고객명" style="width:76px">
+      <select class="inp" id="csch" style="width:80px"><option>WhatsApp</option><option>Email</option><option>Instagram</option><option>Reddit</option><option>기타</option></select>
+      <input class="inp" id="csiss" placeholder="문의 내용" style="flex:1">
+      <select class="inp" id="csstat" style="width:66px"><option>접수</option><option>처리중</option><option>완료</option></select>
+      <button class="abtn" onclick="addCS()">+ 추가</button>
+    </div>
+  </div>
+</div>
+
+<div class="pg" id="page-prod">
+  <div class="pt">&#128230; 상품 현황</div><div class="ps">MVP 확정 상품 · 2026년 4월 15일 · 론칭 D-7</div>
+  <div class="pg-g">
+    <div class="pc live"><div style="font-size:9px;background:var(--ac);color:#fff;padding:2px 6px;border-radius:5px;display:inline-block;margin-bottom:7px;font-weight:700">&#9679; LIVE</div><div style="font-size:13.5px;font-weight:800">Glow Local 2.0</div><div style="font-size:17px;font-weight:800;color:var(--ac);margin-top:3px">$150 <span style="font-size:11px;font-weight:400;color:var(--t2)">/person</span></div><div style="font-size:11px;color:var(--t1);margin-top:5px;line-height:1.6">&#9200;&#65039; 3.5hrs · 퍼스널컬러 진단 + 올리브영 동행 큐레이션 · #K-GlowUp</div></div>
+    <div class="pc live" style="border-color:#2d5fa0"><div style="font-size:9px;background:#2d5fa0;color:#fff;padding:2px 6px;border-radius:5px;display:inline-block;margin-bottom:7px;font-weight:700">&#9679; LIVE</div><div style="font-size:13.5px;font-weight:800">Seoul Trend Pre-Pass</div><div style="font-size:17px;font-weight:800;color:#2d5fa0;margin-top:3px">$99 <span style="font-size:11px;font-weight:400;color:var(--t2)">/person</span></div><div style="font-size:11px;color:var(--t1);margin-top:5px;line-height:1.6">&#9200;&#65039; 2hrs · 핫플 웨이팅 대행 + 현장 동행 가이드 · #K-CultureNow</div></div>
+    <div class="pc"><div style="font-size:9px;background:var(--ac);color:#fff;padding:2px 6px;border-radius:5px;display:inline-block;margin-bottom:7px;font-weight:700">&#9679; LIVE</div><div style="font-size:13.5px;font-weight:800">Make It Yours</div><div style="font-size:17px;font-weight:800;color:var(--ac);margin-top:3px">$25 <span style="font-size:11px;font-weight:400;color:var(--t2)">/줌 상담</span></div><div style="font-size:11px;color:var(--t1);margin-top:5px;line-height:1.6">&#9200;&#65039; 30분 · 커스텀 플랜 설계 · 본 상품 구매 시 차감</div></div>
+    <div class="pc"><div style="font-size:9px;background:#f5f0e8;color:#8a6030;padding:2px 6px;border-radius:5px;display:inline-block;margin-bottom:7px;font-weight:700">&#8987; PREP</div><div style="font-size:13.5px;font-weight:800">Midnight Seoul Feast</div><div style="font-size:17px;font-weight:800;color:#9a5c1a;margin-top:3px">$105 <span style="font-size:11px;font-weight:400;color:var(--t2)">/person</span></div><div style="font-size:11px;color:var(--t1);margin-top:5px;line-height:1.6">&#9200;&#65039; 4hrs · 광장시장 + 로컬 BBQ + 스피키지 야간 · #EatLocalSeoul</div></div>
+    <div class="pc"><div style="font-size:9px;background:#f5f0e8;color:#8a6030;padding:2px 6px;border-radius:5px;display:inline-block;margin-bottom:7px;font-weight:700">&#8987; PREP</div><div style="font-size:13.5px;font-weight:800">Skin Concierge Pass</div><div style="font-size:17px;font-weight:800;color:#9a5c1a;margin-top:3px">$120 <span style="font-size:11px;font-weight:400;color:var(--t2)">/person</span></div><div style="font-size:11px;color:var(--t1);margin-top:5px;line-height:1.6">&#9200;&#65039; Half-day · 피부과 컨시어지 + 로컬 푸드 가이드 · #SeoulSkinGame</div></div>
+    <div class="pc"><div style="font-size:9px;background:#f7eafa;color:#6a2d9a;padding:2px 6px;border-radius:5px;display:inline-block;margin-bottom:7px;font-weight:700">&#128161; 검토중</div><div style="font-size:13.5px;font-weight:800">Stan Seoul: Trend Hunter</div><div style="font-size:17px;font-weight:800;color:#6a2d9a;margin-top:3px">$95 <span style="font-size:11px;font-weight:400;color:var(--t2)">/person</span></div><div style="font-size:11px;color:var(--t1);margin-top:5px;line-height:1.6">&#9200;&#65039; 3hrs · BTS 성지 + 성수/한남 핫 팝업스토어 · #K-CultureNow</div></div>
+  </div>
+  <div class="sim">
+    <div class="sim-t">1인 운영 월 수익 시뮬레이션</div>
+    <div class="sim-r"><span>Glow Local · 주 3회 × 4명 × $150</span><span>~$7,200/월</span></div>
+    <div class="sim-r"><span>Seoul Trend Pass · 주 5회 × $99</span><span>~$1,980/월</span></div>
+    <div class="sim-r"><span>Make It Yours · 주 3회 × $25</span><span>~$300/월</span></div>
+    <div class="sim-tot"><span>현실적 MVP 목표 (40% 가동)</span><span>~$3,500–4,000/월</span></div>
+  </div>
+</div>
+
+<div class="pg" id="page-plannotes">
+  <div class="pt">&#128221; 기획 노트</div><div class="ps">전략 메모 · 추가/수정/삭제 가능 · 상품 관점</div>
+  <div class="note-add">
+    <div class="note-add-title">+ 새 노트 추가</div>
+    <div class="note-form">
+      <div class="note-form-row">
+        <input class="inp" id="nt" placeholder="제목" style="flex:1">
+        <select class="inp" id="nc" style="width:90px"><option>상품</option><option>전략</option><option>영업</option><option>마케팅</option><option>운영</option><option>재무</option><option>기타</option></select>
+      </div>
+      <textarea class="inp" id="nb" placeholder="내용을 입력하세요..." style="width:100%;min-height:70px;resize:vertical;font-family:inherit"></textarea>
+      <div><button class="abtn" onclick="addNote()">노트 추가</button></div>
+    </div>
+  </div>
+  <div id="notes-list"></div>
+</div>
+
+<div class="pg" id="page-ai">
+  <div class="pt">&#129302; AI 스택</div><div class="ps">AI 도구 &amp; 자동화 현황 · 운영</div>
+  <div class="card">
+    <table class="tbl"><thead><tr><th>도구</th><th>용도</th><th>비용</th><th>상태</th></tr></thead>
+    <tbody>
+      <tr><td><b>Claude (Anthropic)</b></td><td>전략기획·콘텐츠·OS 운영</td><td>$20/월</td><td><span class="pill pg2">&#10003; 사용중</span></td></tr>
+      <tr><td><b>Stripe</b></td><td>결제 처리 · 테스트 완료</td><td>2.9%+$0.30/건</td><td><span class="pill pg2">&#10003; 연동완료</span></td></tr>
+      <tr><td><b>Typeform</b></td><td>퀴즈 &amp; 이메일 수집</td><td>무료~$25/월</td><td><span class="pill pg2">&#10003; 사용중</span></td></tr>
+      <tr><td><b>WhatsApp Business</b></td><td>CS · 예약 소통</td><td>무료</td><td><span class="pill po">셋업 필요</span></td></tr>
+      <tr><td><b>Beehiiv</b></td><td>Seoul Insider 뉴스레터</td><td>무료</td><td><span class="pill po">셋업 필요</span></td></tr>
+      <tr><td><b>Buffer</b></td><td>SNS 예약 발행</td><td>$15/월</td><td><span class="pill po">셋업 필요</span></td></tr>
+      <tr><td><b>Calendly</b></td><td>줌 상담 / 예약 관리</td><td>무료</td><td><span class="pill pgr">검토중</span></td></tr>
+    </tbody></table>
+  </div>
+</div>
+
+<div class="pg" id="page-set"><div class="pt" style="padding:0">&#128273; 계정 관리</div><div class="ps">계정 &amp; 즐겨찾기 관리</div></div>
+
+</div></div>
 <script>
-// ─── STORAGE ───
-var K = 'sb2_';
-function sv(k,v){try{localStorage.setItem(K+k,JSON.stringify(v));}catch(e){}}
-function ld(k,d){try{var v=localStorage.getItem(K+k);return v!=null?JSON.parse(v):d;}catch(e){return d;}}
-
-// ─── NAVIGATION ───
-function goPage(id) {
-  document.querySelectorAll('.pg').forEach(function(p){p.classList.remove('on');});
-  var pg = document.getElementById('p-'+id);
-  if (pg) pg.classList.add('on');
-  document.querySelectorAll('.ni').forEach(function(n){n.classList.remove('on');});
-  document.querySelectorAll('.ni[data-page="'+id+'"]').forEach(function(n){n.classList.add('on');});
-  document.querySelectorAll('.mob-ni').forEach(function(n){n.classList.remove('on');});
-  document.querySelectorAll('.mob-ni[data-page="'+id+'"]').forEach(function(n){n.classList.add('on');});
-  window.scrollTo(0,0);
-  // page init
-  if (id==='daily') { wgRender(); schRender(); histDailyRender(); }
-  if (id==='tasks') { mtRender(); }
-  if (id==='history') { histPageRender(); }
-  if (id==='hub') { hubInit(); }
-  if (id==='content') { calRender(); }
-  closeSidebar();
-}
-
-// nav clicks
-document.querySelectorAll('.ni, .mob-ni').forEach(function(el) {
-  el.addEventListener('click', function() {
-    var page = this.getAttribute('data-page');
-    if (page) goPage(page);
-  });
-});
-
-// sidebar
-document.getElementById('mob-btn').addEventListener('click', function() {
-  document.getElementById('sidebar').classList.toggle('open');
-  document.getElementById('sb-ov').classList.toggle('open');
-});
-document.getElementById('sb-ov').addEventListener('click', closeSidebar);
-function closeSidebar() {
-  document.getElementById('sidebar').classList.remove('open');
-  document.getElementById('sb-ov').classList.remove('open');
-}
-
-// ─── UTILS ───
-function toast(msg) {
-  var t = document.createElement('div');
-  t.textContent = msg;
-  t.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#0F5F4A;color:white;padding:8px 16px;border-radius:8px;font-size:12px;font-weight:700;z-index:9999;';
-  document.body.appendChild(t);
-  setTimeout(function(){t.remove();}, 2000);
-}
-function dateLabel() {
-  var d = new Date();
-  var days = ['일','월','화','수','목','금','토'];
-  return d.getFullYear()+'년 '+(d.getMonth()+1)+'월 '+d.getDate()+'일 · '+days[d.getDay()]+'요일';
-}
-
-// ─── HUB ───
-var hubTodos = ld('hubTodos', [
-  {t:'퀴즈→결제 전체 플로우 테스트', d:false},
-  {t:'Gumroad 계정 생성', d:false},
-  {t:'이태원 인터뷰 촬영', d:false},
-  {t:'Calendly 투어 슬롯 오픈', d:false},
-  {t:'인스타 계정 개설 @seoulbound.guide', d:false},
-]);
-
-function hubInit() {
-  var d = new Date(); var launch = new Date('2026-04-22');
-  var diff = Math.ceil((launch - d) / 86400000);
-  var launched = diff <= 0;
-  var dday = Math.max(0, diff);
-  var sb = document.getElementById('dday-sb');
-  if (sb) sb.textContent = dday;
-  var ps = document.getElementById('hub-ps');
-  if (ps) ps.textContent = dateLabel();
-  var banner = document.getElementById('hub-banner');
-  if (banner) banner.innerHTML = '<div style="background:#0F5F4A;color:white;border-radius:10px;padding:12px 16px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between"><div><div style="font-size:9px;opacity:.8;font-weight:700;letter-spacing:.05em;text-transform:uppercase">'+(launched?'MVP 론칭됨! 🚀':'MVP 론칭까지')+'</div><div style="font-size:13px;font-weight:700;margin-top:2px">4월 22일 · 뉴욕 친구 코워커 테스트 유저 1번</div></div><div style="font-size:30px;font-weight:700">'+(launched?'🚀':'D-'+dday)+'</div></div>';
-  var metrics = document.getElementById('hub-metrics');
-  if (metrics) metrics.innerHTML = '<div class="metric m-teal"><div class="ml">MVP까지</div><div class="mv">D-'+dday+'</div><div class="ms">4월 22일</div></div><div class="metric m-amber"><div class="ml">seoulbound.com</div><div class="mv" style="font-size:16px;padding-top:4px">라이브 ✅</div><div class="ms">Stripe 연결됨</div></div><div class="metric m-blue"><div class="ml">투어 상품</div><div class="mv" style="font-size:16px;padding-top:4px">3개</div><div class="ms">$90 / $115 / $135</div></div><div class="metric m-coral"><div class="ml">이번 주 목표</div><div class="mv" style="font-size:16px;padding-top:4px">론칭!</div><div class="ms">4/22</div></div>';
-  renderHubTodos();
-}
-
-function renderHubTodos() {
-  var el = document.getElementById('hub-todos');
-  if (!el) return;
-  var html = '';
-  for (var i = 0; i < hubTodos.length; i++) {
-    var t = hubTodos[i];
-    html += '<div class="ci" data-idx="'+i+'" style="padding:5px 0">';
-    html += '<div class="cb'+(t.d?' on':'')+'"></div>';
-    html += '<div class="cx'+(t.d?' on':'')+'">'+t.t+'</div>';
-    html += '</div>';
-  }
-  el.innerHTML = html;
-  el.querySelectorAll('.ci').forEach(function(ci) {
-    ci.addEventListener('click', function() {
-      var i = parseInt(this.getAttribute('data-idx'));
-      hubTodos[i].d = !hubTodos[i].d;
-      sv('hubTodos', hubTodos);
-      renderHubTodos();
-    });
-  });
-}
-
-document.getElementById('hub-todo-add').addEventListener('click', function() {
-  var inp = document.getElementById('hub-todo-inp');
-  var t = inp.value.trim();
-  if (!t) return;
-  hubTodos.push({t:t, d:false});
-  sv('hubTodos', hubTodos);
-  inp.value = '';
-  renderHubTodos();
-});
-
-// ─── SCHEDULE ───
-var fixedSch = [
-  {time:'09:00', task:'[AI] Stripe/Supabase 지표 → Claude 브리핑', cat:'📊 운영', fixed:true},
-  {time:'09:20', task:'[AI] 스크립트+캡션+Reddit 초안 생성', cat:'📊 운영', fixed:true},
-  {time:'10:00', task:'[촬영] 이태원/명동 인터뷰 3명 (30분)', cat:'🎬 콘텐츠', fixed:true},
-  {time:'10:30', task:'[AI] CapCut 자막 자동생성+편집', cat:'🎬 콘텐츠', fixed:true},
-  {time:'11:00', task:'[배포] Buffer → TikTok+Reels+Shorts 예약', cat:'🎬 콘텐츠', fixed:true},
-  {time:'14:00', task:'[AI] Reddit 답변 검토 후 발행', cat:'📣 마케팅', fixed:true},
-  {time:'16:00', task:'퀴즈 완료 수 & 전환율 확인', cat:'💼 영업', fixed:true},
-  {time:'20:00', task:'[AI] ManyChat 인스타 DM 확인', cat:'📣 마케팅', fixed:true},
+var tasks=[
+  {time:"21:00",task:"&#10003; 상품 확정 + Stripe 테스트 완료",cat:"cat-op",done:true},
+  {time:"21:30",task:"홈페이지 결과 페이지 수정 — MVP 상품 즉시 결제 버튼",cat:"cat-pl",done:false},
+  {time:"22:30",task:"퀴즈 완료 → 이메일 수집 스텝 추가",cat:"cat-pl",done:false},
+  {time:"23:00",task:"WhatsApp Business 셋업 + 자동 환영 메시지",cat:"cat-op",done:false},
+  {time:"23:30",task:"인스타 / 틱톡 계정 셋업",cat:"cat-mk",done:false},
+  {time:"00:30",task:"Reddit 서브레딧 리스트 확정 + 정보성 글 초안",cat:"cat-ct",done:false},
+  {time:"02:00",task:"올리브영 톤별 추천 가이드 PDF 초안",cat:"cat-ct",done:false},
+  {time:"04:00",task:"Beehiiv Seoul Insider 셋업",cat:"cat-mk",done:false},
+  {time:"06:00",task:"오늘 완료 체크 + Day 2 태스크 초안",cat:"cat-op",done:false}
 ];
-var userSch = ld('userSch', []);
-var schDone = ld('schDone', {});
-var CC = {'📊 운영':'#E1F5EE','🎬 콘텐츠':'#FFE8E4','📣 마케팅':'#EDF4FF','🛠 플랫폼':'#F0EFFD','💼 영업':'#FFF3DC'};
-var CT = {'📊 운영':'#0F5F4A','🎬 콘텐츠':'#A33C1D','📣 마케팅':'#1A5FA3','🛠 플랫폼':'#3C3489','💼 영업':'#BA7517'};
+var revenue=[];
+var expenses=[
+  {date:"2026-04-15",cat:"운영",desc:"도메인/호스팅",amt:15},
+  {date:"2026-04-15",cat:"마케팅",desc:"Buffer 구독",amt:15},
+  {date:"2026-04-15",cat:"운영",desc:"Claude Pro",amt:20}
+];
+var crm=[],cslog=[];
+var notes=[
+  {id:1,title:"홈페이지 수익화 개편 To-Be",cat:"전략",content:"퀴즈 답변 기반 프리미엄 MVP 상품 최상단 즉시 결제 버튼.\nK-beauty 선택 → Glow Local 최상단. 예: \"Esther님, Glass Skin 원하신가요?\" 워딩.\nNone of these? → Make It Yours 연결.",date:"2026-04-15"},
+  {id:2,title:"파트너십 핵심 메시지 (영업용)",cat:"영업",content:"피부과/퍼스널컬러 업체에게:\n\"우리는 단순 가이드가 아니라, 당신의 병원에 준비된 글로벌 고객을 데려오는 마케팅 채널이다.\"\n구매 의사 90%+ 검증된 고객 송출 + 노쇼 방지(Stripe 사전결제) 강조.",date:"2026-04-15"},
+  {id:3,title:"서구권 vs 아시아권 마케팅 메시지 분리",cat:"마케팅",content:"서구권 (US/UK/AU): Authentic, locals-only, hidden gems\n아시아권 (SEA/JP): Trending, aesthetic, K-beauty, Instagrammable\n같은 Eats 상품도 채널별로 카피 다르게.",date:"2026-04-15"},
+  {id:4,title:"Mate 리쿠르팅 기준 (초안)",cat:"운영",content:"영어 B2 이상, 서울 거주, 관련 경험 우대\n온보딩 교육 2시간으로 루트 이관 가능\n수익 배분: 건당 Mate $95 / Seoulbound $50\n나중에 Beauty / Medical / Night 버티컬 분리",date:"2026-04-15"}
+];
+var noteIdCounter=5;
+var catL={"cat-op":"운영","cat-pl":"플랫폼","cat-mk":"마케팅","cat-ct":"콘텐츠","cat-biz":"영업"};
+var catCls={"운영":"pg2","마케팅":"pb","개발":"pp","인건비":"po","세금":"pr","기타":"pgr"};
+var statCls={"리드":"pgr","관심":"pb","상담중":"po","결제완료":"pg2","재구매":"pp"};
+var noteCatCls={"상품":"pg2","전략":"pb","영업":"po","마케팅":"pp","운영":"pgr","재무":"pr","기타":"pgr"};
 
-function schRender() {
-  var el = document.getElementById('sch-body');
-  if (!el) return;
-  var all = fixedSch.concat(userSch);
-  var pending = [], done = [];
-  for (var i = 0; i < all.length; i++) {
-    (schDone[i] ? done : pending).push(i);
-  }
-  var order = pending.concat(done);
-  var html = '';
-  for (var r = 0; r < order.length; r++) {
-    var i = order[r]; var t = all[i]; var isDone = schDone[i];
-    html += '<div class="sr" style="opacity:'+(isDone?'.5':'1')+'" data-idx="'+i+'">';
-    html += '<div class="tc">'+t.time+'</div>';
-    html += '<div style="font-size:11px">'+t.task+(t.fixed?'<span style="font-size:8px;color:#6B6863;background:#F5F3EE;border-radius:99px;padding:1px 5px;margin-left:5px">고정</span>':'')+'</div>';
-    html += '<div><span class="cp" style="background:'+(CC[t.cat]||'#f5f3ee')+';color:'+(CT[t.cat]||'#888')+'">'+t.cat+'</span></div>';
-    html += '<div style="justify-content:center"><div class="cb'+(isDone?' on':'')+'" data-chk="'+i+'"></div></div>';
-    html += '<div style="justify-content:center"><button data-del="'+i+'" style="border:none;background:none;color:#C8C5BE;cursor:pointer;font-size:12px">✕</button></div>';
-    html += '</div>';
-  }
-  if (done.length) html += '<div style="padding:6px 10px;background:#E1F5EE;font-size:9px;font-weight:700;color:#0F5F4A;letter-spacing:.05em;text-transform:uppercase">완료 '+done.length+'/'+all.length+'</div>';
-  el.innerHTML = html;
-  el.querySelectorAll('[data-chk]').forEach(function(cb) {
-    cb.addEventListener('click', function(e) {
-      e.stopPropagation();
-      var i = parseInt(this.getAttribute('data-chk'));
-      schDone[i] = !schDone[i];
-      sv('schDone', schDone);
-      schRender();
-    });
+function show(id){
+  document.querySelectorAll(".pg").forEach(function(p){p.classList.remove("on");});
+  document.querySelectorAll(".si").forEach(function(i){i.classList.remove("active");});
+  var pg=document.getElementById("page-"+id);if(pg)pg.classList.add("on");
+  var nav=document.getElementById("nav-"+id);if(nav)nav.classList.add("active");
+  if(id==="hub")renderHub();
+  if(id==="daily")renderTasks();
+  if(id==="rev")renderRev();
+  if(id==="exp")renderExp();
+  if(id==="cf")renderCF();
+  if(id==="tax")renderTax();
+  if(id==="crm")renderCRM();
+  if(id==="cslog")renderCSlog();
+  if(id==="plannotes")renderNotes();
+}
+
+function fmt(n){return "$"+Math.round(n);}
+
+function renderHub(){
+  var tR=revenue.reduce(function(a,b){return a+b.amt;},0);
+  var tE=expenses.reduce(function(a,b){return a+b.amt;},0);
+  var net=tR-tE;
+  var ac=crm.filter(function(c){return c.stat==="결제완료"||c.stat==="재구매";}).length;
+  var kpis=[
+    {l:"수익 (이번달)",v:fmt(tR),s:"목표 $415",c:tR>0?"var(--ac)":"var(--t0)"},
+    {l:"지출 (이번달)",v:fmt(tE),s:"고정비 포함",c:"var(--t0)"},
+    {l:"순이익",v:(net>=0?"+":"")+fmt(net),s:"수익-지출",c:net>=0?"var(--ac)":"#a32d2d"},
+    {l:"활성 고객",v:ac+"명",s:"결제 완료 기준",c:"var(--t0)"}
+  ];
+  var kg=document.getElementById("kpi-g");kg.innerHTML="";
+  kpis.forEach(function(k){var d=document.createElement("div");d.className="kpi";d.innerHTML="<div class=\"kpi-l\">"+k.l+"</div><div class=\"kpi-v\" style=\"color:"+k.c+"\">"+k.v+"</div><div class=\"kpi-s\">"+k.s+"</div>";kg.appendChild(d);});
+  var depts=[
+    {r:"CEO",n:"MVP 런칭 플랜",s:"D-7 · 4/22 론칭 목표",p:"dpw",pt:"D-7",pg:"launch"},
+    {r:"CFO",n:"재무",s:"지출 "+fmt(tE)+"/월 · 수익 "+fmt(tR),p:"dpw",pt:"셋업중",pg:"rev"},
+    {r:"CMO",n:"마케팅",s:"필라 4개 확정 · 채널 셋업 필요",p:"dpr",pt:"미시작",pg:"viral"},
+    {r:"CSO",n:"전략",s:"Phase 1 · 파트너 4개 섭외중",p:"dpg",pt:"진행중",pg:"expand"},
+    {r:"CS",n:"고객관리",s:"고객 "+ac+"명 · CS "+cslog.length+"건",p:"dpg",pt:"정상",pg:"crm"},
+    {r:"상품",n:"상품 현황",s:"LIVE 3개 · PREP 2개 · 검토 1개",p:"dpg",pt:"확장중",pg:"prod"}
+  ];
+  var dg=document.getElementById("dept-g");dg.innerHTML="";
+  depts.forEach(function(d){var div=document.createElement("div");div.className="dept";div.onclick=function(){show(d.pg);};div.innerHTML="<div class=\"dr\">"+d.r+"</div><div class=\"dn\">"+d.n+"</div><div class=\"dst\">"+d.s+"</div><div class=\"dp "+d.p+"\">"+d.pt+"</div>";dg.appendChild(div);});
+}
+
+function renderTasks(){
+  var b=document.getElementById("sch-body");if(!b)return;b.innerHTML="";
+  tasks.forEach(function(t,i){
+    var row=document.createElement("div");row.className="sch-r";row.id="row-"+i;
+    row.innerHTML="<div style=\"font-size:11px;color:var(--t2)\">"+t.time+"</div>"+
+      "<div style=\"font-size:11.5px;"+(t.done?"text-decoration:line-through;color:var(--t2);\"":"\"")+" >"+t.task+"</div>"+
+      "<div><span class=\"pill "+t.cat+"\" style=\"font-size:9.5px;padding:2px 5px;border-radius:6px\">"+catL[t.cat]+"</span></div>"+
+      "<div style=\"display:flex;gap:3px;align-items:center\"><input type=\"checkbox\" style=\"accent-color:var(--ac)\" "+(t.done?"checked":"")+" onchange=\"toggleT("+i+",this)\"><button style=\"border:none;background:none;cursor:pointer;font-size:11px;padding:1px 3px\" onclick=\"editT("+i+")\">&amp;#9999;</button><button style=\"border:none;background:none;cursor:pointer;font-size:11px;padding:1px 3px\" onclick=\"delT("+i+")\">&amp;#128465;</button></div>";
+    b.appendChild(row);
   });
-  el.querySelectorAll('[data-del]').forEach(function(btn) {
-    btn.addEventListener('click', function(e) {
-      e.stopPropagation();
-      var i = parseInt(this.getAttribute('data-del'));
-      if (i < fixedSch.length) { fixedSch.splice(i,1); }
-      else { userSch.splice(i-fixedSch.length,1); sv('userSch',userSch); }
-      delete schDone[i];
-      sv('schDone',schDone);
-      schRender();
-    });
+}
+function editT(i){
+  var t=tasks[i];var row=document.getElementById("row-"+i);
+  row.innerHTML="<input class=\"ei\" style=\"width:52px;font-size:11px\" id=\"et-"+i+"\" value=\""+t.time+"\">"+
+    "<input class=\"ei\" id=\"etask-"+i+"\" value=\""+t.task.replace(/"/g,"&quot;")+"\">"+
+    "<select class=\"inp\" id=\"ecat-"+i+"\" style=\"font-size:10.5px;padding:2px 3px\"><option value=\"cat-op\"" +(t.cat==="cat-op"?" selected":"")+">운영</option><option value=\"cat-pl\"" +(t.cat==="cat-pl"?" selected":"")+">플랫폼</option><option value=\"cat-mk\"" +(t.cat==="cat-mk"?" selected":"")+">마케팅</option><option value=\"cat-ct\"" +(t.cat==="cat-ct"?" selected":"")+">콘텐츠</option><option value=\"cat-biz\"" +(t.cat==="cat-biz"?" selected":"")+">영업</option></select>"+
+    "<div style=\"display:flex;gap:3px\"><button class=\"bs2\" onclick=\"saveT("+i+")\">저장</button><button class=\"bc\" onclick=\"renderTasks()\">취소</button></div>";
+}
+function saveT(i){tasks[i].time=document.getElementById("et-"+i).value;tasks[i].task=document.getElementById("etask-"+i).value;tasks[i].cat=document.getElementById("ecat-"+i).value;renderTasks();}
+function delT(i){tasks.splice(i,1);renderTasks();}
+function toggleT(i,el){tasks[i].done=el.checked;renderTasks();}
+function addTask(){var task=document.getElementById("atask").value;if(!task.trim())return;tasks.push({time:document.getElementById("at").value||"00:00",task:task,cat:document.getElementById("acat").value,done:false});document.getElementById("at").value="";document.getElementById("atask").value="";renderTasks();}
+
+function renderRev(){
+  var tb=document.getElementById("rev-body");if(!tb)return;tb.innerHTML="";var tot=0;
+  if(!revenue.length){tb.innerHTML="<tr><td colspan=\"6\" style=\"text-align:center;color:var(--t2);padding:14px;font-size:11.5px\">아직 수입이 없어요. 첫 결제를 기다리는 중! &#127919;</td></tr>";}
+  revenue.forEach(function(r,i){tot+=r.amt;var tr=document.createElement("tr");tr.innerHTML="<td>"+r.date+"</td><td>"+r.desc+"</td><td><span class=\"pill pg2\">"+r.prod+"</span></td><td>"+r.cust+"</td><td style=\"font-weight:700;color:var(--ac)\">"+fmt(r.amt)+"</td><td><button class=\"dbtn\" onclick=\"delRev("+i+")\">&#10005;</button></td>";tb.appendChild(tr);});
+  var s=document.getElementById("rev-sum");if(s)s.innerHTML="<div class=\"sb-box\"><div class=\"sb-l\">이번달 총 수입</div><div class=\"sb-v\" style=\"color:var(--ac)\">"+fmt(tot)+"</div></div><div class=\"sb-box\"><div class=\"sb-l\">거래 건수</div><div class=\"sb-v\">"+revenue.length+"건</div></div><div class=\"sb-box\"><div class=\"sb-l\">목표 달성률</div><div class=\"sb-v\" style=\"color:var(--ac)\">"+(tot>0?Math.round(tot/415*100):0)+"%</div></div>";
+}
+function addRev(){var amt=parseFloat(document.getElementById("ramt").value);if(!amt)return;revenue.push({date:document.getElementById("rd").value||"2026-04-15",desc:document.getElementById("rdesc").value,prod:document.getElementById("rprod").value,cust:document.getElementById("rcust").value,amt:amt});["rdesc","rcust","ramt"].forEach(function(id){document.getElementById(id).value="";});renderRev();}
+function delRev(i){revenue.splice(i,1);renderRev();}
+
+function renderExp(){
+  var tb=document.getElementById("exp-body");if(!tb)return;tb.innerHTML="";var tot=0;
+  expenses.forEach(function(e,i){tot+=e.amt;var tr=document.createElement("tr");tr.innerHTML="<td>"+e.date+"</td><td><span class=\"pill "+(catCls[e.cat]||"pgr")+"\">"+e.cat+"</span></td><td>"+e.desc+"</td><td style=\"font-weight:700;color:#a32d2d\">"+fmt(e.amt)+"</td><td><button class=\"dbtn\" onclick=\"delExp("+i+")\">&#10005;</button></td>";tb.appendChild(tr);});
+  var s=document.getElementById("exp-sum");if(s)s.innerHTML="<div class=\"sb-box\"><div class=\"sb-l\">이번달 총 지출</div><div class=\"sb-v\" style=\"color:#a32d2d\">"+fmt(tot)+"</div></div><div class=\"sb-box\"><div class=\"sb-l\">항목 수</div><div class=\"sb-v\">"+expenses.length+"건</div></div>";
+}
+function addExp(){var amt=parseFloat(document.getElementById("eamt").value);if(!amt)return;expenses.push({date:document.getElementById("ed").value||"2026-04-15",cat:document.getElementById("ecat").value,desc:document.getElementById("edesc").value,amt:amt});["edesc","eamt"].forEach(function(id){document.getElementById(id).value="";});renderExp();}
+function delExp(i){expenses.splice(i,1);renderExp();}
+
+function renderCF(){
+  var tR=revenue.reduce(function(a,b){return a+b.amt;},0);
+  var tE=expenses.reduce(function(a,b){return a+b.amt;},0);var net=tR-tE;
+  var el=document.getElementById("cf-c");if(!el)return;
+  el.innerHTML="<div class=\"sr-row\"><div class=\"sb-box\"><div class=\"sb-l\">총 수입</div><div class=\"sb-v\" style=\"color:var(--ac)\">+"+fmt(tR)+"</div></div><div class=\"sb-box\"><div class=\"sb-l\">총 지출</div><div class=\"sb-v\" style=\"color:#a32d2d\">-"+fmt(tE)+"</div></div><div class=\"sb-box\"><div class=\"sb-l\">순 현금흐름</div><div class=\"sb-v\" style=\"color:"+(net>=0?"var(--ac)":"#a32d2d")+"\">"+(net>=0?"+":"")+fmt(net)+"</div></div></div>"+
+  "<div class=\"card cp\" style=\"margin-top:10px\"><div style=\"font-size:12px;font-weight:700;margin-bottom:6px\">런웨이 분석</div><div style=\"font-size:11.5px;color:var(--t1);line-height:1.7\">현재 고정 지출: "+fmt(tE)+"/월<br>월 $3,500 달성 시 순이익: "+(3500-tE>=0?"+":"")+fmt(3500-tE)+"/월</div></div>";
+}
+
+function renderTax(){
+  var tR=revenue.reduce(function(a,b){return a+b.amt;},0);
+  var el=document.getElementById("tax-c");if(!el)return;
+  el.innerHTML="<div class=\"sr-row\"><div class=\"sb-box\"><div class=\"sb-l\">예상 세금 (수입×30%)</div><div class=\"sb-v\" style=\"color:#a32d2d\">"+fmt(tR*0.3)+"</div></div><div class=\"sb-box\"><div class=\"sb-l\">세후 예상 수입</div><div class=\"sb-v\">"+fmt(tR*0.7)+"</div></div></div>"+
+  "<div class=\"card\" style=\"margin-top:10px\"><table class=\"tbl\"><thead><tr><th>일정</th><th>내용</th><th>비고</th></tr></thead><tbody><tr><td>2026-05-31</td><td>종합소득세 신고</td><td>2025년도분 · 홈택스</td></tr><tr><td>수익 발생 즉시</td><td>사업자등록</td><td>개인사업자 권장</td></tr><tr><td>상시</td><td>영수증/지출 증빙 보관</td><td>5년간 보관 의무</td></tr></tbody></table></div>"+
+  "<div class=\"hint\">&#128161; 수입의 30%는 세금용 별도 계좌 보관. 세무사 상담은 월 매출 $1,000+ 시 권장.</div>";
+}
+
+function renderCRM(){
+  var tb=document.getElementById("crm-body");if(!tb)return;tb.innerHTML="";
+  if(!crm.length){tb.innerHTML="<tr><td colspan=\"6\" style=\"text-align:center;color:var(--t2);padding:14px;font-size:11.5px\">아직 등록된 고객이 없어요!</td></tr>";return;}
+  crm.forEach(function(c,i){var tr=document.createElement("tr");tr.innerHTML="<td style=\"font-weight:700\">"+c.name+"</td><td>"+c.src+"</td><td>"+c.prod+"</td><td><span class=\"pill "+(statCls[c.stat]||"pgr")+"\">"+c.stat+"</span></td><td>"+c.note+"</td><td><button class=\"dbtn\" onclick=\"delCRM("+i+")\">&#10005;</button></td>";tb.appendChild(tr);});
+}
+function addCRM(){var n=document.getElementById("cn").value;if(!n.trim())return;crm.push({name:n,src:document.getElementById("csrc").value,prod:document.getElementById("cprod").value,stat:document.getElementById("cstat").value,note:document.getElementById("cnote").value});["cn","cnote"].forEach(function(id){document.getElementById(id).value="";});renderCRM();}
+function delCRM(i){crm.splice(i,1);renderCRM();}
+
+function renderCSlog(){
+  var tb=document.getElementById("cs-body");if(!tb)return;tb.innerHTML="";
+  if(!cslog.length){tb.innerHTML="<tr><td colspan=\"6\" style=\"text-align:center;color:var(--t2);padding:14px;font-size:11.5px\">CS 문의가 없어요. &#128077;</td></tr>";return;}
+  var sc={"접수":"po","처리중":"pb","완료":"pg2"};
+  cslog.forEach(function(c,i){var tr=document.createElement("tr");tr.innerHTML="<td>"+c.date+"</td><td>"+c.cust+"</td><td>"+c.ch+"</td><td>"+c.issue+"</td><td><span class=\"pill "+(sc[c.stat]||"pgr")+"\">"+c.stat+"</span></td><td><button class=\"dbtn\" onclick=\"delCS("+i+")\">&#10005;</button></td>";tb.appendChild(tr);});
+}
+function addCS(){cslog.push({date:document.getElementById("csd").value||new Date().toLocaleDateString("ko"),cust:document.getElementById("cscust").value,ch:document.getElementById("csch").value,issue:document.getElementById("csiss").value,stat:document.getElementById("csstat").value});["cscust","csiss"].forEach(function(id){document.getElementById(id).value="";});renderCSlog();}
+function delCS(i){cslog.splice(i,1);renderCSlog();}
+
+function renderNotes(){
+  var list=document.getElementById("notes-list");if(!list)return;list.innerHTML="";
+  if(!notes.length){list.innerHTML="<div style=\"text-align:center;color:var(--t2);padding:20px;font-size:12px\">노트가 없어요. 위에서 추가하세요.</div>";return;}
+  notes.forEach(function(n){
+    var card=document.createElement("div");card.className="note-card";card.id="note-"+n.id;
+    card.innerHTML="<div class=\"note-header\"><div><div class=\"note-title\">"+n.title+"</div><div class=\"note-meta\"><span class=\"pill "+(noteCatCls[n.cat]||"pgr")+" \" style=\"font-size:9px;margin-right:6px\">"+n.cat+"</span>"+n.date+"</div></div><div class=\"note-actions\"><button class=\"note-edit-btn\" onclick=\"editNote("+n.id+")\">수정</button><button class=\"note-del-btn\" onclick=\"deleteNote("+n.id+")\">삭제</button></div></div><div class=\"note-body\">"+n.content+"</div>";
+    list.appendChild(card);
+  });
+}
+function addNote(){
+  var t=document.getElementById("nt").value;var b=document.getElementById("nb").value;
+  if(!t.trim()||!b.trim())return;
+  notes.unshift({id:noteIdCounter++,title:t,cat:document.getElementById("nc").value,content:b,date:new Date().toLocaleDateString("ko")});
+  document.getElementById("nt").value="";document.getElementById("nb").value="";
+  renderNotes();
+}
+function editNote(id){
+  var n=notes.find(function(x){return x.id===id;});if(!n)return;
+  var card=document.getElementById("note-"+id);
+  card.innerHTML="<div class=\"note-form\" style=\"gap:7px\">"+
+    "<div class=\"note-form-row\"><input class=\"inp\" id=\"en-t-"+id+"\" value=\""+n.title.replace(/"/g,"&quot;")+" \" style=\"flex:1\"><select class=\"inp\" id=\"en-c-"+id+"\" style=\"width:90px\"><option"+(n.cat==="상품"?" selected":"")+">상품</option><option"+(n.cat==="전략"?" selected":"")+">전략</option><option"+(n.cat==="영업"?" selected":"")+">영업</option><option"+(n.cat==="마케팅"?" selected":"")+">마케팅</option><option"+(n.cat==="운영"?" selected":"")+">운영</option><option"+(n.cat==="재무"?" selected":"")+">재무</option><option"+(n.cat==="기타"?" selected":"")+">기타</option></select></div>"+
+    "<textarea class=\"inp\" id=\"en-b-"+id+"\" style=\"width:100%;min-height:80px;resize:vertical;font-family:inherit\">"+n.content+"</textarea>"+
+    "<div style=\"display:flex;gap:6px\"><button class=\"abtn\" onclick=\"saveNote("+id+")\">저장</button><button class=\"bc\" onclick=\"renderNotes()\">취소</button></div></div>";
+}
+function saveNote(id){
+  var n=notes.find(function(x){return x.id===id;});if(!n)return;
+  n.title=document.getElementById("en-t-"+id).value;
+  n.cat=document.getElementById("en-c-"+id).value;
+  n.content=document.getElementById("en-b-"+id).value;
+  n.date=new Date().toLocaleDateString("ko");
+  renderNotes();
+}
+function deleteNote(id){
+  if(!confirm("이 노트를 삭제할까요?"))return;
+  notes=notes.filter(function(n){return n.id!==id;});
+  renderNotes();
+}
+
+function addInv(){var n=document.getElementById("in2").value;if(!n.trim())return;var sc={"리서치중":"pgr","접촉예정":"po","미팅중":"pb","검토중":"pp","거절":"pr","확정":"pg2"};var s=document.getElementById("is2").value;var tr=document.createElement("tr");tr.innerHTML="<td style=\"font-weight:700\">"+n+"</td><td>"+document.getElementById("it2").value+"</td><td>"+document.getElementById("ia2").value+"</td><td><span class=\"pill "+(sc[s]||"pgr")+"\">"+s+"</span></td><td>"+document.getElementById("ix2").value+"</td><td><button class=\"dbtn\" onclick=\"this.closest('tr').remove()\">&#10005;</button></td>";document.getElementById("inv-body").appendChild(tr);["in2","ia2","ix2"].forEach(function(id){document.getElementById(id).value="";});}
+function addPart(){var n=document.getElementById("pn").value;if(!n.trim())return;var sc={"리서치중":"pgr","섭외중":"po","관계구축중":"pb","협의중":"pp","계약완료":"pg2","보류":"pr"};var s=document.getElementById("ps2").value;var tr=document.createElement("tr");tr.innerHTML="<td style=\"font-weight:700\">"+n+"</td><td>"+document.getElementById("pt2").value+"</td><td><span class=\"pill "+(sc[s]||"pgr")+"\">"+s+"</span></td><td>"+document.getElementById("pv").value+"</td><td>"+document.getElementById("px").value+"</td><td><button class=\"dbtn\" onclick=\"this.closest('tr').remove()\">&#10005;</button></td>";document.getElementById("part-body").appendChild(tr);["pn","pv","px"].forEach(function(id){document.getElementById(id).value="";});}
+function addViral(){var n=document.getElementById("vn").value;if(!n.trim())return;var sc={"예정":"po","진행중":"pg2","보류":"pgr"};var s=document.getElementById("vs").value;var tr=document.createElement("tr");tr.innerHTML="<td style=\"font-weight:700\">"+n+"</td><td>"+document.getElementById("vp").value+"</td><td>"+document.getElementById("vf").value+"</td><td>"+document.getElementById("vc").value+"</td><td>"+document.getElementById("vco").value+"</td><td><span class=\"pill "+(sc[s]||"pgr")+"\">"+s+"</span></td><td><button class=\"dbtn\" onclick=\"this.closest('tr').remove()\">&#10005;</button></td>";document.getElementById("viral-body").appendChild(tr);["vn","vf","vc","vco"].forEach(function(id){document.getElementById(id).value="";});}
+function addBench(){var n=document.getElementById("bn").value;if(!n.trim())return;var tr=document.createElement("tr");tr.innerHTML="<td style=\"font-weight:700\">"+n+"</td><td>"+document.getElementById("bm").value+"</td><td>"+document.getElementById("ba").value+"</td>";document.getElementById("bench-body").appendChild(tr);["bn","bm","ba"].forEach(function(id){document.getElementById(id).value="";});}
+function addKW(){var n=document.getElementById("kn").value;if(!n.trim())return;var pc={"Glow Local":"pg2","Seoul Trend":"pb","Midnight Seoul":"po","Stan Seoul":"pp","전체":"pgr"};var p=document.getElementById("kp").value;var tr=document.createElement("tr");tr.innerHTML="<td style=\"font-weight:700\">"+n+"</td><td>"+document.getElementById("kc").value+"</td><td>"+document.getElementById("kt").value+"</td><td><span class=\"pill "+(pc[p]||"pgr")+"\">"+p+"</span></td><td>"+document.getElementById("ku").value+"</td><td><span class=\"pill po\">확인필요</span></td><td><button class=\"dbtn\" onclick=\"this.closest('tr').remove()\">&#10005;</button></td>";document.getElementById("kw-body").appendChild(tr);["kn","kc","ku"].forEach(function(id){document.getElementById(id).value="";});}
+
+function rTab(id){
+  ["kw","sea","mvp","adv"].forEach(function(t){
+    document.getElementById("rt-body-"+t).style.display=t===id?"block":"none";
+    document.getElementById("rt-"+t).classList[t===id?"add":"remove"]("on");
   });
 }
 
-document.getElementById('add-sch-btn').addEventListener('click', function() {
-  var time = document.getElementById('ni-time').value||'09:00';
-  var task = document.getElementById('ni-task').value.trim();
-  var cat = document.getElementById('ni-cat').value;
-  if (!task) return;
-  userSch.push({time:time,task:task,cat:cat,fixed:false});
-  sv('userSch',userSch);
-  document.getElementById('ni-task').value='';
-  schRender();
-});
-
-document.getElementById('load-weekly-btn').addEventListener('click', function() {
-  var today = (new Date().getDay()+6)%7;
-  var items = wgData[today]||[];
-  for (var i=0;i<items.length;i++) {
-    if(!items[i].d) userSch.push({time:'09:00',task:items[i].t,cat:'📊 운영',fixed:false});
-  }
-  sv('userSch',userSch); schRender();
-  toast('✅ 주간목표를 오늘 스케줄에 추가했어요!');
-});
-
-// ─── WEEKLY GOALS ───
-var WG_DAYS = ['월','화','수','목','금','토','일'];
-var WG_TODAY = (new Date().getDay()+6)%7;
-var wgData = ld('wgData', {
-  0:[{t:'기획 + Claude 브리핑',d:false}],
-  1:[{t:'이태원 인터뷰 촬영',d:false},{t:'CapCut 편집+업로드',d:false}],
-  2:[{t:'편집 + Buffer 예약',d:false}],
-  3:[{t:'뉴스레터 발송',d:false}],
-  4:[{t:'Reddit 답변 5개',d:false}],
-  5:[{t:'명동/남대문 촬영',d:false}],
-  6:[{t:'다음 주 Buffer 예약',d:false},{t:'주간 회고 작성',d:false}],
-});
-
-function wgRender() {
-  var el = document.getElementById('wg-grid');
-  if (!el) return;
-  var html = '';
-  for (var di=0;di<7;di++) {
-    var isT = di===WG_TODAY; var items = wgData[di]||[];
-    var done = items.filter(function(x){return x.d;}).length;
-    html += '<div class="wg-col'+(isT?' wg-today':'')+'">';
-    html += '<div class="wg-dh">'+WG_DAYS[di]+(isT?' ★':'')+(items.length?' <span style="font-size:7px;opacity:.6">'+done+'/'+items.length+'</span>':'')+'</div>';
-    for (var ii=0;ii<items.length;ii++) {
-      var item=items[ii];
-      html += '<div style="display:flex;align-items:flex-start;gap:3px;margin-bottom:3px">';
-      html += '<div data-wg-chk="'+di+'-'+ii+'" style="width:11px;height:11px;min-width:11px;border:1.5px solid '+(item.d?'#0F5F4A':'#C8C5BE')+';border-radius:2px;margin-top:1px;cursor:pointer;background:'+(item.d?'#0F5F4A':'white')+';flex-shrink:0;display:flex;align-items:center;justify-content:center">'+(item.d?'<span style="color:white;font-size:7px;font-weight:800">✓</span>':'')+'</div>';
-      html += '<span contenteditable="true" data-wg-edit="'+di+'-'+ii+'" style="font-size:9px;flex:1;color:'+(item.d?'#B0ADA7':'#2C2A26')+';text-decoration:'+(item.d?'line-through':'none')+';line-height:1.4;outline:none">'+item.t+'</span>';
-      html += '<button data-wg-del="'+di+'-'+ii+'" style="border:none;background:none;color:#DDD;cursor:pointer;font-size:8px;padding:0;flex-shrink:0">✕</button>';
-      html += '</div>';
-    }
-    html += '<button data-wg-add="'+di+'" style="width:100%;border:none;background:none;color:#6B6863;font-size:8px;cursor:pointer;text-align:left;padding:2px 0;margin-top:2px">+ 추가</button>';
-    html += '</div>';
-  }
-  el.innerHTML = html;
-  el.querySelectorAll('[data-wg-chk]').forEach(function(cb){
-    cb.addEventListener('click',function(){
-      var p=this.getAttribute('data-wg-chk').split('-');
-      var di=parseInt(p[0]),ii=parseInt(p[1]);
-      wgData[di][ii].d=!wgData[di][ii].d; sv('wgData',wgData); wgRender();
-    });
-  });
-  el.querySelectorAll('[data-wg-edit]').forEach(function(sp){
-    sp.addEventListener('blur',function(){
-      var p=this.getAttribute('data-wg-edit').split('-');
-      var di=parseInt(p[0]),ii=parseInt(p[1]);
-      wgData[di][ii].t=this.innerText.trim()||wgData[di][ii].t; sv('wgData',wgData);
-    });
-    sp.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();this.blur();}});
-  });
-  el.querySelectorAll('[data-wg-del]').forEach(function(btn){
-    btn.addEventListener('click',function(){
-      var p=this.getAttribute('data-wg-del').split('-');
-      wgData[parseInt(p[0])].splice(parseInt(p[1]),1); sv('wgData',wgData); wgRender();
-    });
-  });
-  el.querySelectorAll('[data-wg-add]').forEach(function(btn){
-    btn.addEventListener('click',function(){
-      var di=parseInt(this.getAttribute('data-wg-add'));
-      if(!wgData[di])wgData[di]=[];
-      wgData[di].push({t:'새 할 일',d:false}); sv('wgData',wgData); wgRender();
-    });
-  });
-}
-
-// ─── HISTORY ───
-var TODAY_STR = new Date().toISOString().slice(0,10);
-var LAST_DATE = ld('lastDate',null);
-if (LAST_DATE && LAST_DATE!==TODAY_STR) {
-  var hist=ld('history',{}); var all=fixedSch.concat(ld('userSch',[])); var done=ld('schDone',{});
-  var comp=[];for(var i=0;i<all.length;i++){if(done[i])comp.push(all[i].task);}
-  hist[LAST_DATE]={completed:comp,total:all.length}; sv('history',hist);
-  sv('schDone',{}); sv('userSch',[]);
-  schDone={}; userSch=[];
-}
-sv('lastDate',TODAY_STR);
-
-function histDailyRender() {
-  var el=document.getElementById('hist-daily'); if(!el)return;
-  var hist=ld('history',{}); var dates=Object.keys(hist).sort().reverse().slice(0,7);
-  if(!dates.length){el.innerHTML='<div style="text-align:center;padding:20px;color:#6B6863;font-size:11px">아직 기록이 없어요. 매일 사용하면 쌓여요.</div>';return;}
-  var dn=['일','월','화','수','목','금','토']; var html='';
-  for(var i=0;i<dates.length;i++){
-    var d=dates[i]; var rec=hist[d]; var pct=rec.total>0?Math.round(rec.completed.length/rec.total*100):0;
-    var dobj=new Date(d); var label=(dobj.getMonth()+1)+'월 '+dobj.getDate()+'일 '+dn[dobj.getDay()]+'요일';
-    var col=pct>=80?'#0F5F4A':pct>=50?'#BA7517':'#A33C1D';
-    html+='<div style="border:1px solid #E8E5DF;border-radius:9px;overflow:hidden;margin-bottom:8px">';
-    html+='<div data-hist-toggle style="display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:#F5F3EE;cursor:pointer">';
-    html+='<div><div style="font-size:12px;font-weight:700">'+label+'</div><div style="height:3px;background:#E8E5DF;border-radius:99px;width:120px;margin-top:4px;overflow:hidden"><div style="height:100%;background:'+col+';width:'+pct+'%;border-radius:99px"></div></div></div>';
-    html+='<div style="font-size:12px;font-weight:700;color:'+col+'">'+pct+'% ('+rec.completed.length+'/'+rec.total+')</div></div>';
-    html+='<div data-hist-body style="display:none;padding:8px 12px">';
-    for(var j=0;j<rec.completed.length;j++){html+='<div style="font-size:11px;padding:3px 0;border-bottom:1px solid #E8E5DF"><span style="color:#0F5F4A">✓</span> '+rec.completed[j]+'</div>';}
-    html+='</div></div>';
-  }
-  el.innerHTML=html;
-  el.querySelectorAll('[data-hist-toggle]').forEach(function(hd){
-    hd.addEventListener('click',function(){
-      var bd=this.nextElementSibling;
-      bd.style.display=bd.style.display==='none'?'block':'none';
-    });
-  });
-}
-
-function histPageRender() {
-  var el=document.getElementById('hist-page'); if(!el)return;
-  var hist=ld('history',{}); var dates=Object.keys(hist).sort().reverse();
-  if(!dates.length){el.innerHTML='<div style="text-align:center;padding:60px;color:#6B6863">아직 기록이 없어요 📅</div>';return;}
-  var dn=['일','월','화','수','목','금','토']; var html='';
-  for(var i=0;i<dates.length;i++){
-    var d=dates[i]; var rec=hist[d]; var pct=rec.total>0?Math.round(rec.completed.length/rec.total*100):0;
-    var dobj=new Date(d); var label=(dobj.getMonth()+1)+'월 '+dobj.getDate()+'일 '+dn[dobj.getDay()]+'요일';
-    var col=pct>=80?'#0F5F4A':pct>=50?'#BA7517':'#A33C1D';
-    html+='<div style="background:#FEFCF8;border:1px solid #E8E5DF;border-radius:12px;padding:14px;margin-bottom:10px">';
-    html+='<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px"><div style="font-size:15px;font-weight:700">'+label+'</div><div style="text-align:right"><div style="font-size:22px;font-weight:700;color:'+col+'">'+pct+'%</div><div style="font-size:10px;color:#6B6863">'+rec.completed.length+'/'+rec.total+' 완료</div></div></div>';
-    html+='<div style="height:4px;background:#E8E5DF;border-radius:99px;overflow:hidden;margin-bottom:8px"><div style="height:100%;background:'+col+';width:'+pct+'%;border-radius:99px"></div></div>';
-    for(var j=0;j<rec.completed.length;j++){html+='<span style="display:inline-block;background:#E1F5EE;color:#0F5F4A;border-radius:99px;padding:2px 8px;margin:2px;font-size:10px;font-weight:600">✓ '+rec.completed[j]+'</span>';}
-    html+='</div>';
-  }
-  el.innerHTML=html;
-}
-
-// ─── MONTHLY TASKS ───
-var MT_MONTHS=['4월','5월','6월','7월','8월','9월','10월','11월','12월'];
-var mtDef={
-  '4월':{goals:{퀴즈완료:'50명',투어결제:'3건',수익:'$415',구독:'0명'},phases:[
-    {title:'MVP 론칭 준비',c:'#0F5F4A',bg:'#E1F5EE',tasks:[{t:'퀴즈/결과값 시나리오 업데이트',d:false},{t:'여행상품 설명 업데이트',d:false},{t:'4/22 MVP 론칭',d:false},{t:'Calendly 슬롯 오픈',d:false}]},
-    {title:'Phase 1 — PDF 가이드',c:'#BA7517',bg:'#FFF3DC',tasks:[{t:'Gumroad 계정 생성',d:false},{t:'Seoul Survival Guide $19',d:false},{t:'K-beauty Bible $29',d:false}]},
-    {title:'Phase 2 — 뉴스레터',c:'#1A5FA3',bg:'#EDF4FF',tasks:[{t:'Loops.so 계정 생성',d:false},{t:'Seoul Insider 1호 초안',d:false},{t:'목요일 첫 발송',d:false}]},
-    {title:'콘텐츠 & 마케팅',c:'#A33C1D',bg:'#FFF0EB',tasks:[{t:'인스타 계정 개설',d:false},{t:'TikTok 영상 3개',d:false},{t:'Reddit 답변 20개',d:false}]},
-  ]},
-  '5월':{goals:{퀴즈완료:'200명',투어결제:'10건',수익:'$1,195',구독:'50명'},phases:[
-    {title:'투어 확장',c:'#0F5F4A',bg:'#E1F5EE',tasks:[{t:'가이드 1명 모집',d:false},{t:'투어 루트 매뉴얼',d:false}]},
-    {title:'PDF 확장',c:'#BA7517',bg:'#FFF3DC',tasks:[{t:'Seoul on $50/day PDF',d:false},{t:'TikTok PDF 홍보',d:false}]},
-    {title:'뉴스레터 성장',c:'#1A5FA3',bg:'#EDF4FF',tasks:[{t:'구독자 100명 달성',d:false},{t:'Seoul Insider Pro 유료화',d:false}]},
-  ]},
-};
-['6월','7월','8월','9월','10월','11월','12월'].forEach(function(m){
-  mtDef[m]={goals:{퀴즈완료:'',투어결제:'',수익:'',구독:''},phases:[{title:'이번 달 목표',c:'#0F5F4A',bg:'#E1F5EE',tasks:[]}]};
-});
-var mtData=ld('mtData',mtDef);
-MT_MONTHS.forEach(function(m){if(!mtData[m])mtData[m]=mtDef[m];});
-var mtSel=0;
-
-function mtTotal(m){return (mtData[m].phases||[]).reduce(function(s,p){return s+(p.tasks||[]).length;},0);}
-function mtDone(m){return (mtData[m].phases||[]).reduce(function(s,p){return s+(p.tasks||[]).filter(function(t){return t.d;}).length;},0);}
-
-function mtRender(){
-  var tabs=document.getElementById('mt-tabs'); var detail=document.getElementById('mt-detail');
-  if(!tabs||!detail)return;
-  var html='';
-  for(var i=0;i<MT_MONTHS.length;i++){
-    var m=MT_MONTHS[i];
-    html+='<div class="mt-tab'+(i===mtSel?' on':'')+'" data-mi="'+i+'">'+m+'<span class="mt-cnt">'+mtDone(m)+'/'+mtTotal(m)+'</span></div>';
-  }
-  tabs.innerHTML=html;
-  tabs.querySelectorAll('.mt-tab').forEach(function(tab){
-    tab.addEventListener('click',function(){mtSel=parseInt(this.getAttribute('data-mi'));mtRender();});
-  });
-
-  var m=MT_MONTHS[mtSel]; var d=mtData[m];
-  var dhtml='<div style="background:#FEFCF8;border:1px solid #E8E5DF;border-radius:10px;padding:12px 14px;margin-bottom:12px">';
-  dhtml+='<div style="font-size:12px;font-weight:700;margin-bottom:8px">📊 '+m+' 목표 수치</div>';
-  dhtml+='<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px">';
-  ['퀴즈완료','투어결제','수익','구독'].forEach(function(k){
-    dhtml+='<div style="background:#F5F3EE;border-radius:7px;padding:7px 9px"><div style="font-size:8px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:#6B6863;margin-bottom:2px">'+k+'</div><input class="ed" data-goal="'+k+'" value="'+(d.goals[k]||'')+'" placeholder="목표" style="font-size:16px;font-weight:700;color:#0F5F4A;width:100%"></div>';
-  });
-  dhtml+='</div></div>';
-
-  (d.phases||[]).forEach(function(ph,pi){
-    var pdone=(ph.tasks||[]).filter(function(t){return t.d;}).length;
-    dhtml+='<div style="border:1px solid #E8E5DF;border-radius:10px;overflow:hidden;margin-bottom:10px">';
-    dhtml+='<div style="display:flex;align-items:center;justify-content:space-between;padding:9px 12px;border-bottom:1px solid #E8E5DF;background:'+ph.bg+'">';
-    dhtml+='<div style="display:flex;align-items:center"><span style="font-size:9px;font-weight:700;padding:2px 8px;border-radius:99px;background:'+ph.c+';color:white">'+(pi+1)+'</span><span style="font-size:12px;font-weight:700;margin-left:8px">'+ph.title+'</span></div>';
-    dhtml+='<div style="display:flex;gap:6px;align-items:center"><span style="font-size:9px;color:#6B6863">'+pdone+'/'+(ph.tasks||[]).length+'</span><button data-mt-add="'+pi+'" style="background:#E1F5EE;color:#0F5F4A;border:none;border-radius:5px;padding:2px 8px;font-size:9px;font-weight:700;cursor:pointer">+ 추가</button></div></div>';
-    (ph.tasks||[]).forEach(function(t,ti){
-      dhtml+='<div style="display:flex;align-items:center;gap:7px;padding:7px 12px;border-bottom:1px solid #E8E5DF;cursor:pointer" data-mt-task="'+pi+'-'+ti+'">';
-      dhtml+='<span style="color:#C8C5BE;cursor:grab;font-size:12px;flex-shrink:0">⠿</span>';
-      dhtml+='<div class="cb'+(t.d?' on':'')+'" data-mt-chk="'+pi+'-'+ti+'" style="flex-shrink:0"></div>';
-      dhtml+='<span style="flex:1;font-size:12px;color:'+(t.d?'#B0ADA7':'#2C2A26')+';text-decoration:'+(t.d?'line-through':'none')+'">'+t.t+'</span>';
-      dhtml+='<button data-mt-todaily="'+pi+'-'+ti+'" style="font-size:8px;background:#E1F5EE;color:#0F5F4A;border:none;border-radius:4px;padding:1px 6px;font-weight:700;cursor:pointer;opacity:0;transition:opacity .15s" class="to-daily-btn">→ 데일리</button>';
-      dhtml+='<button data-mt-del="'+pi+'-'+ti+'" style="color:#C8C5BE;cursor:pointer;border:none;background:none;font-size:10px;flex-shrink:0">✕</button>';
-      dhtml+='</div>';
-    });
-    dhtml+='</div>';
-  });
-  dhtml+='<button data-mt-addph style="width:100%;background:#FEFCF8;border:1px dashed #E8E5DF;border-radius:9px;padding:9px;font-size:12px;color:#6B6863;cursor:pointer">+ 섹션 추가</button>';
-  detail.innerHTML=dhtml;
-
-  // goal inputs
-  detail.querySelectorAll('[data-goal]').forEach(function(inp){
-    inp.addEventListener('change',function(){
-      mtData[m].goals[this.getAttribute('data-goal')]=this.value; sv('mtData',mtData);
-    });
-  });
-  // chk
-  detail.querySelectorAll('[data-mt-chk]').forEach(function(cb){
-    cb.addEventListener('click',function(e){
-      e.stopPropagation();
-      var p=this.getAttribute('data-mt-chk').split('-');
-      mtData[m].phases[parseInt(p[0])].tasks[parseInt(p[1])].d=!mtData[m].phases[parseInt(p[0])].tasks[parseInt(p[1])].d;
-      sv('mtData',mtData); mtRender();
-    });
-  });
-  // del
-  detail.querySelectorAll('[data-mt-del]').forEach(function(btn){
-    btn.addEventListener('click',function(e){
-      e.stopPropagation();
-      var p=this.getAttribute('data-mt-del').split('-');
-      mtData[m].phases[parseInt(p[0])].tasks.splice(parseInt(p[1]),1);
-      sv('mtData',mtData); mtRender();
-    });
-  });
-  // add task
-  detail.querySelectorAll('[data-mt-add]').forEach(function(btn){
-    btn.addEventListener('click',function(){
-      var pi=parseInt(this.getAttribute('data-mt-add'));
-      var t=prompt('새 태스크 이름:'); if(!t)return;
-      mtData[m].phases[pi].tasks.push({t:t,d:false}); sv('mtData',mtData); mtRender();
-    });
-  });
-  // add phase
-  var addph=detail.querySelector('[data-mt-addph]');
-  if(addph) addph.addEventListener('click',function(){
-    var cols=[['#0F5F4A','#E1F5EE'],['#BA7517','#FFF3DC'],['#1A5FA3','#EDF4FF'],['#A33C1D','#FFF0EB']];
-    var ci=mtData[m].phases.length%4;
-    var t=prompt('섹션 이름:'); if(!t)return;
-    mtData[m].phases.push({title:t,c:cols[ci][0],bg:cols[ci][1],tasks:[]}); sv('mtData',mtData); mtRender();
-  });
-  // to daily
-  detail.querySelectorAll('[data-mt-todaily]').forEach(function(btn){
-    btn.addEventListener('click',function(e){
-      e.stopPropagation();
-      var p=this.getAttribute('data-mt-todaily').split('-');
-      var task=mtData[m].phases[parseInt(p[0])].tasks[parseInt(p[1])].t;
-      userSch.push({time:'09:00',task:task,cat:'📊 운영',fixed:false}); sv('userSch',userSch);
-      toast('✅ 데일리 스케줄에 추가됐어요!');
-    });
-  });
-  // hover to-daily
-  detail.querySelectorAll('[data-mt-task]').forEach(function(row){
-    var btn=row.querySelector('.to-daily-btn');
-    row.addEventListener('mouseenter',function(){if(btn)btn.style.opacity='1';});
-    row.addEventListener('mouseleave',function(){if(btn)btn.style.opacity='0';});
-  });
-}
-
-// ─── CALENDAR ───
-var CAL_MONTHS=['4월','5월','6월','7월','8월','9월','10월','11월','12월'];
-var CAL_NUMS=[4,5,6,7,8,9,10,11,12];
-var calSel=0;
-var calEvs=ld('calEvs',{'4':[{day:22,title:'MVP 론칭 🚀',tag:'t',memo:''},{day:14,title:'이태원 촬영',tag:'t',memo:''}]});
-var TLAB={'t':'🎬 콘텐츠','n':'📧 뉴스레터','r':'📣 마케팅'};
-var TCOL={'t':'#A33C1D','n':'#1A5FA3','r':'#3C3489'};
-var TBGCOL={'t':'#FFE8E4','n':'#EDF4FF','r':'#F0EFFD'};
-
-function calRender(){
-  var tabs=document.getElementById('cal-tabs'); var evlist=document.getElementById('cal-evlist');
-  var title=document.getElementById('cal-title');
-  if(!tabs||!evlist)return;
-  var html='';
-  for(var i=0;i<CAL_MONTHS.length;i++){
-    var k=String(CAL_NUMS[i]); var cnt=(calEvs[k]||[]).length;
-    html+='<div data-cal-tab="'+i+'" style="padding:4px 10px;border-radius:99px;font-size:11px;cursor:pointer;font-weight:'+(i===calSel?'700':'400')+';background:'+(i===calSel?'#0F5F4A':'#E8E5DF')+';color:'+(i===calSel?'white':'#6B6863')+'">'+CAL_MONTHS[i]+' '+cnt+'</div>';
-  }
-  tabs.innerHTML=html;
-  tabs.querySelectorAll('[data-cal-tab]').forEach(function(tab){
-    tab.addEventListener('click',function(){calSel=parseInt(this.getAttribute('data-cal-tab'));calRender();});
-  });
-  if(title) title.textContent='2026년 '+CAL_MONTHS[calSel]+' 일정';
-  var k=String(CAL_NUMS[calSel]); var evs=(calEvs[k]||[]).slice().sort(function(a,b){return a.day-b.day;});
-  if(!evs.length){evlist.innerHTML='<div style="text-align:center;padding:20px;color:#6B6863;font-size:11px">일정이 없어요. + 추가 버튼으로 넣어봐요</div>';return;}
-  var ehtml='';
-  for(var i=0;i<evs.length;i++){
-    var e=evs[i];
-    ehtml+='<div style="display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid #E8E5DF">';
-    ehtml+='<div style="font-size:13px;font-weight:700;color:#0F5F4A;min-width:36px">'+e.day+'일</div>';
-    ehtml+='<div style="flex:1"><div style="font-size:12px;font-weight:600">'+e.title+'</div>';
-    if(e.memo) ehtml+='<div style="font-size:10px;color:#6B6863">'+e.memo+'</div>';
-    ehtml+='<span style="font-size:9px;font-weight:700;padding:1px 6px;border-radius:99px;background:'+(TBGCOL[e.tag]||'#F5F3EE')+';color:'+(TCOL[e.tag]||'#6B6863')+'">'+TLAB[e.tag]+'</span></div>';
-    ehtml+='<button data-cal-del="'+i+'" style="border:none;background:none;color:#C8C5BE;cursor:pointer;font-size:12px">✕</button>';
-    ehtml+='</div>';
-  }
-  evlist.innerHTML=ehtml;
-  evlist.querySelectorAll('[data-cal-del]').forEach(function(btn){
-    btn.addEventListener('click',function(){
-      var idx=parseInt(this.getAttribute('data-cal-del'));
-      var k=String(CAL_NUMS[calSel]); var evs=calEvs[k]||[];
-      evs.sort(function(a,b){return a.day-b.day;});
-      evs.splice(idx,1); calEvs[k]=evs; sv('calEvs',calEvs); calRender();
-    });
-  });
-}
-
-document.getElementById('cal-add-btn').addEventListener('click',function(){
-  var f=document.getElementById('cal-form'); f.style.display=f.style.display==='none'?'block':'none';
-});
-document.getElementById('cal-cancel-btn').addEventListener('click',function(){
-  document.getElementById('cal-form').style.display='none';
-});
-document.getElementById('cal-save-btn').addEventListener('click',function(){
-  var day=parseInt(document.getElementById('cal-day').value);
-  var title=document.getElementById('cal-etitle').value.trim();
-  var tag=document.getElementById('cal-tag').value;
-  var memo=document.getElementById('cal-memo').value.trim();
-  if(!day||!title)return;
-  var k=String(CAL_NUMS[calSel]); if(!calEvs[k])calEvs[k]=[];
-  calEvs[k].push({day:day,title:title,tag:tag,memo:memo}); sv('calEvs',calEvs);
-  document.getElementById('cal-day').value=''; document.getElementById('cal-etitle').value='';
-  document.getElementById('cal-memo').value=''; document.getElementById('cal-form').style.display='none';
-  calRender();
-});
-
-// ─── RETRO ───
-document.querySelectorAll('.ret-ta').forEach(function(ta){
-  var k=ta.getAttribute('data-key'); ta.value=ld(k,'');
-  ta.addEventListener('input',function(){sv(k,this.value);});
-});
-
-// ─── DAILY DATE ───
-var ps2=document.getElementById('daily-ps'); if(ps2) ps2.textContent=dateLabel();
-
-// ─── INIT ───
-hubInit();
-schRender();
-wgRender();
-histDailyRender();
-mtRender();
-calRender();
+renderHub();renderTasks();renderRev();renderExp();renderCRM();renderCSlog();renderNotes();
 </script>
 </body>
 </html>
